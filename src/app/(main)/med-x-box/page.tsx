@@ -1,24 +1,32 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Archive } from 'lucide-react';
+import { TrafficStatsChart } from '@/components/med-x-box/TrafficStatsChart';
+import { TopBlockedTable } from '@/components/med-x-box/TopBlockedTable';
+import { ThreatMap } from '@/components/med-x-box/ThreatMap';
+import { BoxAlertsTable } from '@/components/med-x-box/BoxAlertsTable';
+import { DlpViolationsChart } from '@/components/med-x-box/DlpViolationsChart';
 
 export default function MedXBoxPage() {
   return (
-    <div className="flex-1 space-y-4">
+    <div className="flex-1 space-y-6">
       <h1 className="text-3xl font-bold font-headline">MED x Box</h1>
-      <Card>
-        <CardHeader>
-          <CardTitle>MED x Box</CardTitle>
-          <CardDescription>
-            This page is under construction. Check back later for updates.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex items-center justify-center p-16">
-          <div className="text-center text-muted-foreground">
-            <Archive className="h-16 w-16 mx-auto mb-4" />
-            <p>Content for MED x Box will be here.</p>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
+        <div className="lg:col-span-3">
+          <TrafficStatsChart />
+        </div>
+        <div className="lg:col-span-2">
+          <TopBlockedTable />
+        </div>
+      </div>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
+        <div className="lg:col-span-3">
+            <ThreatMap />
+        </div>
+         <div className="lg:col-span-2">
+            <DlpViolationsChart />
+        </div>
+      </div>
+      <div className="grid gap-6">
+        <BoxAlertsTable />
+      </div>
     </div>
   );
 }
