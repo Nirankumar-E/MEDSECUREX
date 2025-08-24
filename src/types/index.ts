@@ -21,3 +21,23 @@ export interface Alert {
   source: string;
   entity: string;
 }
+
+export type IncidentStatus = 'Open' | 'In Progress' | 'Resolved' | 'Closed';
+export type IncidentSeverity = 'Critical' | 'High' | 'Medium' | 'Low';
+
+export interface Incident {
+  id: string;
+  title: string;
+  status: IncidentStatus;
+  severity: IncidentSeverity;
+  assignee: string;
+  created: string;
+}
+
+export interface TTP {
+  id: string;
+  name: string;
+  tactic: string;
+  count: number;
+  lastSeen: string;
+}
