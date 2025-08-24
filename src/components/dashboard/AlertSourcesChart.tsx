@@ -6,8 +6,8 @@ import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 import { TrendingUp } from 'lucide-react';
 
 const chartData = [
-  { source: 'API Shield', alerts: 65, fill: 'var(--color-api-shield)' },
-  { source: 'MED Box', alerts: 35, fill: 'var(--color-med-box)' },
+  { source: 'API Shield', alerts: 65, fill: 'hsl(var(--destructive))' },
+  { source: 'MED Box', alerts: 35, fill: 'hsl(var(--primary))' },
 ];
 
 const chartConfig = {
@@ -16,11 +16,11 @@ const chartConfig = {
   },
   'API Shield': {
     label: 'API Shield',
-    color: 'hsl(var(--primary))',
+    color: 'hsl(var(--destructive))',
   },
   'MED Box': {
     label: 'MED Box',
-    color: 'hsl(var(--chart-3))',
+    color: 'hsl(var(--primary))',
   },
 };
 
@@ -42,8 +42,9 @@ export function AlertSourcesChart() {
               innerRadius={60}
               strokeWidth={5}
             >
-              <Cell key="cell-0" fill="var(--color-API-Shield)" />
-              <Cell key="cell-1" fill="var(--color-MED-Box)" />
+              {chartData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.fill} />
+              ))}
             </Pie>
           </PieChart>
         </ChartContainer>
@@ -57,7 +58,7 @@ export function AlertSourcesChart() {
             <span
               className="h-2.5 w-2.5 shrink-0 rounded-sm"
               style={{
-                backgroundColor: 'hsl(var(--primary))',
+                backgroundColor: 'hsl(var(--destructive))',
               }}
             />
             <div className="flex-1 text-sm">API Shield</div>
@@ -72,7 +73,7 @@ export function AlertSourcesChart() {
             <span
               className="h-2.5 w-2.5 shrink-0 rounded-sm"
               style={{
-                backgroundColor: 'hsl(var(--chart-3))',
+                backgroundColor: 'hsl(var(--primary))',
               }}
             />
             <div className="flex-1 text-sm">MED Box</div>
