@@ -1,24 +1,24 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ShieldCheck } from 'lucide-react';
+import { ApiUsageChart } from '@/components/health-api-shield/ApiUsageChart';
+import { BlockedRequestsChart } from '@/components/health-api-shield/BlockedRequestsChart';
+import { PiiScrubbingReportChart } from '@/components/health-api-shield/PiiScrubbingReportChart';
+import { ShieldAlertsTable } from '@/components/health-api-shield/ShieldAlertsTable';
 
 export default function HealthApiShieldPage() {
   return (
-    <div className="flex-1 space-y-4">
+    <div className="flex-1 space-y-6">
       <h1 className="text-3xl font-bold font-headline">Health API Shield</h1>
-      <Card>
-        <CardHeader>
-          <CardTitle>Health API Shield</CardTitle>
-          <CardDescription>
-            This page is under construction. Check back later for updates.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex items-center justify-center p-16">
-          <div className="text-center text-muted-foreground">
-            <ShieldCheck className="h-16 w-16 mx-auto mb-4" />
-            <p>Content for Health API Shield will be here.</p>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <ApiUsageChart />
+        </div>
+        <BlockedRequestsChart />
+      </div>
+      <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-1">
+        <PiiScrubbingReportChart />
+      </div>
+      <div className="grid gap-6">
+        <ShieldAlertsTable />
+      </div>
     </div>
   );
 }
