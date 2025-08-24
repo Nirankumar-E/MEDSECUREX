@@ -1,6 +1,7 @@
 import { MetricCard } from '@/components/dashboard/MetricCard';
 import { AlertsOverTimeChart } from '@/components/dashboard/AlertsOverTimeChart';
 import { RecentAlertsTable } from '@/components/dashboard/RecentAlertsTable';
+import { AlertSourcesChart } from '@/components/dashboard/AlertSourcesChart';
 import { BarChart, FileText, ShieldAlert, Zap } from 'lucide-react';
 import Link from 'next/link';
 
@@ -51,7 +52,12 @@ export default function OverviewPage() {
           <AlertsOverTimeChart />
         </div>
         <div className="col-span-12 lg:col-span-3">
-          <RecentAlertsTable />
+          <AlertSourcesChart />
+        </div>
+      </div>
+       <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-1">
+        <div className="col-span-12">
+            <RecentAlertsTable />
         </div>
       </div>
     </div>
