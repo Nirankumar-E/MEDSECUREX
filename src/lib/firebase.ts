@@ -1,7 +1,7 @@
-import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { initializeApp, getApps, getApp, type FirebaseOptions } from 'firebase/app';
+import { getAuth, GoogleAuthProvider, setPersistence, browserLocalPersistence, browserSessionPersistence } from 'firebase/auth';
 
-const firebaseConfig = {
+const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
@@ -12,5 +12,11 @@ const firebaseConfig = {
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
-export { app, auth };
+const setAuthPersistence = (rememberMe: boolean) => {
+  return setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+};
+
+
+export { app, auth, googleProvider, setAuthPersistence };

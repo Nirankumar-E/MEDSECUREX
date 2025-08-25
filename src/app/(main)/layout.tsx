@@ -21,9 +21,10 @@ import { Bell, ChevronDown, LayoutDashboard, LogOut, Settings, ShieldAlert, Shie
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { auth } from '@/lib/firebase';
 
 export default function MainLayout({ children }: { children: ReactNode }) {
-  const { user, role, loading, logout } = useAuth();
+  const { user, role, loading, setUser, setRole } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -38,8 +39,11 @@ export default function MainLayout({ children }: { children: ReactNode }) {
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
   
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await auth.signOut();
+    setUser(null);
+    setRole(null);
+    localStorage.removeItem('medi-secure-x2-user');
     router.push('/login');
   }
 

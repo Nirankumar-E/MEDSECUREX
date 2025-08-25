@@ -1,57 +1,64 @@
 'use client';
 
 import { type ReactNode, createContext, useState, useEffect } from 'react';
+import { type User as FirebaseAuthUser } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 import { type User, type Role } from '@/types';
 import { Skeleton } from '../ui/skeleton';
 
 interface AuthContextType {
   user: User | null;
+  firebaseUser: FirebaseAuthUser | null;
   role: Role | null;
   loading: boolean;
-  login: (role: Role) => void;
-  logout: () => void;
+  setRole: (role: Role | null) => void;
+  setUser: (user: User | null) => void;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [firebaseUser, setFirebaseUser] = useState<FirebaseAuthUser | null>(null);
   const [role, setRole] = useState<Role | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // In a real app, you'd check for a stored session here.
-    // For this scaffold, we'll just end the loading state.
-    const storedUser = localStorage.getItem('medi-secure-x2-user');
-    if (storedUser) {
-      const parsedUser: User = JSON.parse(storedUser);
-      setUser(parsedUser);
-      setRole(parsedUser.role);
-    }
-    setLoading(false);
+    const unsubscribe = auth.onAuthStateChanged(auth_user => {
+      setFirebaseUser(auth_user);
+      if (auth_user) {
+        // In a real app, you might fetch user profile from Firestore here
+        const storedUser = localStorage.getItem('medi-secure-x2-user');
+        if (storedUser) {
+            const parsedUser: User = JSON.parse(storedUser);
+            setUser(parsedUser);
+            setRole(parsedUser.role);
+        } else {
+            // Create a default user object if none is stored
+            const newUser: User = {
+                uid: auth_user.uid,
+                name: auth_user.displayName || 'New User',
+                email: auth_user.email || '',
+                avatarUrl: auth_user.photoURL || `https://i.pravatar.cc/150?u=${auth_user.uid}`,
+                role: 'Viewer' // Default role
+            };
+            setUser(newUser);
+            setRole(newUser.role);
+            localStorage.setItem('medi-secure-x2-user', JSON.stringify(newUser));
+        }
+
+      } else {
+        setUser(null);
+        setRole(null);
+        localStorage.removeItem('medi-secure-x2-user');
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
   
-  const login = (selectedRole: Role) => {
-    setLoading(true);
-    // This is a mock login. In a real app, you'd use Firebase Auth.
-    const mockUser: User = {
-      uid: '12345',
-      name: 'Dr. Alex Chen',
-      email: 'alex.chen@medisecure.dev',
-      avatarUrl: `https://i.pravatar.cc/150?u=alexchen`,
-      role: selectedRole,
-    };
-    setUser(mockUser);
-    setRole(selectedRole);
-    localStorage.setItem('medi-secure-x2-user', JSON.stringify(mockUser));
-    setLoading(false);
-  };
-
-  const logout = () => {
-    setUser(null);
-    setRole(null);
-    localStorage.removeItem('medi-secure-x2-user');
-  };
+  const value = { user, firebaseUser, role, loading, setRole, setUser };
 
   if (loading) {
     return (
@@ -68,7 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, role, loading, login, logout }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
