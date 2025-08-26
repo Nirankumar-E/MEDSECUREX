@@ -4,6 +4,8 @@ import { RecentAlertsTable } from '@/components/dashboard/RecentAlertsTable';
 import { AlertSourcesChart } from '@/components/dashboard/AlertSourcesChart';
 import { BarChart, FileText, ShieldAlert, Zap } from 'lucide-react';
 import Link from 'next/link';
+import { StatisticsBar } from '@/components/dashboard/StatisticsBar';
+import { Separator } from '@/components/ui/separator';
 
 export default function OverviewPage() {
   return (
@@ -47,7 +49,12 @@ export default function OverviewPage() {
           />
         </Link>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+
+      <Separator className="my-6" />
+
+      <StatisticsBar />
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7 pt-4">
         <div className="col-span-12 lg:col-span-4">
           <AlertsOverTimeChart />
         </div>

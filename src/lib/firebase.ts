@@ -6,6 +6,8 @@ import {
   browserLocalPersistence, 
   browserSessionPersistence 
 } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+
 
 const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -23,6 +25,7 @@ if (typeof window !== 'undefined') {
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
+const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 
 // Persistence handler
@@ -35,4 +38,4 @@ export const setAuthPersistence = async (rememberMe: boolean) => {
   }
 };
 
-export { app, auth, googleProvider };
+export { app, auth, db, googleProvider };
