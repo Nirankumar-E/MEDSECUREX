@@ -25,22 +25,31 @@ const chartConfig = {
 };
 
 export function AlertSourcesChart() {
+    const totalAlerts = React.useMemo(() => {
+        return chartData.reduce((acc, curr) => acc + curr.alerts, 0);
+    }, []);
+
   return (
-    <Card className="rounded-2xl shadow-lg h-full">
+    <Card className="rounded-2xl shadow-lg h-full flex flex-col">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle>Alert Sources</CardTitle>
         <CardDescription>Last 24 hours</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
-        <ChartContainer config={chartConfig} className="mx-auto aspect-square h-[250px]">
+      <CardContent className="flex-1 flex items-center justify-center pb-0">
+        <ChartContainer config={chartConfig} className="mx-auto aspect-square h-[250px] relative">
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <p className="text-3xl font-bold">{totalAlerts}</p>
+                <p className="text-xs text-muted-foreground">Total Alerts</p>
+            </div>
           <PieChart>
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
             <Pie
               data={chartData}
               dataKey="alerts"
               nameKey="source"
-              innerRadius={60}
+              innerRadius={80}
               strokeWidth={5}
+              labelLine={false}
             >
               {chartData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.fill} />
@@ -63,7 +72,7 @@ export function AlertSourcesChart() {
             />
             <div className="flex-1 text-sm">API Shield</div>
           </div>
-          <div className="text-sm font-medium">65 (65%)</div>
+          <div className="text-sm font-medium">{chartData[0].alerts} ({Math.round(chartData[0].alerts / totalAlerts * 100)}%)</div>
         </div>
         <div
           className="flex items-center"
@@ -78,7 +87,7 @@ export function AlertSourcesChart() {
             />
             <div className="flex-1 text-sm">MED Box</div>
           </div>
-          <div className="text-sm font-medium">35 (35%)</div>
+          <div className="text-sm font-medium">{chartData[1].alerts} ({Math.round(chartData[1].alerts / totalAlerts * 100)}%)</div>
         </div>
        </div>
     </Card>
