@@ -16,7 +16,7 @@ interface AlertDetailsProps {
 }
 
 const severityStyles: Record<Alert['severity'], string> = {
-  Critical: 'bg-red-900 text-white border-transparent',
+  Critical: 'bg-purple-700 text-white border-transparent',
   High: 'bg-red-600 text-white border-transparent',
   Medium: 'bg-orange-500 text-white border-transparent',
   Low: 'bg-yellow-400 text-black border-transparent',
