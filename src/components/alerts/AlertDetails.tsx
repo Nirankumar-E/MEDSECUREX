@@ -15,11 +15,11 @@ interface AlertDetailsProps {
   alert: Alert;
 }
 
-const severityVariant: Record<Alert['severity'], 'destructive' | 'secondary' | 'default'> = {
-  Critical: 'destructive',
-  High: 'secondary',
-  Medium: 'default',
-  Low: 'default',
+const severityStyles: Record<Alert['severity'], string> = {
+  Critical: 'bg-red-900 text-white border-transparent',
+  High: 'bg-red-600 text-white border-transparent',
+  Medium: 'bg-orange-500 text-white border-transparent',
+  Low: 'bg-yellow-400 text-black border-transparent',
 };
 
 export function AlertDetails({ alert }: AlertDetailsProps) {
@@ -56,7 +56,7 @@ export function AlertDetails({ alert }: AlertDetailsProps) {
             <div><span className="font-semibold">Timestamp:</span> {new Date(alert.timestamp).toLocaleString()}</div>
             <div><span className="font-semibold">Entity:</span> {alert.entity}</div>
             <div><span className="font-semibold">Source:</span> {alert.source}</div>
-            <div><span className="font-semibold">Severity:</span> <Badge variant={severityVariant[alert.severity]}>{alert.severity}</Badge></div>
+            <div><span className="font-semibold">Severity:</span> <Badge className={severityStyles[alert.severity]}>{alert.severity}</Badge></div>
             <div><span className="font-semibold">Status:</span> <Badge variant="outline">{alert.status}</Badge></div>
           </div>
           <div>

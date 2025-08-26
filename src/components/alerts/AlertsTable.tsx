@@ -36,9 +36,13 @@ const mockAlerts: Alert[] = [
 ];
 
 const severityOrder: Record<AlertSeverity, number> = { 'Critical': 4, 'High': 3, 'Medium': 2, 'Low': 1 };
-const severityVariant: Record<Alert['severity'], 'destructive' | 'secondary' | 'default'> = {
-  Critical: 'destructive', High: 'secondary', Medium: 'default', Low: 'default',
+const severityStyles: Record<Alert['severity'], string> = {
+  Critical: 'bg-red-900 text-white border-transparent',
+  High: 'bg-red-600 text-white border-transparent',
+  Medium: 'bg-orange-500 text-white border-transparent',
+  Low: 'bg-yellow-400 text-black border-transparent',
 };
+
 
 export function AlertsTable() {
   const [alerts] = useState<Alert[]>(mockAlerts);
@@ -170,7 +174,11 @@ export function AlertsTable() {
             <TableBody>
               {sortedAlerts.map((alert) => (
                 <TableRow key={alert.id} onClick={() => setSelectedAlert(alert)} className="cursor-pointer">
-                  <TableCell><Badge variant={severityVariant[alert.severity]}>{alert.severity}</Badge></TableCell>
+                  <TableCell>
+                    <Badge className={severityStyles[alert.severity]}>
+                      {alert.severity}
+                    </Badge>
+                  </TableCell>
                   <TableCell className="font-medium">{alert.description}</TableCell>
                   <TableCell><Badge variant="outline">{alert.ttp_id}</Badge></TableCell>
                   <TableCell>{alert.status}</TableCell>
