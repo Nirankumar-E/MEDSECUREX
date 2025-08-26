@@ -15,11 +15,11 @@ const recentAlerts: Alert[] = [
   { id: 'AL-9872', timestamp: '2023-10-26 22:10:19', severity: 'High', description: 'PowerShell execution with suspicious arguments', ttp_id: 'T1059.001', status: 'Resolved', source: 'EDR', entity: 'SRV-WEB02' },
 ];
 
-const severityVariant: Record<Alert['severity'], 'destructive' | 'secondary' | 'default'> = {
-  Critical: 'destructive',
-  High: 'secondary',
-  Medium: 'default',
-  Low: 'default',
+const severityStyles: Record<Alert['severity'], string> = {
+  Critical: 'bg-purple-700 text-white border-transparent',
+  High: 'bg-red-600 text-white border-transparent',
+  Medium: 'bg-orange-500 text-white border-transparent',
+  Low: 'bg-yellow-400 text-black border-transparent',
 };
 
 const statusColor: Record<Alert['status'], string> = {
@@ -91,7 +91,7 @@ export function RecentAlertsTable() {
                 filteredAlerts.map((alert) => (
                 <TableRow key={alert.id}>
                     <TableCell>
-                    <Badge variant={severityVariant[alert.severity]}>{alert.severity}</Badge>
+                      <Badge className={severityStyles[alert.severity]}>{alert.severity}</Badge>
                     </TableCell>
                     <TableCell className="font-medium">{alert.description}</TableCell>
                     <TableCell>

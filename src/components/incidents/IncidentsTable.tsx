@@ -39,11 +39,11 @@ const mockIncidents: Incident[] = [
   { id: 'INC-012', title: 'Potential API scraping activity', status: 'Resolved', severity: 'High', assignee: 'Casey Day', created: '2023-10-26 21:30:00' },
 ];
 
-const severityVariant: Record<IncidentSeverity, 'destructive' | 'secondary' | 'default'> = {
-  Critical: 'destructive',
-  High: 'secondary',
-  Medium: 'default',
-  Low: 'default',
+const severityStyles: Record<IncidentSeverity, string> = {
+  Critical: 'bg-purple-700 text-white border-transparent',
+  High: 'bg-red-600 text-white border-transparent',
+  Medium: 'bg-orange-500 text-white border-transparent',
+  Low: 'bg-yellow-400 text-black border-transparent',
 };
 
 export function IncidentsTable() {
@@ -76,7 +76,7 @@ export function IncidentsTable() {
                         <Badge variant={incident.status === 'Open' ? 'outline' : 'default'}>{incident.status}</Badge>
                     </TableCell>
                     <TableCell>
-                        <Badge variant={severityVariant[incident.severity]}>{incident.severity}</Badge>
+                        <Badge className={severityStyles[incident.severity]}>{incident.severity}</Badge>
                     </TableCell>
                     <TableCell>{incident.assignee}</TableCell>
                     <TableCell>{new Date(incident.created).toLocaleString()}</TableCell>

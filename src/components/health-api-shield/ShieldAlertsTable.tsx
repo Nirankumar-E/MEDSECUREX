@@ -15,11 +15,11 @@ const mockAlerts: Alert[] = [
   { id: 'SH-104', timestamp: '2023-10-26 21:30:00', severity: 'High', description: 'Potential API scraping activity from a single user session', ttp_id: 'T1003', status: 'Resolved', source: 'Shield', entity: 'Appointments API' },
 ];
 
-const severityVariant: Record<Alert['severity'], 'destructive' | 'secondary' | 'default'> = {
-  Critical: 'destructive',
-  High: 'secondary',
-  Medium: 'default',
-  Low: 'default',
+const severityStyles: Record<Alert['severity'], string> = {
+  Critical: 'bg-purple-700 text-white border-transparent',
+  High: 'bg-red-600 text-white border-transparent',
+  Medium: 'bg-orange-500 text-white border-transparent',
+  Low: 'bg-yellow-400 text-black border-transparent',
 };
 
 export function ShieldAlertsTable() {
@@ -74,7 +74,7 @@ export function ShieldAlertsTable() {
             {sortedAlerts.map((alert) => (
               <TableRow key={alert.id}>
                 <TableCell>
-                  <Badge variant={severityVariant[alert.severity]}>{alert.severity}</Badge>
+                  <Badge className={severityStyles[alert.severity]}>{alert.severity}</Badge>
                 </TableCell>
                 <TableCell className="font-medium">{alert.description}</TableCell>
                 <TableCell>
