@@ -1,9 +1,11 @@
 'use client';
 
+import { useMemo, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import type { Alert } from '@/types';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const recentAlerts: Alert[] = [
   { id: 'AL-9876', timestamp: '2023-10-27 14:45:12', severity: 'Critical', description: 'Ransomware behavior detected on endpoint SRV-DB01', ttp_id: 'T1486', status: 'New', source: 'EDR', entity: 'SRV-DB01' },
@@ -28,11 +30,52 @@ const statusColor: Record<Alert['status'], string> = {
 }
 
 export function RecentAlertsTable() {
+  const [severityFilter, setSeverityFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('all');
+
+  const filteredAlerts = useMemo(() => {
+    return recentAlerts.filter(alert => {
+      const severityMatch = severityFilter === 'all' || alert.severity === severityFilter;
+      const statusMatch = statusFilter === 'all' || alert.status === statusFilter;
+      return severityMatch && statusMatch;
+    });
+  }, [severityFilter, statusFilter]);
+
   return (
     <Card className="rounded-2xl shadow-lg">
       <CardHeader>
-        <CardTitle>Recent High-Severity Alerts</CardTitle>
-        <CardDescription>A summary of the latest critical and high-priority threats.</CardDescription>
+        <div className="flex flex-col md:flex-row justify-between md:items-center">
+            <div className='mb-4 md:mb-0'>
+                <CardTitle>Recent High-Severity Alerts</CardTitle>
+                <CardDescription>A summary of the latest critical and high-priority threats.</CardDescription>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-2">
+                <Select value={severityFilter} onValueChange={setSeverityFilter}>
+                <SelectTrigger className="w-full sm:w-[160px]">
+                    <SelectValue placeholder="Filter by severity" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="all">All Severities</SelectItem>
+                    <SelectItem value="Critical">Critical</SelectItem>
+                    <SelectItem value="High">High</SelectItem>
+                    <SelectItem value="Medium">Medium</SelectItem>
+                    <SelectItem value="Low">Low</SelectItem>
+                </SelectContent>
+                </Select>
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-full sm:w-[160px]">
+                    <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="all">All Statuses</SelectItem>
+                    <SelectItem value="New">New</SelectItem>
+                    <SelectItem value="In Progress">In Progress</SelectItem>
+                    <SelectItem value="Resolved">Resolved</SelectItem>
+                    <SelectItem value="Dismissed">Dismissed</SelectItem>
+                </SelectContent>
+                </Select>
+            </div>
+        </div>
       </CardHeader>
       <CardContent>
         <Table>
@@ -44,20 +87,28 @@ export function RecentAlertsTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {recentAlerts.map((alert) => (
-              <TableRow key={alert.id}>
-                <TableCell>
-                  <Badge variant={severityVariant[alert.severity]}>{alert.severity}</Badge>
-                </TableCell>
-                <TableCell className="font-medium">{alert.description}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <span className={`h-2.5 w-2.5 rounded-full ${statusColor[alert.status]}`} />
-                    {alert.status}
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+            {filteredAlerts.length > 0 ? (
+                filteredAlerts.map((alert) => (
+                <TableRow key={alert.id}>
+                    <TableCell>
+                    <Badge variant={severityVariant[alert.severity]}>{alert.severity}</Badge>
+                    </TableCell>
+                    <TableCell className="font-medium">{alert.description}</TableCell>
+                    <TableCell>
+                    <div className="flex items-center gap-2">
+                        <span className={`h-2.5 w-2.5 rounded-full ${statusColor[alert.status]}`} />
+                        {alert.status}
+                    </div>
+                    </TableCell>
+                </TableRow>
+                ))
+            ) : (
+                <TableRow>
+                    <TableCell colSpan={3} className="text-center h-24">
+                        No alerts match the current filters.
+                    </TableCell>
+                </TableRow>
+            )}
           </TableBody>
         </Table>
       </CardContent>

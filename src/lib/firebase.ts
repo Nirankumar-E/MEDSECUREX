@@ -1,5 +1,11 @@
 import { initializeApp, getApps, getApp, type FirebaseOptions } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, setPersistence, browserLocalPersistence, browserSessionPersistence } from 'firebase/auth';
+import { 
+  getAuth, 
+  GoogleAuthProvider, 
+  setPersistence, 
+  browserLocalPersistence, 
+  browserSessionPersistence 
+} from 'firebase/auth';
 
 const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -10,16 +16,23 @@ const firebaseConfig: FirebaseOptions = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Log the configuration to the browser console for debugging
-console.log('Firebase Config:', firebaseConfig);
+// Debug log (remove before production)
+if (typeof window !== 'undefined') {
+  console.log('Firebase Config:', firebaseConfig);
+}
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
-const setAuthPersistence = (rememberMe: boolean) => {
-  return setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+// Persistence handler
+export const setAuthPersistence = async (rememberMe: boolean) => {
+  try {
+    await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+    console.log(`Persistence set to: ${rememberMe ? 'local' : 'session'}`);
+  } catch (err) {
+    console.error('Error setting persistence:', err);
+  }
 };
 
-
-export { app, auth, googleProvider, setAuthPersistence };
+export { app, auth, googleProvider };
