@@ -2,6 +2,7 @@
 
 import { Badge } from '@/components/ui/badge';
 import type { AlertStatus, IncidentStatus } from '@/types';
+import { cn } from '@/lib/utils';
 
 type Status = AlertStatus | IncidentStatus;
 
@@ -22,7 +23,7 @@ const statusStyles: Record<Status, string> = {
 
 export function StatusBadge({ status }: StatusBadgeProps) {
   return (
-    <Badge className={statusStyles[status] || 'bg-gray-500 text-white'}>
+    <Badge className={cn(statusStyles[status] || 'bg-gray-500 text-white', 'whitespace-nowrap')}>
       {status}
     </Badge>
   );
