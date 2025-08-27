@@ -80,20 +80,18 @@ export default function MainLayout({ children }: { children: ReactNode }) {
           </div>
         </SidebarHeader>
         <SidebarContent>
-          <div className="flex flex-col justify-center flex-1">
-            <SidebarMenu>
-              {filteredNavItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton asChild isActive={pathname.startsWith(item.href)} tooltip={item.label}>
-                    <Link href={item.href}>
-                      <item.icon />
-                      <span>{item.label}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </div>
+          <SidebarMenu>
+            {filteredNavItems.map((item) => (
+              <SidebarMenuItem key={item.href}>
+                <SidebarMenuButton asChild isActive={pathname.startsWith(item.href)} tooltip={item.label}>
+                  <Link href={item.href}>
+                    <item.icon />
+                    <span>{item.label}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
            <DropdownMenu>
@@ -132,12 +130,9 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b bg-background/95 backdrop-blur-sm px-4 shadow-sm">
           <div className="flex items-center gap-4">
             <SidebarTrigger />
-          </div>
-
-          <div className="flex-1 flex justify-center">
-             {currentPage && (
-                <h1 className="text-lg font-semibold md:text-xl font-headline text-muted-foreground">{currentPage.label}</h1>
-              )}
+            {currentPage && (
+              <h1 className="text-lg font-semibold md:text-xl font-headline text-muted-foreground">{currentPage.label}</h1>
+            )}
           </div>
 
           <div className="flex items-center gap-2">
