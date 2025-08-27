@@ -48,7 +48,11 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   ];
 
   const filteredNavItems = navItems.filter(item => role && item.roles.includes(role));
-  const currentPage = navItems.find(item => pathname.startsWith(item.href));
+  
+  const getPageData = (path: string) => {
+    return navItems.find(item => path.startsWith(item.href))
+  }
+  const currentPage = getPageData(pathname)
 
   if (loading || !user) {
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
@@ -125,7 +129,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-4">
             <SidebarTrigger />
              <div className="flex items-center gap-2">
-                <div className="bg-primary text-primary-foreground rounded-lg p-2">
+                <div className="bg-primary text-primary-foreground rounded-lg p-2 md:hidden">
                     <ShieldCheck className="h-6 w-6" />
                 </div>
                 <h1 className="text-xl font-semibold font-headline text-primary md:hidden">MediSecureX2</h1>
