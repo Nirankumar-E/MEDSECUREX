@@ -17,7 +17,7 @@ import {
   SidebarTrigger,
   SidebarHeader,
 } from '@/components/ui/sidebar';
-import { Bell, ChevronDown, LayoutDashboard, LogOut, Settings, ShieldAlert, ShieldCheck, HeartPulse, Archive, ClipboardList, FileText, BarChart, Rocket } from 'lucide-react';
+import { Bell, ChevronDown, LayoutDashboard, LogOut, Settings, ShieldAlert, ShieldCheck, HeartPulse, Archive, ClipboardList, FileText, BarChart, Rocket, FileBarChart } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -41,6 +41,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
     { href: '/med-x-box', label: 'MED x Box', icon: Archive, roles: ['Admin', 'Analyst', 'Viewer'] },
     { href: '/alerts', label: 'Alerts', icon: ShieldAlert, roles: ['Admin', 'Analyst', 'Viewer'] },
     { href: '/incidents', label: 'Incidents', icon: FileText, roles: ['Admin', 'Analyst'] },
+    { href: '/reports', label: 'Reports', icon: FileBarChart, roles: ['Admin', 'Analyst'] },
     { href: '/ttps', label: 'TTPs', icon: BarChart, roles: ['Admin', 'Analyst'] },
     { href: '/pii-reports', label: 'PII Reports', icon: ClipboardList, roles: ['Admin', 'Analyst'] },
     { href: '/agents', label: 'Agents', icon: Rocket, roles: ['Admin', 'Analyst', 'Viewer'] },
