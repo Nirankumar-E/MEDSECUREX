@@ -69,8 +69,8 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   return (
     <SidebarProvider defaultOpen={true}>
       <Sidebar>
-        <SidebarHeader className="justify-between">
-          <div className="flex items-center gap-2">
+        <SidebarHeader className="justify-between group-data-[collapsible=icon]:group-data-[state=collapsed]:justify-center">
+          <div className="flex items-center gap-2 group-data-[collapsible=icon]:group-data-[state=collapsed]:hidden">
               <div className="bg-primary text-primary-foreground rounded-lg p-2">
                   <ShieldCheck className="h-6 w-6" />
               </div>
