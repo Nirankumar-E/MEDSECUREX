@@ -35,7 +35,7 @@ export function AlertSourcesChart() {
         <CardTitle>Alert Sources</CardTitle>
         <CardDescription>Last 24 hours</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 flex items-center justify-center p-0">
+      <CardContent className="flex-1 p-0">
         <ChartContainer config={chartConfig} className="mx-auto aspect-square h-full max-h-[250px]">
           <PieChart>
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
@@ -62,7 +62,14 @@ export function AlertSourcesChart() {
               }}
             />
           </PieChart>
-          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+          <div style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              textAlign: 'center',
+              pointerEvents: 'none'
+          }}>
                 <p className="text-4xl font-bold">{totalAlerts}</p>
                 <p className="text-xs text-muted-foreground">Total Alerts</p>
             </div>
