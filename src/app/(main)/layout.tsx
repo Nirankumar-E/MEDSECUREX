@@ -16,6 +16,7 @@ import {
   SidebarMenuButton,
   SidebarInset,
   SidebarTrigger,
+  SidebarRail,
 } from '@/components/ui/sidebar';
 import { Bell, ChevronDown, LayoutDashboard, LogOut, Settings, ShieldAlert, ShieldCheck, HeartPulse, Archive, ClipboardList, FileText, BarChart, Rocket } from 'lucide-react';
 import Link from 'next/link';
@@ -63,8 +64,9 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   const filteredNavItems = navItems.filter(item => role && item.roles.includes(role));
 
   return (
-    <SidebarProvider defaultOpen={false}>
+    <SidebarProvider defaultOpen={true}>
       <Sidebar>
+        <SidebarRail />
         <SidebarHeader>
           <div className="flex items-center gap-2">
             <div className="bg-primary text-primary-foreground rounded-lg p-2">
@@ -77,7 +79,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
           <SidebarMenu>
             {filteredNavItems.map((item) => (
               <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton asChild isActive={pathname.startsWith(item.href)}>
+                <SidebarMenuButton asChild isActive={pathname.startsWith(item.href)} tooltip={item.label}>
                   <Link href={item.href}>
                     <item.icon />
                     <span>{item.label}</span>
@@ -95,11 +97,11 @@ export default function MainLayout({ children }: { children: ReactNode }) {
                     <AvatarImage src={user.avatarUrl} alt={user.name} data-ai-hint="user avatar" />
                     <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                 </Avatar>
-                <div className="text-left">
+                <div className="text-left group-data-[collapsible=icon]:group-data-[state=collapsed]:hidden">
                   <p className="font-semibold">{user.name}</p>
                   <p className="text-xs text-muted-foreground">{user.role}</p>
                 </div>
-                <ChevronDown className="ml-auto h-4 w-4" />
+                <ChevronDown className="ml-auto h-4 w-4 group-data-[collapsible=icon]:group-data-[state=collapsed]:hidden" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end" forceMount>
@@ -122,9 +124,9 @@ export default function MainLayout({ children }: { children: ReactNode }) {
       </Sidebar>
       <SidebarInset>
         <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/80 backdrop-blur-lg px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 py-4">
-          <SidebarTrigger />
+          <SidebarTrigger className="md:hidden" />
+           <h1 className="text-lg font-semibold md:text-2xl font-headline">MEDSECUREX Dashboard</h1>
           <div className="flex-1">
-            {/* Can add breadcrumbs here */}
           </div>
           <Button variant="outline" size="icon" className="h-9 w-9">
             <Bell className="h-4 w-4" />
