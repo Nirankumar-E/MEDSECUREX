@@ -54,16 +54,16 @@ export function SettingsTabs() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>User</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead className="text-center">User</TableHead>
+                  <TableHead className="text-center">Role</TableHead>
+                  <TableHead className="text-center">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {mockUsers.map(user => (
                   <TableRow key={user.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
+                    <TableCell className="text-center">
+                      <div className="flex items-center gap-3 justify-center">
                         <Avatar>
                           <AvatarImage src={user.avatarUrl} data-ai-hint="user avatar" />
                           <AvatarFallback>{user.name.slice(0, 2)}</AvatarFallback>
@@ -74,9 +74,9 @@ export function SettingsTabs() {
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-center">
                       <Select defaultValue={user.role}>
-                        <SelectTrigger className="w-[120px]">
+                        <SelectTrigger className="w-[120px] mx-auto">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -86,7 +86,7 @@ export function SettingsTabs() {
                         </SelectContent>
                       </Select>
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-center">
                       <Button variant="outline" size="sm">Save</Button>
                     </TableCell>
                   </TableRow>

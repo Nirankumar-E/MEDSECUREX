@@ -23,19 +23,19 @@ export function TopBlockedTable() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Rank</TableHead>
-              <TableHead>Source</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead className="text-right">Count</TableHead>
+              <TableHead className="text-center">Rank</TableHead>
+              <TableHead className="text-center">Source</TableHead>
+              <TableHead className="text-center">Category</TableHead>
+              <TableHead className="text-center">Count</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {blockedData.map((item) => (
               <TableRow key={item.rank}>
-                <TableCell className="font-medium">{item.rank}</TableCell>
-                <TableCell className="font-mono">{item.source}</TableCell>
-                <TableCell><Badge variant="secondary">{item.category}</Badge></TableCell>
-                <TableCell className="text-right">{item.count.toLocaleString()}</TableCell>
+                <TableCell className="font-medium text-center">{item.rank}</TableCell>
+                <TableCell className="font-mono text-center">{item.source}</TableCell>
+                <TableCell className="text-center"><Badge variant="secondary">{item.category}</Badge></TableCell>
+                <TableCell className="text-center">{item.count.toLocaleString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>

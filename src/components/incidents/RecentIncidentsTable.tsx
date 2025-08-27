@@ -35,23 +35,23 @@ export function RecentIncidentsTable({ incidents }: RecentIncidentsTableProps) {
             <Table>
                 <TableHeader>
                 <TableRow>
-                    <TableHead>Title</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Severity</TableHead>
-                    <TableHead>Created</TableHead>
+                    <TableHead className="text-center">Title</TableHead>
+                    <TableHead className="text-center">Status</TableHead>
+                    <TableHead className="text-center">Severity</TableHead>
+                    <TableHead className="text-center">Created</TableHead>
                 </TableRow>
                 </TableHeader>
                 <TableBody>
                 {incidents.map((incident) => (
                     <TableRow key={incident.id}>
-                    <TableCell className="font-medium">{incident.title}</TableCell>
-                    <TableCell>
+                    <TableCell className="font-medium text-center">{incident.title}</TableCell>
+                    <TableCell className="text-center">
                         <StatusBadge status={incident.status} />
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-center">
                         <Badge className={severityStyles[incident.severity]}>{incident.severity}</Badge>
                     </TableCell>
-                    <TableCell>{new Date(incident.created).toLocaleString()}</TableCell>
+                    <TableCell className="text-center">{new Date(incident.created).toLocaleString()}</TableCell>
                     </TableRow>
                 ))}
                 </TableBody>

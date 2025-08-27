@@ -26,20 +26,20 @@ export function TopPiiTypesTable() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>PII Type</TableHead>
-              <TableHead className="text-right">Count (30d)</TableHead>
+              <TableHead className="text-center">PII Type</TableHead>
+              <TableHead className="text-center">Count (30d)</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {piiData.map((item) => (
               <TableRow key={item.type}>
-                <TableCell className="font-medium">
+                <TableCell className="font-medium text-center">
                   <div className="flex flex-col gap-1">
                     <span>{item.type}</span>
                      <Progress value={(item.count / total) * 100} className="h-2" />
                   </div>
                 </TableCell>
-                <TableCell className="text-right font-mono">{item.count.toLocaleString()}</TableCell>
+                <TableCell className="text-center font-mono">{item.count.toLocaleString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>

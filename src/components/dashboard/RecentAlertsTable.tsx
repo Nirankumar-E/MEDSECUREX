@@ -75,20 +75,20 @@ export function RecentAlertsTable() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Severity</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead className="text-center">Severity</TableHead>
+              <TableHead className="text-center">Description</TableHead>
+              <TableHead className="text-center">Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredAlerts.length > 0 ? (
                 filteredAlerts.map((alert) => (
                 <TableRow key={alert.id}>
-                    <TableCell>
+                    <TableCell className="text-center">
                       <Badge className={severityStyles[alert.severity]}>{alert.severity}</Badge>
                     </TableCell>
-                    <TableCell className="font-medium">{alert.description}</TableCell>
-                    <TableCell>
+                    <TableCell className="font-medium text-center">{alert.description}</TableCell>
+                    <TableCell className="text-center">
                       <StatusBadge status={alert.status} />
                     </TableCell>
                 </TableRow>

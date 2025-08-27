@@ -110,14 +110,14 @@ export function ShieldAlertsTable() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>
+              <TableHead className="text-center">
                  <Button variant="ghost" onClick={() => requestSort('severity')}>
                     Severity <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
               </TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>
+              <TableHead className="text-center">Description</TableHead>
+              <TableHead className="text-center">Status</TableHead>
+              <TableHead className="text-center">
                  <Button variant="ghost" onClick={() => requestSort('timestamp')}>
                     Timestamp <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
@@ -127,14 +127,14 @@ export function ShieldAlertsTable() {
           <TableBody>
             {sortedAlerts.map((alert) => (
               <TableRow key={alert.id}>
-                <TableCell>
+                <TableCell className="text-center">
                   <Badge className={severityStyles[alert.severity]}>{alert.severity}</Badge>
                 </TableCell>
-                <TableCell className="font-medium">{alert.description}</TableCell>
-                <TableCell>
+                <TableCell className="font-medium text-center">{alert.description}</TableCell>
+                <TableCell className="text-center">
                   <StatusBadge status={alert.status} />
                 </TableCell>
-                <TableCell>{new Date(alert.timestamp).toLocaleString()}</TableCell>
+                <TableCell className="text-center">{new Date(alert.timestamp).toLocaleString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>

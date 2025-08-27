@@ -92,16 +92,16 @@ export function TTPsTable() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Tactic</TableHead>
-              <TableHead>
+              <TableHead className="text-center">ID</TableHead>
+              <TableHead className="text-center">Name</TableHead>
+              <TableHead className="text-center">Tactic</TableHead>
+              <TableHead className="text-center">
                 <Button variant="ghost" onClick={() => requestSort('count')}>
                   Detection Count
                   <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
               </TableHead>
-              <TableHead>
+              <TableHead className="text-center">
                 <Button variant="ghost" onClick={() => requestSort('lastSeen')}>
                   Last Seen
                   <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -112,13 +112,13 @@ export function TTPsTable() {
           <TableBody>
             {filteredAndSortedTTPs.map((ttp) => (
               <TableRow key={ttp.id}>
-                <TableCell className="font-mono">{ttp.id}</TableCell>
-                <TableCell className="font-medium">{ttp.name}</TableCell>
-                <TableCell>
+                <TableCell className="font-mono text-center">{ttp.id}</TableCell>
+                <TableCell className="font-medium text-center">{ttp.name}</TableCell>
+                <TableCell className="text-center">
                   <Badge variant="outline">{ttp.tactic}</Badge>
                 </TableCell>
-                <TableCell>{ttp.count}</TableCell>
-                <TableCell>{new Date(ttp.lastSeen).toLocaleString()}</TableCell>
+                <TableCell className="text-center">{ttp.count}</TableCell>
+                <TableCell className="text-center">{new Date(ttp.lastSeen).toLocaleString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>
