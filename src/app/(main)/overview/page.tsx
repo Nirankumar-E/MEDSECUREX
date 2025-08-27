@@ -8,14 +8,11 @@ import { BarChart, FileText, ShieldAlert, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { StatisticsBar } from '@/components/dashboard/StatisticsBar';
 import { Separator } from '@/components/ui/separator';
-import { MitreAttackChart } from '@/components/dashboard/MitreAttackChart';
-import { TopAgentsChart } from '@/components/dashboard/TopAgentsChart';
-import { AlertsEvolutionChart } from '@/components/dashboard/AlertsEvolutionChart';
 
 export default function OverviewPage() {
   return (
-    <div className="flex-1">
-      <h1 className="text-3xl font-bold font-headline text-center mb-6">Overview</h1>
+    <div className="flex-1 text-center">
+      <h1 className="text-3xl font-bold font-headline mb-6">Overview</h1>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Link href="/alerts">
           <MetricCard
@@ -67,17 +64,8 @@ export default function OverviewPage() {
           <AlertSourcesChart />
         </div>
       </div>
-      <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-7 pt-4">
-        <div className="col-span-12 lg:col-span-4">
-            <RecentAlertsTable />
-        </div>
-         <div className="col-span-12 lg:col-span-3">
-            <MitreAttackChart />
-        </div>
-      </div>
-      <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2 pt-4">
-        <TopAgentsChart />
-        <AlertsEvolutionChart />
+      <div className="grid gap-4 md:grid-cols-1 pt-4">
+        <RecentAlertsTable />
       </div>
     </div>
   );
