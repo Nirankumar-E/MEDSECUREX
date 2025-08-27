@@ -36,19 +36,6 @@ export default function MainLayout({ children }: { children: ReactNode }) {
     }
   }, [user, loading, router]);
 
-  if (loading || !user) {
-    // You can render a loading spinner here
-    return <div className="flex h-screen items-center justify-center">Loading...</div>;
-  }
-  
-  const handleLogout = async () => {
-    await auth.signOut();
-    setUser(null);
-    setRole(null);
-    localStorage.removeItem('medi-secure-x2-user');
-    router.push('/login');
-  }
-
   const navItems = [
     { href: '/overview', label: 'Overview', icon: LayoutDashboard, roles: ['Admin', 'Analyst', 'Viewer'] },
     { href: '/health-api-shield', label: 'Health API Shield', icon: HeartPulse, roles: ['Admin', 'Analyst', 'Viewer'] },
@@ -62,19 +49,24 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   ];
 
   const filteredNavItems = navItems.filter(item => role && item.roles.includes(role));
+  const currentPage = navItems.find(item => pathname.startsWith(item.href));
+
+  if (loading || !user) {
+    // You can render a loading spinner here
+    return <div className="flex h-screen items-center justify-center">Loading...</div>;
+  }
+  
+  const handleLogout = async () => {
+    await auth.signOut();
+    setUser(null);
+    setRole(null);
+    localStorage.removeItem('medi-secure-x2-user');
+    router.push('/login');
+  }
 
   return (
-    <SidebarProvider defaultOpen={false}>
+    <SidebarProvider defaultOpen={true}>
       <Sidebar>
-        <SidebarRail />
-        <SidebarHeader>
-          <div className="flex items-center gap-2">
-            <div className="bg-primary text-primary-foreground rounded-lg p-2">
-              <ShieldCheck className="h-6 w-6" />
-            </div>
-            <h1 className="text-xl font-semibold font-headline text-primary">MediSecureX2</h1>
-          </div>
-        </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
             {filteredNavItems.map((item) => (
@@ -123,20 +115,35 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/80 backdrop-blur-lg px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 py-4">
-          <SidebarTrigger className="md:hidden" />
-           <h1 className="text-lg font-semibold md:text-2xl font-headline">MEDSECUREX Dashboard</h1>
-          <div className="flex-1">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b bg-background/95 backdrop-blur-sm px-4 shadow-sm">
+          <div className="flex items-center gap-4">
+            <SidebarTrigger className="md:hidden" />
+            <div className="hidden md:flex items-center gap-2">
+                <div className="bg-primary text-primary-foreground rounded-lg p-2">
+                    <ShieldCheck className="h-6 w-6" />
+                </div>
+                <h1 className="text-xl font-semibold font-headline text-primary">MediSecureX2</h1>
+            </div>
           </div>
+          
+          {currentPage && (
+            <div className="flex-1 flex justify-center">
+                <div className="bg-muted px-4 py-1.5 rounded-lg">
+                    <h1 className="text-lg font-semibold md:text-xl font-headline text-muted-foreground">{currentPage.label}</h1>
+                </div>
+            </div>
+          )}
+
+
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon" className="h-9 w-9">
+            <Button variant="ghost" size="icon" className="h-9 w-9">
                 <Bell className="h-4 w-4" />
                 <span className="sr-only">Toggle notifications</span>
             </Button>
             <ModeToggle />
           </div>
         </header>
-        <main className="flex-1 p-4 sm:px-6 sm:py-0 space-y-4">
+        <main className="flex-1 p-4 sm:px-6 sm:py-4 space-y-4">
             {children}
         </main>
       </SidebarInset>
