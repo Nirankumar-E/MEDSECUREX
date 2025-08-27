@@ -64,7 +64,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   const filteredNavItems = navItems.filter(item => role && item.roles.includes(role));
 
   return (
-    <SidebarProvider defaultOpen={true}>
+    <SidebarProvider defaultOpen={false}>
       <Sidebar>
         <SidebarRail />
         <SidebarHeader>
@@ -128,11 +128,13 @@ export default function MainLayout({ children }: { children: ReactNode }) {
            <h1 className="text-lg font-semibold md:text-2xl font-headline">MEDSECUREX Dashboard</h1>
           <div className="flex-1">
           </div>
-          <Button variant="outline" size="icon" className="h-9 w-9">
-            <Bell className="h-4 w-4" />
-            <span className="sr-only">Toggle notifications</span>
-          </Button>
-          <ModeToggle />
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="icon" className="h-9 w-9">
+                <Bell className="h-4 w-4" />
+                <span className="sr-only">Toggle notifications</span>
+            </Button>
+            <ModeToggle />
+          </div>
         </header>
         <main className="flex-1 p-4 sm:px-6 sm:py-0 space-y-4">
             {children}
