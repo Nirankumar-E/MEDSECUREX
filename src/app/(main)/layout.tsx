@@ -22,6 +22,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { auth } from '@/lib/firebase';
+import { ModeToggle } from '@/components/ui/mode-toggle';
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   const { user, role, loading, setUser, setRole } = useAuth();
@@ -129,6 +130,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
             <Bell className="h-4 w-4" />
             <span className="sr-only">Toggle notifications</span>
           </Button>
+          <ModeToggle />
         </header>
         <main className="flex-1 p-4 sm:px-6 sm:py-0 space-y-4">
             {children}
