@@ -10,7 +10,7 @@ import { Separator } from '@/components/ui/separator';
 export default function OverviewPage() {
   return (
     <div className="flex-1 space-y-4">
-      <h1 className="text-3xl font-bold font-headline">Overview</h1>
+      <h1 className="text-3xl font-bold font-headline text-center">Overview</h1>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Link href="/alerts">
           <MetricCard
