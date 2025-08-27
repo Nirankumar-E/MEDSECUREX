@@ -1,7 +1,6 @@
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import Image from 'next/image';
 
 export function ThreatMap() {
   return (
@@ -10,15 +9,9 @@ export function ThreatMap() {
         <CardTitle>Threat Sources by Location</CardTitle>
         <CardDescription>Geographic distribution of incoming threats.</CardDescription>
       </CardHeader>
-      <CardContent className="p-0">
-        <div className="aspect-video relative">
-            <Image 
-                src="https://placehold.co/800x450.png"
-                alt="World map with threat locations"
-                fill
-                className="object-cover rounded-b-2xl"
-                data-ai-hint="world map"
-            />
+      <CardContent>
+        <div className="flex items-center justify-center h-full text-muted-foreground aspect-video">
+          Threat map data will be displayed here.
         </div>
       </CardContent>
     </Card>
