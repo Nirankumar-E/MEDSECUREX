@@ -75,17 +75,26 @@ export function TTPsTable() {
       <CardHeader>
         <CardTitle>TTPs Detected</CardTitle>
         <CardDescription>MITRE ATT&CK techniques observed in your environment.</CardDescription>
-        <div className="relative pt-4">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input
-              placeholder="Search by ID, Name, or Tactic..."
-              className="pl-10 w-full md:w-1/3"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
       </CardHeader>
-      <CardContent>
+      <div className="sticky top-0 z-10 bg-card/80 backdrop-blur-sm shadow-sm py-4 px-6">
+        <div className="flex flex-col items-center gap-4">
+            <div className="relative w-full max-w-md">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
+                  placeholder="Search by ID, Name, or Tactic..."
+                  className="pl-10 rounded-2xl border-border focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-0 transition duration-200 ease-in-out"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </div>
+            <div className="flex gap-3 items-center justify-center">
+                <Button variant="secondary" className="rounded-full px-3 py-1 h-auto text-xs font-normal">Tactic: All</Button>
+                <Button variant="secondary" className="rounded-full px-3 py-1 h-auto text-xs font-normal">Date: All Time</Button>
+                <Button variant="secondary" className="rounded-full px-3 py-1 h-auto text-xs font-normal">Detection Count: All</Button>
+            </div>
+        </div>
+      </div>
+      <CardContent className="pt-0">
         <Table>
           <TableHeader>
             <TableRow>
