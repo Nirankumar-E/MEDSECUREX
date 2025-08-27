@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import {
   SidebarProvider,
   Sidebar,
-  SidebarHeader,
   SidebarContent,
   SidebarFooter,
   SidebarMenu,
@@ -16,7 +15,7 @@ import {
   SidebarMenuButton,
   SidebarInset,
   SidebarTrigger,
-  SidebarRail,
+  SidebarHeader,
 } from '@/components/ui/sidebar';
 import { Bell, ChevronDown, LayoutDashboard, LogOut, Settings, ShieldAlert, ShieldCheck, HeartPulse, Archive, ClipboardList, FileText, BarChart, Rocket } from 'lucide-react';
 import Link from 'next/link';
@@ -52,7 +51,6 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   const currentPage = navItems.find(item => pathname.startsWith(item.href));
 
   if (loading || !user) {
-    // You can render a loading spinner here
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
   
@@ -65,8 +63,16 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <SidebarProvider defaultOpen={true}>
+    <SidebarProvider defaultOpen={false}>
       <Sidebar>
+        <SidebarHeader>
+          <div className="flex items-center gap-2">
+              <div className="bg-primary text-primary-foreground rounded-lg p-2">
+                  <ShieldCheck className="h-6 w-6" />
+              </div>
+              <h1 className="text-xl font-semibold font-headline text-primary">MediSecureX2</h1>
+          </div>
+        </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
             {filteredNavItems.map((item) => (
@@ -117,23 +123,13 @@ export default function MainLayout({ children }: { children: ReactNode }) {
       <SidebarInset>
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b bg-background/95 backdrop-blur-sm px-4 shadow-sm">
           <div className="flex items-center gap-4">
-            <SidebarTrigger className="md:hidden" />
-            <div className="hidden md:flex items-center gap-2">
-                <div className="bg-primary text-primary-foreground rounded-lg p-2">
-                    <ShieldCheck className="h-6 w-6" />
-                </div>
-                <h1 className="text-xl font-semibold font-headline text-primary">MediSecureX2</h1>
-            </div>
-          </div>
-          
-          {currentPage && (
-            <div className="flex-1 flex justify-center">
-                <div className="bg-muted px-4 py-1.5 rounded-lg">
+            <SidebarTrigger />
+             {currentPage && (
+                <div className="hidden md:flex">
                     <h1 className="text-lg font-semibold md:text-xl font-headline text-muted-foreground">{currentPage.label}</h1>
                 </div>
-            </div>
-          )}
-
+              )}
+          </div>
 
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="h-9 w-9">
