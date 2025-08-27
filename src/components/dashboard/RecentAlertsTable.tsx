@@ -6,7 +6,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import type { Alert } from '@/types';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { StatusBadge } from '@/components/ui/StatusBadge';
 
 const recentAlerts: Alert[] = [
   { id: 'AL-9876', timestamp: '2023-10-27 14:45:12', severity: 'Critical', description: 'Ransomware behavior detected on endpoint SRV-DB01', ttp_id: 'T1486', status: 'New', source: 'EDR', entity: 'SRV-DB01' },
@@ -89,7 +88,7 @@ export function RecentAlertsTable() {
                     </TableCell>
                     <TableCell className="font-medium">{alert.description}</TableCell>
                     <TableCell>
-                      <StatusBadge status={alert.status} />
+                      {alert.status}
                     </TableCell>
                 </TableRow>
                 ))
