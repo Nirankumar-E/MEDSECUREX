@@ -81,7 +81,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
           <SidebarTrigger />
         </SidebarHeader>
         <SidebarContent>
-          <SidebarMenu>
+          <SidebarMenu className="gap-2">
             {filteredNavItems.map((item) => (
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton asChild isActive={pathname.startsWith(item.href)} tooltip={item.label}>
