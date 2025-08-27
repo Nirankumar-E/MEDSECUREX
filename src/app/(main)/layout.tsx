@@ -124,10 +124,11 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b bg-background/95 backdrop-blur-sm px-4 shadow-sm">
           <div className="flex items-center gap-4">
             <SidebarTrigger />
+          </div>
+
+          <div className="flex-1 flex justify-center">
              {currentPage && (
-                <div className="hidden md:flex">
-                    <h1 className="text-lg font-semibold md:text-xl font-headline text-muted-foreground">{currentPage.label}</h1>
-                </div>
+                <h1 className="text-lg font-semibold md:text-xl font-headline text-muted-foreground">{currentPage.label}</h1>
               )}
           </div>
 
