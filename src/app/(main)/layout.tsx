@@ -74,7 +74,9 @@ export default function MainLayout({ children }: { children: ReactNode }) {
               <div className="bg-primary text-primary-foreground rounded-lg p-2">
                   <ShieldCheck className="h-6 w-6" />
               </div>
-              <h1 className="text-xl font-semibold font-headline text-primary">MediSecureX2</h1>
+              <div className="group-data-[collapsible=icon]:group-data-[state=collapsed]:hidden">
+                <h1 className="text-xl font-semibold font-headline text-primary">MediSecureX2</h1>
+              </div>
           </div>
         </SidebarHeader>
         <SidebarContent>
