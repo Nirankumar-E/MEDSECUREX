@@ -110,9 +110,9 @@ export default function IncidentsPage() {
   
 
   return (
-    <div className="flex-1 space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
+    <div className="flex-1">
+      <div className="flex justify-between items-center mb-6">
+        <div className="text-center flex-1">
             <h1 className="text-3xl font-bold font-headline">Incidents</h1>
             <p className="text-muted-foreground">
                 Track, manage, and analyze security incidents.
