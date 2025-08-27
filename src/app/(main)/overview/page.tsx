@@ -67,16 +67,16 @@ export default function OverviewPage() {
           <AlertSourcesChart />
         </div>
       </div>
-      <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-1 pt-4">
-        <div className="col-span-12">
+      <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-7 pt-4">
+        <div className="col-span-12 lg:col-span-4">
             <RecentAlertsTable />
+        </div>
+         <div className="col-span-12 lg:col-span-3">
+            <MitreAttackChart />
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2 pt-4">
-        <MitreAttackChart />
         <TopAgentsChart />
-      </div>
-       <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-1 pt-4">
         <AlertsEvolutionChart />
       </div>
     </div>
