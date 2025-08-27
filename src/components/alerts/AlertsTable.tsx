@@ -108,7 +108,7 @@ export function AlertsTable() {
     <Sheet open={!!selectedAlert} onOpenChange={(isOpen) => !isOpen && setSelectedAlert(null)}>
       <div className="space-y-4">
         <div className="flex flex-col md:flex-row gap-4 justify-between">
-          <div className="relative flex-1">
+          <div className="relative flex-1 md:max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               placeholder="Search by description or TTP ID..."
@@ -117,9 +117,9 @@ export function AlertsTable() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <Select value={severityFilter} onValueChange={setSeverityFilter}>
-              <SelectTrigger className="w-full md:w-[180px]">
+              <SelectTrigger className="w-full sm:w-[180px]">
                 <SelectValue placeholder="Filter by severity" />
               </SelectTrigger>
               <SelectContent>
@@ -131,7 +131,7 @@ export function AlertsTable() {
               </SelectContent>
             </Select>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full md:w-[180px]">
+              <SelectTrigger className="w-full sm:w-[180px]">
                 <SelectValue placeholder="Filter by status" />
               </SelectTrigger>
               <SelectContent>
@@ -154,13 +154,13 @@ export function AlertsTable() {
                     Severity <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
                 </TableHead>
-                <TableHead className="text-center">
+                <TableHead>
                   <Button variant="ghost" onClick={() => requestSort('description')}>
                     Description <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
                 </TableHead>
-                <TableHead className="text-center">TTP ID</TableHead>
-                <TableHead className="text-center">
+                <TableHead className="hidden md:table-cell text-center">TTP ID</TableHead>
+                <TableHead className="hidden sm:table-cell text-center">
                   <Button variant="ghost" onClick={() => requestSort('status')}>
                     Status <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
@@ -180,9 +180,9 @@ export function AlertsTable() {
                       {alert.severity}
                     </Badge>
                   </TableCell>
-                  <TableCell className="font-medium text-center">{alert.description}</TableCell>
-                  <TableCell className="text-center"><Badge variant="outline">{alert.ttp_id}</Badge></TableCell>
-                  <TableCell className="text-center"><StatusBadge status={alert.status} /></TableCell>
+                  <TableCell className="font-medium">{alert.description}</TableCell>
+                  <TableCell className="hidden md:table-cell text-center"><Badge variant="outline">{alert.ttp_id}</Badge></TableCell>
+                  <TableCell className="hidden sm:table-cell text-center"><StatusBadge status={alert.status} /></TableCell>
                   <TableCell className="text-center">{new Date(alert.timestamp).toLocaleString()}</TableCell>
                 </TableRow>
               ))}

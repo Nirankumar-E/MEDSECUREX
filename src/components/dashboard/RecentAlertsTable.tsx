@@ -38,8 +38,8 @@ export function RecentAlertsTable() {
   return (
     <Card className="rounded-2xl shadow-lg">
       <CardHeader>
-        <div className="flex flex-col md:flex-row justify-between md:items-center">
-            <div className='mb-4 md:mb-0'>
+        <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
+            <div className='flex-1'>
                 <CardTitle>Recent High-Severity Alerts</CardTitle>
                 <CardDescription>A summary of the latest critical and high-priority threats.</CardDescription>
             </div>
@@ -76,7 +76,7 @@ export function RecentAlertsTable() {
           <TableHeader>
             <TableRow>
               <TableHead className="text-center">Severity</TableHead>
-              <TableHead className="text-center">Description</TableHead>
+              <TableHead>Description</TableHead>
               <TableHead className="text-center">Status</TableHead>
             </TableRow>
           </TableHeader>
@@ -87,7 +87,7 @@ export function RecentAlertsTable() {
                     <TableCell className="text-center">
                       <Badge className={severityStyles[alert.severity]}>{alert.severity}</Badge>
                     </TableCell>
-                    <TableCell className="font-medium text-center">{alert.description}</TableCell>
+                    <TableCell className="font-medium">{alert.description}</TableCell>
                     <TableCell className="text-center">
                       <StatusBadge status={alert.status} />
                     </TableCell>

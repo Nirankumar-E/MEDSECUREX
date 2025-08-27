@@ -162,12 +162,12 @@ export function StatisticsBar() {
         <div className="flex-1">
             {/* Placeholder for potential title or description */}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row items-center gap-2">
             <Popover>
             <PopoverTrigger asChild>
                 <Button
                 variant={'outline'}
-                className="w-[280px] justify-start text-left font-normal"
+                className="w-full sm:w-[280px] justify-start text-left font-normal"
                 >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {date?.from ? (
@@ -194,14 +194,14 @@ export function StatisticsBar() {
                 />
             </PopoverContent>
             </Popover>
-           <Button variant="outline" onClick={handleExploreAgent}><Rocket className="mr-2 h-4 w-4"/> Explore Agent</Button>
-           <Button onClick={handleGenerateReport}><FileDown className="mr-2 h-4 w-4"/> Generate Report</Button>
+           <Button variant="outline" onClick={handleExploreAgent} className="w-full sm:w-auto"><Rocket className="mr-2 h-4 w-4"/> Explore Agent</Button>
+           <Button onClick={handleGenerateReport} className="w-full sm:w-auto"><FileDown className="mr-2 h-4 w-4"/> Generate Report</Button>
         </div>
       </div>
       
       {error && <div className="text-red-500 p-4 bg-red-50 rounded-lg">{error}</div>}
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard title="Total Alerts" value={stats?.totalAlerts ?? 0} color="text-blue-500" isLoading={isLoading} />
         <StatCard title="Level 12+ Alerts" value={stats?.highSeverityAlerts ?? 0} color="text-red-500" isLoading={isLoading} />
         <StatCard title="Authentication Failures" value={stats?.authFailures ?? 0} color="text-red-500" isLoading={isLoading} />

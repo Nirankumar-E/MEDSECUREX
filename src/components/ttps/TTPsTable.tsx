@@ -72,36 +72,34 @@ export function TTPsTable() {
   return (
     <Card className="rounded-2xl shadow-lg">
       <CardHeader>
-        <CardTitle>TTPs Detected</CardTitle>
-        <CardDescription>MITRE ATT&CK techniques observed in your environment.</CardDescription>
+        <CardTitle className="text-center">TTPs Detected</CardTitle>
+        <CardDescription className="text-center">MITRE ATT&CK techniques observed in your environment.</CardDescription>
       </CardHeader>
-      <div className="sticky top-0 z-10 bg-card/80 backdrop-blur-sm shadow-sm py-4 px-6">
-        <div className="flex flex-col items-center gap-4">
-            <div className="relative w-full max-w-md">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input
-                  placeholder="Search by ID, Name, or Tactic..."
-                  className="pl-10 rounded-2xl border-border focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-0 transition duration-200 ease-in-out"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-            </div>
+      <div className="py-4 px-6">
+        <div className="relative w-full max-w-md mx-auto">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input
+              placeholder="Search by ID, Name, or Tactic..."
+              className="pl-10 rounded-2xl border-border focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-0 transition duration-200 ease-in-out"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
         </div>
       </div>
       <CardContent className="pt-0">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-center">ID</TableHead>
-              <TableHead className="text-center">Name</TableHead>
-              <TableHead className="text-center">Tactic</TableHead>
+              <TableHead className="hidden md:table-cell text-center">ID</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead className="hidden sm:table-cell text-center">Tactic</TableHead>
               <TableHead className="text-center">
                 <Button variant="ghost" onClick={() => requestSort('count')}>
-                  Detection Count
+                  Count
                   <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
               </TableHead>
-              <TableHead className="text-center">
+              <TableHead className="hidden lg:table-cell text-center">
                 <Button variant="ghost" onClick={() => requestSort('lastSeen')}>
                   Last Seen
                   <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -112,13 +110,13 @@ export function TTPsTable() {
           <TableBody>
             {filteredAndSortedTTPs.map((ttp) => (
               <TableRow key={ttp.id}>
-                <TableCell className="font-mono text-center">{ttp.id}</TableCell>
-                <TableCell className="font-medium text-center">{ttp.name}</TableCell>
-                <TableCell className="text-center">
+                <TableCell className="font-mono hidden md:table-cell text-center">{ttp.id}</TableCell>
+                <TableCell className="font-medium">{ttp.name}</TableCell>
+                <TableCell className="hidden sm:table-cell text-center">
                   <Badge variant="outline">{ttp.tactic}</Badge>
                 </TableCell>
                 <TableCell className="text-center">{ttp.count}</TableCell>
-                <TableCell className="text-center">{new Date(ttp.lastSeen).toLocaleString()}</TableCell>
+                <TableCell className="hidden lg:table-cell text-center">{new Date(ttp.lastSeen).toLocaleString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>

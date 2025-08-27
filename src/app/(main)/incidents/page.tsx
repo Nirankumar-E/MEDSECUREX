@@ -111,7 +111,7 @@ export default function IncidentsPage() {
 
   return (
     <div className="flex-1">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
         <div className="text-center flex-1">
             <h1 className="text-3xl font-bold font-headline">Incidents</h1>
             <p className="text-muted-foreground">
@@ -150,7 +150,9 @@ export default function IncidentsPage() {
         </div>
       </div>
 
-      <IncidentsTable incidents={incidents} />
+      <div className="mt-6">
+        <IncidentsTable incidents={incidents} />
+      </div>
     </div>
   );
 }
