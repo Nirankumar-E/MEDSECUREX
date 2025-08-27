@@ -67,9 +67,9 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <SidebarProvider defaultOpen={false}>
+    <SidebarProvider defaultOpen={true}>
       <Sidebar>
-        <SidebarHeader>
+        <SidebarHeader className="justify-between">
           <div className="flex items-center gap-2">
               <div className="bg-primary text-primary-foreground rounded-lg p-2">
                   <ShieldCheck className="h-6 w-6" />
@@ -78,6 +78,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
                 <h1 className="text-xl font-semibold font-headline text-primary">MediSecureX2</h1>
               </div>
           </div>
+          <SidebarTrigger />
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
@@ -128,20 +129,19 @@ export default function MainLayout({ children }: { children: ReactNode }) {
       </Sidebar>
       <SidebarInset>
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b bg-background/95 backdrop-blur-sm px-4 shadow-sm">
-          <div className="flex items-center gap-4">
-            <SidebarTrigger />
-            {currentPage && (
-              <h1 className="text-lg font-semibold md:text-xl font-headline text-muted-foreground">{currentPage.label}</h1>
-            )}
-          </div>
+            <div className="flex items-center gap-4">
+              {currentPage && (
+                <h1 className="text-lg font-semibold md:text-xl font-headline text-muted-foreground">{currentPage.label}</h1>
+              )}
+            </div>
 
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="h-9 w-9">
-                <Bell className="h-4 w-4" />
-                <span className="sr-only">Toggle notifications</span>
-            </Button>
-            <ModeToggle />
-          </div>
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="icon" className="h-9 w-9">
+                  <Bell className="h-4 w-4" />
+                  <span className="sr-only">Toggle notifications</span>
+              </Button>
+              <ModeToggle />
+            </div>
         </header>
         <main className="flex-1 p-4 sm:px-6 sm:py-4 space-y-4">
             {children}
