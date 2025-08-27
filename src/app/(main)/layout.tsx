@@ -80,7 +80,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
           </div>
           <SidebarTrigger />
         </SidebarHeader>
-        <SidebarContent>
+        <SidebarContent className="overflow-y-auto">
           <SidebarMenu className="gap-2">
             {filteredNavItems.map((item) => (
               <SidebarMenuItem key={item.href}>
@@ -98,10 +98,6 @@ export default function MainLayout({ children }: { children: ReactNode }) {
            <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="justify-start items-center gap-2 p-2 h-auto w-full">
-                 <Avatar className="h-10 w-10">
-                    <AvatarImage src={user.avatarUrl} alt={user.name} data-ai-hint="user avatar" />
-                    <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-                </Avatar>
                 <div className="text-left group-data-[collapsible=icon]:group-data-[state=collapsed]:hidden">
                   <p className="font-semibold">{user.name}</p>
                   <p className="text-xs text-muted-foreground">{user.role}</p>
