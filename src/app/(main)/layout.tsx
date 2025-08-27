@@ -3,7 +3,6 @@
 import { useEffect, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth/useAuth';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   SidebarProvider,
@@ -97,7 +96,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         <SidebarFooter>
            <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="justify-start items-center gap-2 p-2 h-auto w-full">
+              <Button variant="ghost" className="justify-center items-center gap-2 p-2 h-auto w-full">
                 <div className="text-left group-data-[collapsible=icon]:group-data-[state=collapsed]:hidden">
                   <p className="font-semibold">{user.name}</p>
                   <p className="text-xs text-muted-foreground">{user.role}</p>
@@ -139,7 +138,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
               <ModeToggle />
             </div>
         </header>
-        <main className="flex-1 p-4 sm:px-6 sm:py-4 space-y-4">
+        <main className="flex-1 p-4 sm:px-6 sm:py-4">
             {children}
         </main>
       </SidebarInset>
