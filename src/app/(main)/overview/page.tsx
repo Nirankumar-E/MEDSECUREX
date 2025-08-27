@@ -4,7 +4,6 @@ import { MetricCard } from '@/components/dashboard/MetricCard';
 import { AlertsOverTimeChart } from '@/components/dashboard/AlertsOverTimeChart';
 import { RecentAlertsTable } from '@/components/dashboard/RecentAlertsTable';
 import { AlertSourcesChart } from '@/components/dashboard/AlertSourcesChart';
-import { MitreAttackChart } from '@/components/dashboard/MitreAttackChart';
 import { BarChart, FileText, ShieldAlert, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { StatisticsBar } from '@/components/dashboard/StatisticsBar';
@@ -63,7 +62,6 @@ export default function OverviewPage() {
         </div>
         <div className="col-span-12 lg:col-span-3 space-y-4">
           <AlertSourcesChart />
-          <MitreAttackChart />
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-1 pt-4">
