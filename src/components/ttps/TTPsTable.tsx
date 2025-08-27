@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useMemo } from 'react';
@@ -86,11 +85,6 @@ export function TTPsTable() {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
-            </div>
-            <div className="flex gap-3 items-center justify-center">
-                <Button variant="secondary" className="rounded-full px-3 py-1 h-auto text-xs font-normal">Tactic: All</Button>
-                <Button variant="secondary" className="rounded-full px-3 py-1 h-auto text-xs font-normal">Date: All Time</Button>
-                <Button variant="secondary" className="rounded-full px-3 py-1 h-auto text-xs font-normal">Detection Count: All</Button>
             </div>
         </div>
       </div>
