@@ -47,8 +47,9 @@ export function AlertSourcesChart() {
               strokeWidth={5}
               labelLine={false}
             >
-                <Cell key="cell-0" fill="var(--color-API Shield)" />
-                <Cell key="cell-1" fill="var(--color-MED Box)" />
+                {chartData.map((entry) => (
+                  <Cell key={`cell-${entry.source}`} fill={entry.fill} />
+                ))}
             </Pie>
              <ChartLegend
               content={<ChartLegendContent nameKey="source" />}
