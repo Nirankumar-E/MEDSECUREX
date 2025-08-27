@@ -63,7 +63,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   const filteredNavItems = navItems.filter(item => role && item.roles.includes(role));
 
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <Sidebar>
         <SidebarHeader>
           <div className="flex items-center gap-2">
@@ -122,7 +122,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
       </Sidebar>
       <SidebarInset>
         <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/80 backdrop-blur-lg px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 py-4">
-          <SidebarTrigger className="md:hidden" />
+          <SidebarTrigger />
           <div className="flex-1">
             {/* Can add breadcrumbs here */}
           </div>
