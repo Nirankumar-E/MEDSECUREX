@@ -2,9 +2,8 @@
 
 import * as React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { PieChart, Pie, Cell, Tooltip } from 'recharts';
-import { TrendingUp } from 'lucide-react';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@/components/ui/chart';
+import { PieChart, Pie, Cell } from 'recharts';
 
 const chartData = [
   { source: 'API Shield', alerts: 65, fill: 'hsl(var(--destructive))' },
@@ -32,14 +31,14 @@ export function AlertSourcesChart() {
 
   return (
     <Card className="rounded-2xl shadow-lg h-full flex flex-col">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <CardHeader className="items-center pb-2">
         <CardTitle>Alert Sources</CardTitle>
         <CardDescription>Last 24 hours</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 flex items-center justify-center pb-0">
-        <ChartContainer config={chartConfig} className="mx-auto aspect-square h-[250px] relative">
+      <CardContent className="flex-1 flex flex-col items-center justify-center p-0">
+        <ChartContainer config={chartConfig} className="w-full h-full max-h-[250px] relative">
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <p className="text-3xl font-bold">{totalAlerts}</p>
+                <p className="text-4xl font-bold">{totalAlerts}</p>
                 <p className="text-xs text-muted-foreground">Total Alerts</p>
             </div>
           <PieChart>
@@ -48,7 +47,7 @@ export function AlertSourcesChart() {
               data={chartData}
               dataKey="alerts"
               nameKey="source"
-              innerRadius={80}
+              innerRadius="60%"
               strokeWidth={5}
               labelLine={false}
             >
@@ -56,41 +55,18 @@ export function AlertSourcesChart() {
                 <Cell key={`cell-${index}`} fill={entry.fill} />
               ))}
             </Pie>
+             <ChartLegend
+              content={<ChartLegendContent nameKey="source" />}
+              verticalAlign="bottom"
+              height={40}
+              wrapperStyle={{
+                boxSizing: 'content-box',
+                paddingTop: '20px',
+              }}
+            />
           </PieChart>
         </ChartContainer>
       </CardContent>
-       <div className="p-6 flex flex-col gap-2 pt-2">
-        <div
-          className="flex items-center"
-          
-        >
-          <div className="flex items-center gap-2">
-            <span
-              className="h-2.5 w-2.5 shrink-0 rounded-sm"
-              style={{
-                backgroundColor: 'hsl(var(--destructive))',
-              }}
-            />
-            <div className="flex-1 text-sm">API Shield</div>
-          </div>
-          <div className="text-sm font-medium">{chartData[0].alerts} ({Math.round(chartData[0].alerts / totalAlerts * 100)}%)</div>
-        </div>
-        <div
-          className="flex items-center"
-          
-        >
-          <div className="flex items-center gap-2">
-            <span
-              className="h-2.5 w-2.5 shrink-0 rounded-sm"
-              style={{
-                backgroundColor: 'hsl(var(--primary))',
-              }}
-            />
-            <div className="flex-1 text-sm">MED Box</div>
-          </div>
-          <div className="text-sm font-medium">{chartData[1].alerts} ({Math.round(chartData[1].alerts / totalAlerts * 100)}%)</div>
-        </div>
-       </div>
     </Card>
   );
 }
