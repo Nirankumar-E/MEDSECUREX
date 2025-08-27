@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { db } from '@/lib/firebase';
-import { collection, query, where, onSnapshot, Timestamp, getCountFromServer } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, Timestamp, getDocs } from 'firebase/firestore';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar as CalendarIcon, FileDown, Rocket } from 'lucide-react';
@@ -14,6 +14,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import type { Incident } from '@/types';
 
 interface StatData {
   totalAlerts: number;
@@ -43,6 +44,7 @@ const StatCard = ({ title, value, color, isLoading }: { title: string; value: nu
 
 export function StatisticsBar() {
   const [stats, setStats] = useState<StatData | null>(null);
+  const [incidents, setIncidents] = useState<Incident[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
@@ -67,13 +69,19 @@ export function StatisticsBar() {
       highSeverityAlerts: query(collection(db, 'alerts'), where('createdAt', '>=', startDate), where('createdAt', '<=', endDate), where('severity', '>=', 12)),
       authFailures: query(collection(db, 'auth_logs'), where('createdAt', '>=', startDate), where('createdAt', '<=', endDate), where('status', '==', 'failure')),
       authSuccesses: query(collection(db, 'auth_logs'), where('createdAt', '>=', startDate), where('createdAt', '<=', endDate), where('status', '==', 'success')),
+      incidents: query(collection(db, 'incidents'), where('created', '>=', startDate), where('created', '<=', endDate)),
     };
 
     const unsubscribes = Object.entries(queries).map(([key, q]) => {
       return onSnapshot(q, async (snapshot) => {
         try {
-          const count = snapshot.size;
-          setStats((prevStats) => ({ ...(prevStats as StatData), [key]: count }));
+          if (key === 'incidents') {
+            const incidentsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Incident));
+            setIncidents(incidentsData);
+          } else {
+            const count = snapshot.size;
+            setStats((prevStats) => ({ ...(prevStats as StatData), [key]: count }));
+          }
         } catch (err: any) {
           console.error(`Error fetching ${key}:`, err);
           setError(`Failed to load data for ${key}.`);
@@ -94,12 +102,54 @@ export function StatisticsBar() {
     };
 
   }, [date, toast]);
+  
+  const handleGenerateReport = async () => {
+    try {
+      const incidentsCollection = collection(db, 'incidents');
+      const incidentsSnapshot = await getDocs(incidentsCollection);
+      const incidentsData = incidentsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Incident));
 
-  const handleGenerateReport = () => {
-    toast({
-      title: "Report Generated",
-      description: "A CSV report has been successfully generated.",
-    });
+      if (incidentsData.length === 0) {
+        toast({ title: 'No Incidents', description: 'There are no incidents to report.' });
+        return;
+      }
+      
+      const headers = Object.keys(incidentsData[0]);
+      const csvRows = [
+        headers.join(','),
+        ...incidentsData.map(row =>
+          headers.map(fieldName =>
+            JSON.stringify(row[fieldName as keyof Incident] ?? '', (key, value) => value ?? '')
+          ).join(',')
+        )
+      ];
+
+      const csvContent = csvRows.join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      if (link.href) {
+        URL.revokeObjectURL(link.href);
+      }
+      const url = URL.createObjectURL(blob);
+      link.href = url;
+      link.setAttribute('download', 'incident_report.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      toast({
+        title: "Report Generated",
+        description: "Your incident report has been downloaded.",
+      });
+
+    } catch (error: any) {
+      console.error("Error generating report: ", error);
+      toast({
+        variant: "destructive",
+        title: "Report Failed",
+        description: "Could not generate the incident report. " + error.message,
+      });
+    }
   };
   
   const handleExploreAgent = () => {
