@@ -96,7 +96,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         <SidebarFooter>
            <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="justify-center items-center gap-2 p-2 h-auto w-full">
+              <Button variant="ghost" className="justify-start items-center gap-2 p-2 h-auto w-full">
                 <div className="text-left group-data-[collapsible=icon]:group-data-[state=collapsed]:hidden">
                   <p className="font-semibold">{user.name}</p>
                   <p className="text-xs text-muted-foreground">{user.role}</p>
