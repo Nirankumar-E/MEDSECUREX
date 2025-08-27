@@ -11,9 +11,9 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { StatusBadge } from '../ui/StatusBadge';
-import type { Incident, IncidentSeverity, IncidentStatus } from '@/types';
+import type { Incident, IncidentSeverity } from '@/types';
 
-interface IncidentsTableProps {
+interface RecentIncidentsTableProps {
   incidents: Incident[];
 }
 
@@ -24,29 +24,26 @@ const severityStyles: Record<IncidentSeverity, string> = {
   Low: 'bg-yellow-400 text-black border-transparent',
 };
 
-export function IncidentsTable({ incidents }: IncidentsTableProps) {
+export function RecentIncidentsTable({ incidents }: RecentIncidentsTableProps) {
   return (
     <Card className="rounded-2xl shadow-lg">
         <CardHeader>
-            <CardTitle>All Incidents</CardTitle>
-            <CardDescription>A complete log of all open and historical security incidents.</CardDescription>
+            <CardTitle>Recent Incidents</CardTitle>
+            <CardDescription>Top 5 most recent security incidents.</CardDescription>
         </CardHeader>
         <CardContent>
             <Table>
                 <TableHeader>
                 <TableRow>
-                    <TableHead>ID</TableHead>
                     <TableHead>Title</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Severity</TableHead>
-                    <TableHead>Assignee</TableHead>
                     <TableHead>Created</TableHead>
                 </TableRow>
                 </TableHeader>
                 <TableBody>
                 {incidents.map((incident) => (
                     <TableRow key={incident.id}>
-                    <TableCell className="font-mono">{incident.id}</TableCell>
                     <TableCell className="font-medium">{incident.title}</TableCell>
                     <TableCell>
                         <StatusBadge status={incident.status} />
@@ -54,7 +51,6 @@ export function IncidentsTable({ incidents }: IncidentsTableProps) {
                     <TableCell>
                         <Badge className={severityStyles[incident.severity]}>{incident.severity}</Badge>
                     </TableCell>
-                    <TableCell>{incident.assignee}</TableCell>
                     <TableCell>{new Date(incident.created).toLocaleString()}</TableCell>
                     </TableRow>
                 ))}
