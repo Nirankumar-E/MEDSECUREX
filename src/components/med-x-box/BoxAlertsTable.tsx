@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowUpDown } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { StatusBadge } from '../ui/StatusBadge';
 
 const mockAlerts: Alert[] = [
   { id: 'BOX-501', timestamp: '2023-10-27 15:10:00', severity: 'Medium', description: 'Outbound connection to suspicious IP 198.51.100.22', ttp_id: 'T1071', status: 'New', source: 'Box', entity: 'Firewall-Main' },
@@ -120,7 +121,7 @@ export function BoxAlertsTable() {
                 </TableCell>
                 <TableCell className="font-medium">{alert.description}</TableCell>
                 <TableCell>
-                  <Badge variant="outline">{alert.status}</Badge>
+                  <StatusBadge status={alert.status} />
                 </TableCell>
                 <TableCell>{new Date(alert.timestamp).toLocaleString()}</TableCell>
               </TableRow>

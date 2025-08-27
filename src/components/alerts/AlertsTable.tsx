@@ -23,6 +23,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { StatusBadge } from '../ui/StatusBadge';
 
 const mockAlerts: Alert[] = [
     { id: 'AL-9876', timestamp: '2023-10-27 14:45:12', severity: 'Critical', description: 'Ransomware behavior detected on endpoint SRV-DB01', ttp_id: 'T1486', status: 'New', source: 'EDR', entity: 'SRV-DB01' },
@@ -181,7 +182,7 @@ export function AlertsTable() {
                   </TableCell>
                   <TableCell className="font-medium">{alert.description}</TableCell>
                   <TableCell><Badge variant="outline">{alert.ttp_id}</Badge></TableCell>
-                  <TableCell>{alert.status}</TableCell>
+                  <TableCell><StatusBadge status={alert.status} /></TableCell>
                   <TableCell>{new Date(alert.timestamp).toLocaleString()}</TableCell>
                 </TableRow>
               ))}

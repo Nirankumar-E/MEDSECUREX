@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowUpDown } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { StatusBadge } from '../ui/StatusBadge';
 
 const mockAlerts: Alert[] = [
   { id: 'SH-101', timestamp: '2023-10-27 14:40:00', severity: 'High', description: 'Anomalous API usage pattern detected for user_123', ttp_id: 'T1497.003', status: 'New', source: 'Shield', entity: 'API Gateway' },
@@ -131,7 +132,7 @@ export function ShieldAlertsTable() {
                 </TableCell>
                 <TableCell className="font-medium">{alert.description}</TableCell>
                 <TableCell>
-                  <Badge variant="outline">{alert.status}</Badge>
+                  <StatusBadge status={alert.status} />
                 </TableCell>
                 <TableCell>{new Date(alert.timestamp).toLocaleString()}</TableCell>
               </TableRow>

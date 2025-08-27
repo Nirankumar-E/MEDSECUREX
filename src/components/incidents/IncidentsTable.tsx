@@ -11,18 +11,9 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { StatusBadge } from '../ui/StatusBadge';
+import type { Incident, IncidentSeverity, IncidentStatus } from '@/types';
 
-type IncidentStatus = 'Open' | 'In Progress' | 'Resolved' | 'Closed';
-type IncidentSeverity = 'Critical' | 'High' | 'Medium' | 'Low';
-
-interface Incident {
-  id: string;
-  title: string;
-  status: IncidentStatus;
-  severity: IncidentSeverity;
-  assignee: string;
-  created: string;
-}
 
 const mockIncidents: Incident[] = [
   { id: 'INC-001', title: 'Ransomware attack on SRV-DB01', status: 'In Progress', severity: 'Critical', assignee: 'Dr. Alex Chen', created: '2023-10-27 15:00:00' },
@@ -73,7 +64,7 @@ export function IncidentsTable() {
                     <TableCell className="font-mono">{incident.id}</TableCell>
                     <TableCell className="font-medium">{incident.title}</TableCell>
                     <TableCell>
-                        <Badge variant={incident.status === 'Open' ? 'outline' : 'default'}>{incident.status}</Badge>
+                        <StatusBadge status={incident.status} />
                     </TableCell>
                     <TableCell>
                         <Badge className={severityStyles[incident.severity]}>{incident.severity}</Badge>

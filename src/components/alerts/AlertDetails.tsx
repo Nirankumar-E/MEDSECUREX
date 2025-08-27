@@ -10,6 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { AlertTriangle, Bot } from 'lucide-react';
+import { StatusBadge } from '../ui/StatusBadge';
 
 interface AlertDetailsProps {
   alert: Alert;
@@ -57,7 +58,7 @@ export function AlertDetails({ alert }: AlertDetailsProps) {
             <div><span className="font-semibold">Entity:</span> {alert.entity}</div>
             <div><span className="font-semibold">Source:</span> {alert.source}</div>
             <div><span className="font-semibold">Severity:</span> <Badge className={severityStyles[alert.severity]}>{alert.severity}</Badge></div>
-            <div><span className="font-semibold">Status:</span> <Badge variant="outline">{alert.status}</Badge></div>
+            <div><span className="font-semibold">Status:</span> <StatusBadge status={alert.status} /></div>
           </div>
           <div>
             <div className="font-semibold">Description:</div>
