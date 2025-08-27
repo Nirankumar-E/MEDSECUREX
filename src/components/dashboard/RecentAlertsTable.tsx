@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import type { Alert } from '@/types';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { StatusBadge } from '@/components/ui/StatusBadge';
 
 const recentAlerts: Alert[] = [
   { id: 'AL-9876', timestamp: '2023-10-27 14:45:12', severity: 'Critical', description: 'Ransomware behavior detected on endpoint SRV-DB01', ttp_id: 'T1486', status: 'New', source: 'EDR', entity: 'SRV-DB01' },
@@ -21,13 +22,6 @@ const severityStyles: Record<Alert['severity'], string> = {
   Medium: 'bg-orange-500 text-white border-transparent',
   Low: 'bg-yellow-400 text-black border-transparent',
 };
-
-const statusColor: Record<Alert['status'], string> = {
-    'New': 'bg-red-500',
-    'In Progress': 'bg-yellow-500',
-    'Resolved': 'bg-green-500',
-    'Dismissed': 'bg-gray-500',
-}
 
 export function RecentAlertsTable() {
   const [severityFilter, setSeverityFilter] = useState('all');
@@ -95,10 +89,7 @@ export function RecentAlertsTable() {
                     </TableCell>
                     <TableCell className="font-medium">{alert.description}</TableCell>
                     <TableCell>
-                    <div className="flex items-center gap-2">
-                        <span className={`h-2.5 w-2.5 rounded-full ${statusColor[alert.status]}`} />
-                        {alert.status}
-                    </div>
+                      <StatusBadge status={alert.status} />
                     </TableCell>
                 </TableRow>
                 ))
