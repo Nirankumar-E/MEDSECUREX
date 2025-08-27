@@ -149,23 +149,23 @@ export function AlertsTable() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>
+                <TableHead className="text-center">
                   <Button variant="ghost" onClick={() => requestSort('severity')}>
                     Severity <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
                 </TableHead>
-                <TableHead>
+                <TableHead className="text-center">
                   <Button variant="ghost" onClick={() => requestSort('description')}>
                     Description <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
                 </TableHead>
-                <TableHead>TTP ID</TableHead>
-                <TableHead>
+                <TableHead className="text-center">TTP ID</TableHead>
+                <TableHead className="text-center">
                   <Button variant="ghost" onClick={() => requestSort('status')}>
                     Status <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
                 </TableHead>
-                <TableHead>
+                <TableHead className="text-center">
                    <Button variant="ghost" onClick={() => requestSort('timestamp')}>
                     Timestamp <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
@@ -175,15 +175,15 @@ export function AlertsTable() {
             <TableBody>
               {sortedAlerts.map((alert) => (
                 <TableRow key={alert.id} onClick={() => setSelectedAlert(alert)} className="cursor-pointer">
-                  <TableCell>
+                  <TableCell className="text-center">
                     <Badge className={severityStyles[alert.severity]}>
                       {alert.severity}
                     </Badge>
                   </TableCell>
-                  <TableCell className="font-medium">{alert.description}</TableCell>
-                  <TableCell><Badge variant="outline">{alert.ttp_id}</Badge></TableCell>
-                  <TableCell><StatusBadge status={alert.status} /></TableCell>
-                  <TableCell>{new Date(alert.timestamp).toLocaleString()}</TableCell>
+                  <TableCell className="font-medium text-center">{alert.description}</TableCell>
+                  <TableCell className="text-center"><Badge variant="outline">{alert.ttp_id}</Badge></TableCell>
+                  <TableCell className="text-center"><StatusBadge status={alert.status} /></TableCell>
+                  <TableCell className="text-center">{new Date(alert.timestamp).toLocaleString()}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
