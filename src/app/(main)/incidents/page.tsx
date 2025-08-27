@@ -118,7 +118,12 @@ export default function IncidentsPage() {
                 Track, manage, and analyze security incidents.
             </p>
         </div>
-        <Button onClick={handleDownloadReport}><FileDown className="mr-2 h-4 w-4" /> Download Report</Button>
+        <Button 
+            onClick={handleDownloadReport}
+            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl shadow-lg hover:scale-105 hover:brightness-90 transform transition-transform duration-200"
+        >
+            <FileDown className="mr-2 h-4 w-4" /> Download Report
+        </Button>
       </div>
       
       {/* Report Summary Section */}
