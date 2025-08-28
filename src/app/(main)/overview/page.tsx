@@ -8,6 +8,7 @@ import { BarChart, FileText, ShieldAlert, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { StatisticsBar } from '@/components/dashboard/StatisticsBar';
 import { Separator } from '@/components/ui/separator';
+import { MitreAttackChart } from '@/components/dashboard/MitreAttackChart';
 
 export default function OverviewPage() {
   return (
@@ -60,8 +61,9 @@ export default function OverviewPage() {
         <div className="col-span-12 lg:col-span-4">
           <AlertsOverTimeChart />
         </div>
-        <div className="col-span-12 lg:col-span-3 space-y-4">
-          <AlertSourcesChart />
+        <div className="col-span-12 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <AlertSourcesChart />
+            <MitreAttackChart />
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-1 pt-4">
