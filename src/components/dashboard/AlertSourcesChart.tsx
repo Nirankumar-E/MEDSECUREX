@@ -24,13 +24,13 @@ const chartConfig = {
   },
 };
 
-export function AlertSourcesChart() {
+export function AlertSourcesChart({ className }: { className?: string }) {
     const totalAlerts = React.useMemo(() => {
         return chartData.reduce((acc, curr) => acc + curr.alerts, 0);
     }, []);
 
   return (
-    <Card className="rounded-2xl shadow-lg">
+    <Card className={`rounded-2xl shadow-lg flex flex-col ${className}`}>
       <CardHeader className="items-center pb-2">
         <CardTitle>Alert Sources</CardTitle>
         <CardDescription>Last 24 hours</CardDescription>

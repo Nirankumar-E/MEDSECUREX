@@ -39,13 +39,13 @@ const chartConfig = {
   },
 };
 
-export function MitreAttackChart() {
+export function MitreAttackChart({ className }: { className?: string }) {
     const totalAlerts = React.useMemo(() => {
         return chartData.reduce((acc, curr) => acc + curr.alerts, 0);
     }, []);
 
   return (
-    <Card className="rounded-2xl shadow-lg">
+    <Card className={`rounded-2xl shadow-lg flex flex-col ${className}`}>
       <CardHeader className="items-center pb-2">
         <CardTitle>MITRE ATT&amp;CK</CardTitle>
         <CardDescription>Top 5 Techniques</CardDescription>
@@ -53,7 +53,7 @@ export function MitreAttackChart() {
       <CardContent className="flex-1 flex items-center justify-center p-0 relative">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square h-full max-h-[250px]"
+          className="mx-auto aspect-square h-full max-h-[500px]"
         >
           <PieChart>
             <ChartTooltip

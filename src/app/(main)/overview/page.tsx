@@ -61,20 +61,27 @@ export default function OverviewPage() {
 
       <StatisticsBar />
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
-        <AlertsOverTimeChart />
-        <AlertsEvolutionChart />
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-3">
-        <AlertSourcesChart />
-        <MitreAttackChart />
-        <TopSystemsChart />
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <div className="col-span-12 lg:col-span-4">
+            <AlertsOverTimeChart />
+        </div>
+        <div className="col-span-12 lg:col-span-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4 h-full">
+                <AlertSourcesChart className="h-full" />
+                <MitreAttackChart className="h-full" />
+            </div>
+        </div>
       </div>
       
       <div>
         <RecentAlertsTable />
       </div>
+
+       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
+        <TopSystemsChart />
+        <AlertsEvolutionChart />
+      </div>
+
     </div>
   );
 }
