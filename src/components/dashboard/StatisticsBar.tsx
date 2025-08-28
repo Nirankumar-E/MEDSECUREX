@@ -156,6 +156,13 @@ export function StatisticsBar() {
     router.push('/agents');
   };
 
+  const statCards = [
+    { title: "Total Alerts", value: stats?.totalAlerts ?? 0, color: "text-blue-500", isLoading: isLoading },
+    { title: "Level 12+ Alerts", value: stats?.highSeverityAlerts ?? 0, color: "text-red-500", isLoading: isLoading },
+    { title: "Authentication Failures", value: stats?.authFailures ?? 0, color: "text-red-500", isLoading: isLoading },
+    { title: "Authentication Success", value: stats?.authSuccesses ?? 0, color: "text-blue-500", isLoading: isLoading },
+  ]
+
   return (
     <div className="space-y-4">
       <div className="flex flex-col md:flex-row justify-between items-center gap-4">
@@ -202,10 +209,7 @@ export function StatisticsBar() {
       {error && <div className="text-red-500 p-4 bg-red-50 rounded-lg">{error}</div>}
 
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard title="Total Alerts" value={stats?.totalAlerts ?? 0} color="text-blue-500" isLoading={isLoading} />
-        <StatCard title="Level 12+ Alerts" value={stats?.highSeverityAlerts ?? 0} color="text-red-500" isLoading={isLoading} />
-        <StatCard title="Authentication Failures" value={stats?.authFailures ?? 0} color="text-red-500" isLoading={isLoading} />
-        <StatCard title="Authentication Success" value={stats?.authSuccesses ?? 0} color="text-blue-500" isLoading={isLoading} />
+        {statCards.map(card => <StatCard key={card.title} {...card} />)}
       </div>
     </div>
   );
