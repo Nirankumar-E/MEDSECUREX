@@ -50,16 +50,16 @@ export function MitreAttackChart() {
         <CardTitle>MITRE ATT&amp;CK</CardTitle>
         <CardDescription>Top 5 Techniques</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 p-0 relative flex items-center justify-center">
+      <CardContent className="flex-1 flex items-center justify-center p-0 relative">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square h-full max-h-[250px]"
+          className="mx-auto aspect-square h-full max-h-[500px]"
         >
           <PieChart>
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
-              position={{ y: -10 }}
+              position={{ y: 0 }}
             />
             <Pie
               data={chartData}

@@ -35,7 +35,7 @@ export function AlertSourcesChart() {
         <CardTitle>Alert Sources</CardTitle>
         <CardDescription>Last 24 hours</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 p-0 relative">
+      <CardContent className="flex-1 flex items-center justify-center p-0 relative">
         <ChartContainer config={chartConfig} className="mx-auto aspect-square h-full max-h-[250px]">
           <PieChart>
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
