@@ -30,7 +30,7 @@ export function AlertSourcesChart({ className }: { className?: string }) {
     }, []);
 
   return (
-    <Card className={`rounded-2xl shadow-lg ${className}`}>
+    <Card className={`rounded-2xl shadow-lg h-full flex flex-col ${className}`}>
       <CardHeader className="items-center pb-2">
         <CardTitle>Alert Sources</CardTitle>
         <CardDescription>Last 24 hours</CardDescription>
