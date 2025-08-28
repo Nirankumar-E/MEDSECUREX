@@ -35,38 +35,40 @@ export function AlertSourcesChart({ className }: { className?: string }) {
         <CardTitle>Alert Sources</CardTitle>
         <CardDescription>Last 24 hours</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 flex items-center justify-center p-0 relative">
-        <ChartContainer config={chartConfig} className="mx-auto aspect-square h-full max-h-[250px]">
-          <PieChart>
-            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Pie
-              data={chartData}
-              dataKey="alerts"
-              nameKey="source"
-              innerRadius="60%"
-              strokeWidth={5}
-              labelLine={false}
-            >
-                {chartData.map((entry) => (
-                  <Cell key={`cell-${entry.source}`} fill={entry.fill} />
-                ))}
-            </Pie>
-             <ChartLegend
-              content={<ChartLegendContent nameKey="source" />}
-              verticalAlign="bottom"
-              align="center"
-              height={40}
-              wrapperStyle={{
-                boxSizing: 'content-box',
-                margin: '0 auto',
-                paddingTop: '20px'
-              }}
-            />
-          </PieChart>
-        </ChartContainer>
-        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-            <div className="text-4xl font-bold">{totalAlerts}</div>
-            <div className="text-sm text-muted-foreground">Total</div>
+      <CardContent className="flex-1 flex items-center justify-center p-0">
+        <div className="relative">
+            <ChartContainer config={chartConfig} className="mx-auto aspect-square h-full max-h-[250px]">
+              <PieChart>
+                <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+                <Pie
+                  data={chartData}
+                  dataKey="alerts"
+                  nameKey="source"
+                  innerRadius="60%"
+                  strokeWidth={5}
+                  labelLine={false}
+                >
+                    {chartData.map((entry) => (
+                      <Cell key={`cell-${entry.source}`} fill={entry.fill} />
+                    ))}
+                </Pie>
+                 <ChartLegend
+                  content={<ChartLegendContent nameKey="source" />}
+                  verticalAlign="bottom"
+                  align="center"
+                  height={40}
+                  wrapperStyle={{
+                    boxSizing: 'content-box',
+                    margin: '0 auto',
+                    paddingTop: '20px'
+                  }}
+                />
+              </PieChart>
+            </ChartContainer>
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none -translate-y-4">
+                <div className="text-4xl font-bold">{totalAlerts}</div>
+                <div className="text-sm text-muted-foreground">Total</div>
+            </div>
         </div>
       </CardContent>
     </Card>
