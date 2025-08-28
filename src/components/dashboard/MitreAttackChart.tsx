@@ -60,7 +60,7 @@ export function MitreAttackChart() {
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
               contentStyle={{
-                transform: 'translateY(1rem)'
+                transform: 'translateX(-2rem)'
               }}
             />
             <Pie
