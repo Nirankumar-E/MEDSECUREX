@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@/components/ui/chart';
-import { PieChart, Pie, Cell, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell } from 'recharts';
 
 const chartData = [
   { technique: 'Password Guessing', alerts: 275, fill: 'hsl(var(--chart-1))' },
@@ -40,13 +40,17 @@ const chartConfig = {
 };
 
 export function MitreAttackChart() {
+    const totalAlerts = React.useMemo(() => {
+        return chartData.reduce((acc, curr) => acc + curr.alerts, 0);
+    }, []);
+
   return (
     <Card className="rounded-2xl shadow-lg h-full flex flex-col">
       <CardHeader className="items-center pb-2">
-        <CardTitle>MITRE ATT&CK</CardTitle>
+        <CardTitle>MITRE ATT&amp;CK</CardTitle>
         <CardDescription>Top 5 Techniques</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 p-0">
+      <CardContent className="flex-1 p-0 relative">
         <ChartContainer
           config={chartConfig}
           className="mx-auto aspect-square h-full max-h-[250px]"
@@ -69,15 +73,23 @@ export function MitreAttackChart() {
             </Pie>
             <ChartLegend
                 content={<ChartLegendContent nameKey="technique" />}
-                verticalAlign="middle"
-                align="right"
-                layout="vertical"
+                verticalAlign="bottom"
+                align="center"
+                height={40}
                 wrapperStyle={{
-                    paddingLeft: '20px'
+                    boxSizing: 'content-box',
+                    margin: '0 auto',
+                    paddingTop: '20px'
                 }}
             />
           </PieChart>
         </ChartContainer>
+         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center text-center pointer-events-none">
+            <span className="text-4xl font-bold">
+                {totalAlerts.toLocaleString()}
+            </span>
+            <span className="text-xs text-muted-foreground mt-1">Total Detections</span>
+        </div>
       </CardContent>
     </Card>
   );
