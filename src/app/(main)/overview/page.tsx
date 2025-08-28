@@ -62,18 +62,23 @@ export default function OverviewPage() {
         <div className="col-span-12 lg:col-span-4">
           <AlertsOverTimeChart />
         </div>
-        <div className="col-span-12 lg:col-span-3 flex flex-col gap-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <AlertSourcesChart />
-                <MitreAttackChart />
-            </div>
-            <div>
-                <TopSystemsChart />
-            </div>
+        <div className="col-span-12 lg:col-span-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <AlertSourcesChart />
+              <MitreAttackChart />
+          </div>
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-1 pt-4">
         <RecentAlertsTable />
+      </div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7 pt-4">
+        <div className="col-span-12 lg:col-span-3">
+          <TopSystemsChart />
+        </div>
+        <div className="col-span-12 lg:col-span-4">
+           {/* This space is now empty, you can add new components here */}
+        </div>
       </div>
     </div>
   );
