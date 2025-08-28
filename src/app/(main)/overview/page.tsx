@@ -13,7 +13,7 @@ export default function OverviewPage() {
   return (
     <div className="flex-1">
       <h1 className="text-3xl font-bold font-headline text-center mb-6">Overview</h1>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
         <Link href="/alerts">
           <MetricCard
             title="Total Alerts (24h)"

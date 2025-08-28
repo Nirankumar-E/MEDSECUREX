@@ -77,7 +77,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
                 <h1 className="text-xl font-semibold font-headline text-primary">MediSecureX2</h1>
               </div>
           </div>
-          <SidebarTrigger />
+          <SidebarTrigger className="hidden md:flex" />
         </SidebarHeader>
         <SidebarContent className="overflow-y-auto">
           <SidebarMenu className="gap-2">
@@ -124,7 +124,8 @@ export default function MainLayout({ children }: { children: ReactNode }) {
       </Sidebar>
       <SidebarInset>
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b bg-background/95 backdrop-blur-sm px-4 shadow-sm">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+               <SidebarTrigger className="md:hidden" />
               {currentPage && (
                 <h1 className="text-lg font-semibold md:text-xl font-headline text-muted-foreground">{currentPage.label}</h1>
               )}
