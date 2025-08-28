@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@/components/ui/chart';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { PieChart, Pie, Cell } from 'recharts';
 
 const chartData = [
@@ -50,7 +50,7 @@ export function MitreAttackChart() {
         <CardTitle>MITRE ATT&amp;CK</CardTitle>
         <CardDescription>Top 5 Techniques</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 p-0 relative">
+      <CardContent className="flex-1 p-0 relative flex items-center justify-center">
         <ChartContainer
           config={chartConfig}
           className="mx-auto aspect-square h-full max-h-[250px]"
@@ -59,6 +59,9 @@ export function MitreAttackChart() {
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
+              contentStyle={{
+                transform: 'translateY(1rem)'
+              }}
             />
             <Pie
               data={chartData}
@@ -71,17 +74,6 @@ export function MitreAttackChart() {
                 <Cell key={`cell-${entry.technique}`} fill={entry.fill} />
               ))}
             </Pie>
-            <ChartLegend
-                content={<ChartLegendContent nameKey="technique" />}
-                verticalAlign="bottom"
-                align="center"
-                height={40}
-                wrapperStyle={{
-                    boxSizing: 'content-box',
-                    margin: '0 auto',
-                    paddingTop: '20px'
-                }}
-            />
           </PieChart>
         </ChartContainer>
          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center text-center pointer-events-none">
