@@ -64,6 +64,10 @@ export function AlertSourcesChart({ className }: { className?: string }) {
             />
           </PieChart>
         </ChartContainer>
+        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+            <div className="text-4xl font-bold">{totalAlerts}</div>
+            <div className="text-sm text-muted-foreground">Total</div>
+        </div>
       </CardContent>
     </Card>
   );
