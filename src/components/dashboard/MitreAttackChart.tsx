@@ -11,7 +11,6 @@ const chartData = [
   { technique: 'Brute Force', alerts: 187, fill: 'hsl(var(--chart-3))' },
   { technique: 'Valid Accounts', alerts: 173, fill: 'hsl(var(--chart-4))' },
   { technique: 'System Binary Proxy', alerts: 90, fill: 'hsl(var(--chart-5))' },
-  { technique: 'Account Access Re...', alerts: 50, fill: 'hsl(var(--muted))' },
 ];
 
 const chartConfig = {
@@ -37,10 +36,6 @@ const chartConfig = {
   'System Binary Proxy': {
     label: 'System Binary Proxy',
     color: 'hsl(var(--chart-5))',
-  },
-  'Account Access Re...': {
-    label: 'Account Access Re...',
-    color: 'hsl(var(--muted))',
   },
 };
 
