@@ -62,9 +62,11 @@ export default function OverviewPage() {
         <div className="col-span-12 lg:col-span-4">
           <AlertsOverTimeChart />
         </div>
-        <div className="col-span-12 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
+        <div className="col-span-12 lg:col-span-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
             <AlertSourcesChart />
             <MitreAttackChart />
+          </div>
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-1 pt-4">
