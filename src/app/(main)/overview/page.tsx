@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { StatisticsBar } from '@/components/dashboard/StatisticsBar';
 import { Separator } from '@/components/ui/separator';
 import { MitreAttackChart } from '@/components/dashboard/MitreAttackChart';
+import { AlertsEvolutionChart } from '@/components/dashboard/AlertsEvolutionChart';
 
 export default function OverviewPage() {
   return (
@@ -77,7 +78,7 @@ export default function OverviewPage() {
           <TopSystemsChart />
         </div>
         <div className="col-span-12 lg:col-span-4">
-           {/* This space is now empty, you can add new components here */}
+           <AlertsEvolutionChart />
         </div>
       </div>
     </div>

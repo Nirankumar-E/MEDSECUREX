@@ -53,7 +53,7 @@ export function MitreAttackChart() {
       <CardContent className="flex-1 p-0 relative flex items-center justify-center">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square h-full max-h-[500px]"
+          className="mx-auto aspect-square h-full max-h-[250px]"
         >
           <PieChart>
             <ChartTooltip
