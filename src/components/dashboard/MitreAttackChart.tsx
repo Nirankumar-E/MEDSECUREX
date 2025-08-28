@@ -45,7 +45,7 @@ export function MitreAttackChart() {
     }, []);
 
   return (
-    <Card className="rounded-2xl shadow-lg h-full flex flex-col">
+    <Card className="rounded-2xl shadow-lg">
       <CardHeader className="items-center pb-2">
         <CardTitle>MITRE ATT&amp;CK</CardTitle>
         <CardDescription>Top 5 Techniques</CardDescription>
@@ -53,13 +53,13 @@ export function MitreAttackChart() {
       <CardContent className="flex-1 flex items-center justify-center p-0 relative">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square h-full max-h-[500px]"
+          className="mx-auto aspect-square h-full max-h-[250px]"
         >
           <PieChart>
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
-              position={{ y: 0 }}
+              position={{ y: 80 }}
             />
             <Pie
               data={chartData}

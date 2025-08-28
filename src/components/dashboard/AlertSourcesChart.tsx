@@ -30,7 +30,7 @@ export function AlertSourcesChart() {
     }, []);
 
   return (
-    <Card className="rounded-2xl shadow-lg h-full flex flex-col">
+    <Card className="rounded-2xl shadow-lg">
       <CardHeader className="items-center pb-2">
         <CardTitle>Alert Sources</CardTitle>
         <CardDescription>Last 24 hours</CardDescription>
