@@ -22,6 +22,7 @@ import { usePathname } from 'next/navigation';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { auth } from '@/lib/firebase';
 import { ModeToggle } from '@/components/ui/mode-toggle';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   const { user, role, loading, setUser, setRole } = useAuth();
@@ -79,19 +80,21 @@ export default function MainLayout({ children }: { children: ReactNode }) {
           </div>
           <SidebarTrigger className="hidden md:flex" />
         </SidebarHeader>
-        <SidebarContent className="overflow-y-auto">
-          <SidebarMenu className="gap-2">
-            {filteredNavItems.map((item) => (
-              <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton asChild isActive={pathname.startsWith(item.href)} tooltip={item.label}>
-                  <Link href={item.href}>
-                    <item.icon />
-                    <span>{item.label}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
+        <SidebarContent>
+          <ScrollArea className="flex-1">
+            <SidebarMenu className="gap-2">
+              {filteredNavItems.map((item) => (
+                <SidebarMenuItem key={item.href}>
+                  <SidebarMenuButton asChild isActive={pathname.startsWith(item.href)} tooltip={item.label}>
+                    <Link href={item.href}>
+                      <item.icon />
+                      <span>{item.label}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </ScrollArea>
         </SidebarContent>
         <SidebarFooter>
            <DropdownMenu>
