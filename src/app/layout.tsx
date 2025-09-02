@@ -5,7 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/ui/theme-provider';
 
 export const metadata: Metadata = {
-  title: 'MediSecureX2 Dashboard',
+  title: 'MedSecureX Dashboard',
   description: 'A dashboard for security monitoring and threat intelligence.',
 };
 

@@ -67,7 +67,7 @@ export default function SignupPage() {
             <ShieldCheck className="h-8 w-8" />
           </div>
           <CardTitle className="text-3xl font-headline">Create an Account</CardTitle>
-          <CardDescription>Join MediSecureX2 to protect your data.</CardDescription>
+          <CardDescription>Join MedSecureX to protect your data.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <Form {...form}>

@@ -74,7 +74,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
                   <ShieldCheck className="h-6 w-6" />
               </div>
               <div className="group-data-[collapsible=icon]:group-data-[state=collapsed]:hidden">
-                <h1 className="text-xl font-semibold font-headline text-primary">MediSecureX2</h1>
+                <h1 className="text-xl font-semibold font-headline text-primary">MedSecureX</h1>
               </div>
           </div>
           <SidebarTrigger className="hidden md:flex" />

@@ -80,7 +80,7 @@ export default function LoginPage() {
           <div className="mx-auto bg-primary text-primary-foreground rounded-full p-3 w-fit mb-4">
             <ShieldCheck className="h-8 w-8" />
           </div>
-          <CardTitle className="text-3xl font-headline">MediSecureX2</CardTitle>
+          <CardTitle className="text-3xl font-headline">MedSecureX</CardTitle>
           <CardDescription>Sign in to access your security dashboard.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
