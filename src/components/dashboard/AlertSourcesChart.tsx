@@ -58,7 +58,7 @@ export function AlertSourcesChart({ className }: { className?: string }) {
                 dataKey="alerts"
                 nameKey="source"
                 innerRadius="60%"
-                strokeWidth={5}
+                strokeWidth={0}
                 onMouseEnter={onPieEnter}
                 onMouseLeave={onPieLeave}
                 >
@@ -86,10 +86,6 @@ export function AlertSourcesChart({ className }: { className?: string }) {
                 />
             </PieChart>
             </ChartContainer>
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                <span className="text-3xl font-bold">{totalAlerts}</span>
-                <span className="text-xs text-muted-foreground">Total Alerts</span>
-            </div>
         </div>
       </CardContent>
     </Card>

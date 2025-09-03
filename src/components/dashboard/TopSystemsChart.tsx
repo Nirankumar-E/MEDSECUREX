@@ -97,6 +97,7 @@ export function TopSystemsChart() {
               dataKey="alerts" 
               nameKey="os" 
               innerRadius="60%"
+              strokeWidth={0}
               onMouseEnter={onPieEnter}
               onMouseLeave={onPieLeave}
             >

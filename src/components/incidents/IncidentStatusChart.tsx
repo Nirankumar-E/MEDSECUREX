@@ -58,7 +58,7 @@ export function IncidentStatusChart({ data }: IncidentStatusChartProps) {
                             dataKey="count"
                             nameKey="status"
                             innerRadius={50}
-                            strokeWidth={5}
+                            strokeWidth={0}
                             onMouseEnter={onPieEnter}
                             onMouseLeave={onPieLeave}
                         >

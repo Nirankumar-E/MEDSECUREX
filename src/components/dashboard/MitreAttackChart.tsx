@@ -102,8 +102,7 @@ export function MitreAttackChart({ className }) {
                   dataKey="alerts"
                   nameKey="technique"
                   innerRadius="60%"
-                  strokeWidth={5}
-                  stroke="hsl(var(--card))"
+                  strokeWidth={0}
                   onMouseEnter={onPieEnter}
                   onMouseLeave={onPieLeave}
                 >
