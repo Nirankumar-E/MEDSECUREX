@@ -12,7 +12,7 @@ import { motion } from 'framer-motion';
 const chartData = [
   { technique: 'Password Guessing', alerts: 275, fill: 'hsl(120 70% 40%)' }, // Green
   { technique: 'SSH', alerts: 200, fill: 'hsl(220 70% 50%)' }, // Blue
-  { technique: 'Brute Force', alerts: 187, fill: 'hsl(0 70% 50%)' }, // Red
+  { technique: 'Brute Force', alerts: 187, fill: 'hsl(var(--destructive))' }, // Red
   { technique: 'Valid Accounts', alerts: 173, fill: 'hsl(280 65% 60%)' }, // Purple
   { technique: 'System Binary Proxy', alerts: 90, fill: 'hsl(30 80% 55%)' }, // Orange
 ];
@@ -32,7 +32,7 @@ const chartConfig = {
   },
   'Brute Force': {
     label: 'Brute Force',
-    color: 'hsl(0 70% 50%)',
+    color: 'hsl(var(--destructive))',
   },
   'Valid Accounts': {
     label: 'Valid Accounts',
@@ -44,7 +44,7 @@ const chartConfig = {
   },
 };
 
-export function MitreAttackChart({ className }) {
+export function MitreAttackChart({ className }: { className?: string }) {
   const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
 
   // Calculate the total number of incidents from the chart data.
