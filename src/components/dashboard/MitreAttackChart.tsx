@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -44,11 +45,22 @@ const chartConfig = {
 };
 
 export function MitreAttackChart({ className }) {
+  const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
+
   // Calculate the total number of incidents from the chart data.
   // Replace this with your actual total or keep it dynamic
   const totalAlerts = React.useMemo(() => {
     return 925; 
   }, []);
+  
+  const onPieEnter = (_: any, index: number) => {
+    setActiveIndex(index);
+  };
+
+  const onPieLeave = () => {
+    setActiveIndex(null);
+  };
+
 
   return (
     <Card className={`rounded-2xl shadow-lg h-full flex flex-col overflow-hidden ${className}`}>
@@ -92,9 +104,19 @@ export function MitreAttackChart({ className }) {
                   innerRadius="60%"
                   strokeWidth={5}
                   stroke="hsl(var(--card))"
+                  onMouseEnter={onPieEnter}
+                  onMouseLeave={onPieLeave}
                 >
-                  {chartData.map((entry) => (
-                    <Cell key={`cell-${entry.technique}`} fill={entry.fill} />
+                  {chartData.map((entry, index) => (
+                    <Cell 
+                        key={`cell-${entry.technique}`} 
+                        fill={entry.fill}
+                        style={{
+                            transform: activeIndex === index ? 'scale(1.05)' : 'scale(1)',
+                            transformOrigin: 'center center',
+                            transition: 'transform 0.2s ease-in-out',
+                        }}
+                    />
                   ))}
                 </Pie>
               </PieChart>
