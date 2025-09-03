@@ -35,9 +35,19 @@ const chartConfig = {
 };
 
 export function TopSystemsChart() {
+  const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
+
   const totalAlerts = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.alerts, 0);
   }, []);
+
+  const onPieEnter = (_: any, index: number) => {
+    setActiveIndex(index);
+  };
+
+  const onPieLeave = () => {
+    setActiveIndex(null);
+  };
 
   return (
     <Card className="rounded-2xl shadow-lg h-full flex flex-col">
@@ -82,9 +92,24 @@ export function TopSystemsChart() {
                     return null;
                 }}
             />
-            <Pie data={chartData} dataKey="alerts" nameKey="os" innerRadius="60%">
-              {chartData.map((entry) => (
-                <Cell key={entry.os} fill={entry.fill} />
+            <Pie 
+              data={chartData} 
+              dataKey="alerts" 
+              nameKey="os" 
+              innerRadius="60%"
+              onMouseEnter={onPieEnter}
+              onMouseLeave={onPieLeave}
+            >
+              {chartData.map((entry, index) => (
+                <Cell 
+                  key={entry.os} 
+                  fill={entry.fill} 
+                  style={{
+                    transform: activeIndex === index ? 'scale(1.05)' : 'scale(1)',
+                    transformOrigin: 'center center',
+                    transition: 'transform 0.2s ease-in-out',
+                  }}
+                />
               ))}
             </Pie>
           </PieChart>

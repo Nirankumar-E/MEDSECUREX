@@ -18,6 +18,8 @@ const chartConfig = {
 };
 
 export function IncidentStatusChart({ data }: IncidentStatusChartProps) {
+    const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
+    
     const chartData = Object.entries(data).map(([status, count]) => ({
         status,
         count,
@@ -27,6 +29,14 @@ export function IncidentStatusChart({ data }: IncidentStatusChartProps) {
     const totalIncidents = React.useMemo(() => {
         return chartData.reduce((acc, curr) => acc + curr.count, 0);
     }, [chartData]);
+    
+    const onPieEnter = (_: any, index: number) => {
+        setActiveIndex(index);
+    };
+
+    const onPieLeave = () => {
+        setActiveIndex(null);
+    };
 
     return (
         <Card className="rounded-2xl shadow-lg h-full flex flex-col">
@@ -49,9 +59,19 @@ export function IncidentStatusChart({ data }: IncidentStatusChartProps) {
                             nameKey="status"
                             innerRadius={50}
                             strokeWidth={5}
+                            onMouseEnter={onPieEnter}
+                            onMouseLeave={onPieLeave}
                         >
-                            {chartData.map((entry) => (
-                                <Cell key={`cell-${entry.status}`} fill={entry.fill} />
+                            {chartData.map((entry, index) => (
+                                <Cell 
+                                    key={`cell-${entry.status}`} 
+                                    fill={entry.fill} 
+                                    style={{
+                                        transform: activeIndex === index ? 'scale(1.05)' : 'scale(1)',
+                                        transformOrigin: 'center center',
+                                        transition: 'transform 0.2s ease-in-out',
+                                    }}
+                                />
                             ))}
                         </Pie>
                     </PieChart>

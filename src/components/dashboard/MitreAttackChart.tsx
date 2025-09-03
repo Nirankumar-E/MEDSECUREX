@@ -1,11 +1,13 @@
-
 'use client';
 
 import * as React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { ChartContainer, ChartTooltip } from '@/components/ui/chart';
 import { PieChart, Pie, Cell } from 'recharts';
+import { motion, AnimatePresence } from 'framer-motion';
 
+// Chart Data: Add or update your MITRE ATT&CK techniques here.
+// The 'technique' is the label, 'alerts' is the value, and 'fill' is the color.
 const chartData = [
   { technique: 'Password Guessing', alerts: 275, fill: 'hsl(120 70% 40%)' }, // Green
   { technique: 'SSH', alerts: 200, fill: 'hsl(220 70% 50%)' }, // Blue
@@ -14,6 +16,7 @@ const chartData = [
   { technique: 'System Binary Proxy', alerts: 90, fill: 'hsl(30 80% 55%)' }, // Orange
 ];
 
+// Chart Configuration: Maps data keys to labels and colors for the chart.
 const chartConfig = {
   alerts: {
     label: 'Alerts',
@@ -41,69 +44,127 @@ const chartConfig = {
 };
 
 export function MitreAttackChart({ className }: { className?: string }) {
-    const totalAlerts = React.useMemo(() => {
-        return chartData.reduce((acc, curr) => acc + curr.alerts, 0);
-    }, []);
+  const [isHovered, setIsHovered] = React.useState(false);
+  const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
+
+  // Calculate the total number of incidents from the chart data.
+  // Replace this with your actual total or keep it dynamic
+  const totalAlerts = React.useMemo(() => {
+    return 925; 
+  }, []);
+
+  const onPieEnter = (_: any, index: number) => {
+    setActiveIndex(index);
+  };
+
+  const onPieLeave = () => {
+    setActiveIndex(null);
+  };
+
 
   return (
-    <Card className={`rounded-2xl shadow-lg h-full flex flex-col ${className}`}>
-      <CardHeader className="pb-2">
-        <CardTitle>MITRE ATT&amp;CK Techniques</CardTitle>
-      </CardHeader>
-      <CardContent className="flex-1 flex flex-col items-center justify-center p-4">
-        <div className="relative w-full h-[250px] flex items-center justify-center">
-            <ChartContainer
-            config={chartConfig}
-            className="mx-auto aspect-square h-full"
+    <motion.div
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      whileHover={{ scale: 1.05 }}
+      transition={{ duration: 0.3 }}
+      className="relative"
+    >
+      <Card className={`rounded-2xl shadow-lg h-full flex flex-col overflow-hidden ${className}`}>
+        <AnimatePresence>
+          {isHovered && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="absolute inset-0 z-0"
             >
-            <PieChart>
-                <ChartTooltip
-                  cursor={false}
-                  content={({ active, payload }) => {
-                    if (active && payload && payload.length) {
-                      const data = payload[0].payload;
-                      const percentage = ((data.alerts / totalAlerts) * 100).toFixed(1);
-                      return (
-                        <div className="rounded-lg border bg-background p-2 shadow-sm text-xs">
-                          <p className="font-bold">{data.technique}</p>
-                          <p>Count: {data.alerts.toLocaleString()}</p>
-                          <p>Percentage: {percentage}%</p>
-                        </div>
-                      );
-                    }
-                    return null;
-                  }}
-                />
-                <Pie
-                data={chartData}
-                dataKey="alerts"
-                nameKey="technique"
-                innerRadius="60%"
-                strokeWidth={5}
-                >
-                {chartData.map((entry) => (
-                    <Cell key={`cell-${entry.technique}`} fill={entry.fill} />
-                ))}
-                </Pie>
-            </PieChart>
-            </ChartContainer>
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <span className="text-3xl font-bold">{totalAlerts.toLocaleString()}</span>
-              <span className="text-xs text-muted-foreground">Total Incidents</span>
-            </div>
-        </div>
-        <div className="w-full mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs">
-            {chartData.map((entry) => (
-                <div key={entry.technique} className="flex items-center gap-2">
-                    <div
-                        className="h-2.5 w-2.5 rounded-full"
-                        style={{ backgroundColor: entry.fill }}
-                    />
-                    <span>{entry.technique}</span>
+              <video
+                src="/video-effect.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/50 dark:bg-black/70" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div className="relative z-10 flex flex-col h-full">
+            <CardHeader className="items-center pb-2">
+                <CardTitle>MITRE ATT&CK Techniques</CardTitle>
+            </CardHeader>
+            <CardContent className="flex-1 flex flex-col items-center justify-center p-4">
+                <div className="relative w-full h-[250px] flex items-center justify-center">
+                    <ChartContainer
+                        config={chartConfig}
+                        className="mx-auto aspect-square h-full"
+                    >
+                        <PieChart>
+                            <ChartTooltip
+                                cursor={false}
+                                content={({ active, payload }) => {
+                                    if (active && payload && payload.length) {
+                                        const data = payload[0].payload;
+                                        const chartTotal = chartData.reduce((acc, curr) => acc + curr.alerts, 0);
+                                        const percentage = ((data.alerts / chartTotal) * 100).toFixed(1);
+                                        return (
+                                            <div className="rounded-lg border bg-background/80 backdrop-blur-sm p-2 shadow-sm text-xs">
+                                                <p className="font-bold">{data.technique}</p>
+                                                <p>Count: {data.alerts.toLocaleString()}</p>
+                                                <p>Percentage: {percentage}%</p>
+                                            </div>
+                                        );
+                                    }
+                                    return null;
+                                }}
+                            />
+                            <Pie
+                                data={chartData}
+                                dataKey="alerts"
+                                nameKey="technique"
+                                innerRadius="60%"
+                                strokeWidth={5}
+                                stroke="hsl(var(--card))"
+                                onMouseEnter={onPieEnter}
+                                onMouseLeave={onPieLeave}
+                            >
+                                {chartData.map((entry, index) => (
+                                    <Cell 
+                                      key={`cell-${entry.technique}`} 
+                                      fill={entry.fill}
+                                      style={{
+                                        transform: activeIndex === index ? 'scale(1.05)' : 'scale(1)',
+                                        transformOrigin: 'center center',
+                                        transition: 'transform 0.2s ease-in-out',
+                                      }}
+                                    />
+                                ))}
+                            </Pie>
+                        </PieChart>
+                    </ChartContainer>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                        <span className="text-3xl font-bold">{totalAlerts.toLocaleString()}</span>
+                        <span className="text-xs text-muted-foreground">Total Incidents</span>
+                    </div>
                 </div>
-            ))}
+                <div className="w-full mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs">
+                    {chartData.map((entry) => (
+                        <div key={entry.technique} className="flex items-center gap-2">
+                            <div
+                                className="h-2.5 w-2.5 rounded-full"
+                                style={{ backgroundColor: entry.fill }}
+                            />
+                            <span>{entry.technique}</span>
+                        </div>
+                    ))}
+                </div>
+            </CardContent>
         </div>
-      </CardContent>
-    </Card>
+      </Card>
+    </motion.div>
   );
 }
