@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { MitreAttackChart } from '@/components/dashboard/MitreAttackChart';
 import { AlertsEvolutionChart } from '@/components/dashboard/AlertsEvolutionChart';
+import { StatisticsBar } from '@/components/dashboard/StatisticsBar';
 
 export default function OverviewPage() {
   return (
@@ -17,40 +18,8 @@ export default function OverviewPage() {
       <div>
         <h1 className="text-3xl font-bold font-headline text-center">Overview</h1>
       </div>
-      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-        <Link href="/alerts">
-          <MetricCard
-            title="Total Alerts"
-            value="1,284"
-            description="+5.2% from yesterday"
-            icon={ShieldAlert}
-            iconClassName="text-blue-500"
-          />
-        </Link>
-        <Link href="/alerts?severity=High&severity=Critical">
-          <MetricCard
-            title="Level 12+ Alerts"
-            value="73"
-            description="-3.1% from yesterday"
-            icon={Zap}
-            iconClassName="text-red-500"
-          />
-        </Link>
-        <MetricCard
-          title="Authentication Failures"
-          value="42"
-          description="+10.5% from yesterday"
-          icon={AlertCircle}
-          iconClassName="text-red-500"
-        />
-        <MetricCard
-          title="Authentication Success"
-          value="958"
-          description="+2.1% from yesterday"
-          icon={CheckCircle}
-          iconClassName="text-green-500"
-        />
-      </div>
+
+      <StatisticsBar />
 
       <Separator />
 
