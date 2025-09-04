@@ -1,4 +1,3 @@
-
 'use client';
 
 import * as React from 'react';
@@ -50,7 +49,7 @@ export function MitreAttackChart({ className }: { className?: string }) {
   // Calculate the total number of incidents from the chart data.
   // Replace this with your actual total or keep it dynamic
   const totalAlerts = React.useMemo(() => {
-    return 925; 
+    return chartData.reduce((acc, curr) => acc + curr.alerts, 0); 
   }, []);
   
   const onPieEnter = (_: any, index: number) => {
@@ -69,9 +68,7 @@ export function MitreAttackChart({ className }: { className?: string }) {
           <CardTitle>MITRE ATT&amp;CK Techniques</CardTitle>
         </CardHeader>
         <CardContent className="flex-1 flex flex-col items-center justify-center p-4">
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+          <div
             className="relative w-full h-[250px] flex items-center justify-center"
           >
             <ChartContainer
@@ -120,11 +117,16 @@ export function MitreAttackChart({ className }: { className?: string }) {
                 </Pie>
               </PieChart>
             </ChartContainer>
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+            <motion.div
+              className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
+              initial={{ opacity: 1 }}
+              animate={{ opacity: activeIndex !== null ? 0 : 1 }}
+              transition={{ duration: 0.2 }}
+            >
               <span className="text-3xl font-bold">{totalAlerts.toLocaleString()}</span>
               <span className="text-xs text-muted-foreground">Total Incidents</span>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
           <div className="w-full mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs">
             {chartData.map((entry) => (
               <div key={entry.technique} className="flex items-center gap-2">
