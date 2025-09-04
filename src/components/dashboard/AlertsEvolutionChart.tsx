@@ -1,5 +1,7 @@
+
 'use client';
 
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
@@ -23,6 +25,16 @@ const chartConfig = {
 };
 
 export function AlertsEvolutionChart() {
+  const [activeBar, setActiveBar] = useState<string | null>(null);
+
+  const getGlowFilter = (barKey: string) => {
+    if (activeBar === barKey) {
+      const color = chartConfig[barKey as keyof typeof chartConfig].color;
+      return `url(#glow) drop-shadow(0 0 5px ${color})`;
+    }
+    return 'url(#glow)';
+  };
+
   return (
     <Card className="rounded-2xl shadow-lg h-full flex flex-col">
       <CardHeader>
@@ -46,11 +58,11 @@ export function AlertsEvolutionChart() {
             <YAxis tickLine={false} axisLine={false} tickMargin={8} />
             <ChartTooltip content={<ChartTooltipContent />} />
             <Legend />
-            <Bar dataKey="SRV-DB01" stackId="a" fill="var(--color-SRV-DB01)" stroke="hsl(var(--background))" strokeWidth={1} style={{ filter: 'url(#glow)', transition: 'all 0.2s ease-in-out' }} onMouseOver={(e) => e.target.style.filter = 'url(#glow) drop-shadow(0 0 5px var(--color-SRV-DB01))'} onMouseOut={(e) => e.target.style.filter = 'url(#glow)'} />
-            <Bar dataKey="PC-MKTG-05" stackId="a" fill="var(--color-PC-MKTG-05)" stroke="hsl(var(--background))" strokeWidth={1} style={{ filter: 'url(#glow)', transition: 'all 0.2s ease-in-out' }} onMouseOver={(e) => e.target.style.filter = 'url(#glow) drop-shadow(0 0 5px var(--color-PC-MKTG-05))'} onMouseOut={(e) => e.target.style.filter = 'url(#glow)'} />
-            <Bar dataKey="SRV-WEB02" stackId="a" fill="var(--color-SRV-WEB02)" stroke="hsl(var(--background))" strokeWidth={1} style={{ filter: 'url(#glow)', transition: 'all 0.2s ease-in-out' }} onMouseOver={(e) => e.target.style.filter = 'url(#glow) drop-shadow(0 0 5px var(--color-SRV-WEB02))'} onMouseOut={(e) => e.target.style.filter = 'url(#glow)'} />
-            <Bar dataKey="DB-PATIENTS" stackId="a" fill="var(--color-DB-PATIENTS)" stroke="hsl(var(--background))" strokeWidth={1} style={{ filter: 'url(#glow)', transition: 'all 0.2s ease-in-out' }} onMouseOver={(e) => e.target.style.filter = 'url(#glow) drop-shadow(0 0 5px var(--color-DB-PATIENTS))'} onMouseOut={(e) => e.target.style.filter = 'url(#glow)'} />
-            <Bar dataKey="SRV-APP03" stackId="a" fill="var(--color-SRV-APP03)" stroke="hsl(var(--background))" strokeWidth={1} style={{ filter: 'url(#glow)', transition: 'all 0.2s ease-in-out' }} onMouseOver={(e) => e.target.style.filter = 'url(#glow) drop-shadow(0 0 5px var(--color-SRV-APP03))'} onMouseOut={(e) => e.target.style.filter = 'url(#glow)'} />
+            <Bar dataKey="SRV-DB01" stackId="a" fill="var(--color-SRV-DB01)" stroke="hsl(var(--background))" strokeWidth={1} style={{ transition: 'all 0.2s ease-in-out', filter: getGlowFilter('SRV-DB01') }} onMouseOver={() => setActiveBar('SRV-DB01')} onMouseOut={() => setActiveBar(null)} />
+            <Bar dataKey="PC-MKTG-05" stackId="a" fill="var(--color-PC-MKTG-05)" stroke="hsl(var(--background))" strokeWidth={1} style={{ transition: 'all 0.2s ease-in-out', filter: getGlowFilter('PC-MKTG-05') }} onMouseOver={() => setActiveBar('PC-MKTG-05')} onMouseOut={() => setActiveBar(null)} />
+            <Bar dataKey="SRV-WEB02" stackId="a" fill="var(--color-SRV-WEB02)" stroke="hsl(var(--background))" strokeWidth={1} style={{ transition: 'all 0.2s ease-in-out', filter: getGlowFilter('SRV-WEB02') }} onMouseOver={() => setActiveBar('SRV-WEB02')} onMouseOut={() => setActiveBar(null)} />
+            <Bar dataKey="DB-PATIENTS" stackId="a" fill="var(--color-DB-PATIENTS)" stroke="hsl(var(--background))" strokeWidth={1} style={{ transition: 'all 0.2s ease-in-out', filter: getGlowFilter('DB-PATIENTS') }} onMouseOver={() => setActiveBar('DB-PATIENTS')} onMouseOut={() => setActiveBar(null)} />
+            <Bar dataKey="SRV-APP03" stackId="a" fill="var(--color-SRV-APP03)" stroke="hsl(var(--background))" strokeWidth={1} style={{ transition: 'all 0.2s ease-in-out', filter: getGlowFilter('SRV-APP03') }} onMouseOver={() => setActiveBar('SRV-APP03')} onMouseOut={() => setActiveBar(null)} />
           </BarChart>
         </ChartContainer>
       </CardContent>
