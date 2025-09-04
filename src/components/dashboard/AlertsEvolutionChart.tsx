@@ -32,16 +32,25 @@ export function AlertsEvolutionChart() {
       <CardContent className="flex-1 pb-0">
         <ChartContainer config={chartConfig} className="h-[250px] w-full">
           <BarChart data={chartData} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+            <defs>
+                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                    <feMerge>
+                        <feMergeNode in="coloredBlur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
             <CartesianGrid vertical={false} />
             <XAxis dataKey="date" tickLine={false} axisLine={false} tickMargin={8} />
             <YAxis tickLine={false} axisLine={false} tickMargin={8} />
             <ChartTooltip content={<ChartTooltipContent />} />
             <Legend />
-            <Bar dataKey="SRV-DB01" stackId="a" fill="var(--color-SRV-DB01)" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="PC-MKTG-05" stackId="a" fill="var(--color-PC-MKTG-05)" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="SRV-WEB02" stackId="a" fill="var(--color-SRV-WEB02)" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="DB-PATIENTS" stackId="a" fill="var(--color-DB-PATIENTS)" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="SRV-APP03" stackId="a" fill="var(--color-SRV-APP03)" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="SRV-DB01" stackId="a" fill="var(--color-SRV-DB01)" stroke="hsl(var(--background))" strokeWidth={1} style={{ filter: 'url(#glow)', transition: 'all 0.2s ease-in-out' }} onMouseOver={(e) => e.target.style.filter = 'url(#glow) drop-shadow(0 0 5px var(--color-SRV-DB01))'} onMouseOut={(e) => e.target.style.filter = 'url(#glow)'} />
+            <Bar dataKey="PC-MKTG-05" stackId="a" fill="var(--color-PC-MKTG-05)" stroke="hsl(var(--background))" strokeWidth={1} style={{ filter: 'url(#glow)', transition: 'all 0.2s ease-in-out' }} onMouseOver={(e) => e.target.style.filter = 'url(#glow) drop-shadow(0 0 5px var(--color-PC-MKTG-05))'} onMouseOut={(e) => e.target.style.filter = 'url(#glow)'} />
+            <Bar dataKey="SRV-WEB02" stackId="a" fill="var(--color-SRV-WEB02)" stroke="hsl(var(--background))" strokeWidth={1} style={{ filter: 'url(#glow)', transition: 'all 0.2s ease-in-out' }} onMouseOver={(e) => e.target.style.filter = 'url(#glow) drop-shadow(0 0 5px var(--color-SRV-WEB02))'} onMouseOut={(e) => e.target.style.filter = 'url(#glow)'} />
+            <Bar dataKey="DB-PATIENTS" stackId="a" fill="var(--color-DB-PATIENTS)" stroke="hsl(var(--background))" strokeWidth={1} style={{ filter: 'url(#glow)', transition: 'all 0.2s ease-in-out' }} onMouseOver={(e) => e.target.style.filter = 'url(#glow) drop-shadow(0 0 5px var(--color-DB-PATIENTS))'} onMouseOut={(e) => e.target.style.filter = 'url(#glow)'} />
+            <Bar dataKey="SRV-APP03" stackId="a" fill="var(--color-SRV-APP03)" stroke="hsl(var(--background))" strokeWidth={1} style={{ filter: 'url(#glow)', transition: 'all 0.2s ease-in-out' }} onMouseOver={(e) => e.target.style.filter = 'url(#glow) drop-shadow(0 0 5px var(--color-SRV-APP03))'} onMouseOut={(e) => e.target.style.filter = 'url(#glow)'} />
           </BarChart>
         </ChartContainer>
       </CardContent>
