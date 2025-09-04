@@ -13,6 +13,17 @@ import { MitreAttackChart } from '@/components/dashboard/MitreAttackChart';
 import { AlertsEvolutionChart } from '@/components/dashboard/AlertsEvolutionChart';
 import { StatisticsBar } from '@/components/dashboard/StatisticsBar';
 
+const TooltipList = ({ items }: { items: { label: string, value: string | number }[] }) => (
+  <ul className="space-y-1">
+    {items.map(item => (
+      <li key={item.label} className="flex justify-between items-center text-xs">
+        <span className="text-muted-foreground">{item.label}</span>
+        <span className="font-semibold">{item.value}</span>
+      </li>
+    ))}
+  </ul>
+);
+
 export default function OverviewPage() {
   return (
     <div className="flex-1 space-y-6">
@@ -28,15 +39,26 @@ export default function OverviewPage() {
                 value="1,284"
                 description="+5.2% from yesterday"
                 iconClassName='text-orange-500'
+                tooltipContent={<TooltipList items={[
+                  { label: 'Critical', value: 15 },
+                  { label: 'High', value: 73 },
+                  { label: 'Medium', value: 432 },
+                  { label: 'Low', value: 764 },
+                ]} />}
             />
         </Link>
-        <Link href="/alerts">
+        <Link href="/alerts?severity=High">
             <MetricCard 
                 icon={AlertCircle}
                 title="High Severity Alerts"
                 value="73"
                 description="-3.1% from yesterday"
                 iconClassName='text-red-500'
+                tooltipContent={<TooltipList items={[
+                  { label: 'T1110', value: 'Brute Force' },
+                  { label: 'T1071', value: 'Web Protocols' },
+                  { label: 'T1059', value: 'PowerShell' },
+                ]} />}
             />
         </Link>
         <Link href="/incidents">
@@ -46,6 +68,11 @@ export default function OverviewPage() {
                 value="12"
                 description="2 require immediate attention"
                 iconClassName='text-purple-500'
+                tooltipContent={<TooltipList items={[
+                  { label: 'Active', value: 3 },
+                  { label: 'Investigating', value: 9 },
+                  { label: 'Resolved', value: 58 },
+                ]} />}
             />
         </Link>
         <Link href="/ttps">
@@ -55,6 +82,13 @@ export default function OverviewPage() {
                 value="48"
                 description="T1059.001 most common"
                 iconClassName='text-blue-500'
+                tooltipContent={<TooltipList items={[
+                  { label: 'T1059.001', value: 48 },
+                  { label: 'T1071.001', value: 32 },
+                  { label: 'T1110', value: 25 },
+                  { label: 'T1530', value: 18 },
+                  { label: 'T1486', value: 15 },
+                ]} />}
             />
         </Link>
       </div>
