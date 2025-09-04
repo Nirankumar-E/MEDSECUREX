@@ -5,9 +5,8 @@ import { AlertsOverTimeChart } from '@/components/dashboard/AlertsOverTimeChart'
 import { RecentAlertsTable } from '@/components/dashboard/RecentAlertsTable';
 import { AlertSourcesChart } from '@/components/dashboard/AlertSourcesChart';
 import { TopSystemsChart } from '@/components/dashboard/TopSystemsChart';
-import { BarChart, FileText, ShieldAlert, Zap } from 'lucide-react';
+import { BarChart, FileText, ShieldAlert, Zap, AlertCircle, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
-import { StatisticsBar } from '@/components/dashboard/StatisticsBar';
 import { Separator } from '@/components/ui/separator';
 import { MitreAttackChart } from '@/components/dashboard/MitreAttackChart';
 import { AlertsEvolutionChart } from '@/components/dashboard/AlertsEvolutionChart';
@@ -21,7 +20,7 @@ export default function OverviewPage() {
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
         <Link href="/alerts">
           <MetricCard
-            title="Total Alerts (24h)"
+            title="Total Alerts"
             value="1,284"
             description="+5.2% from yesterday"
             icon={ShieldAlert}
@@ -30,36 +29,30 @@ export default function OverviewPage() {
         </Link>
         <Link href="/alerts?severity=High&severity=Critical">
           <MetricCard
-            title="High Severity Alerts"
+            title="Level 12+ Alerts"
             value="73"
             description="-3.1% from yesterday"
             icon={Zap}
             iconClassName="text-red-500"
           />
         </Link>
-        <Link href="/incidents">
-          <MetricCard
-            title="Open Incidents"
-            value="12"
-            description="2 requires immediate attention"
-            icon={FileText}
-            iconClassName="text-yellow-500"
-          />
-        </Link>
-        <Link href="/ttps">
-          <MetricCard
-            title="TTPs Detected"
-            value="48"
-            description="Most common: T1059.001"
-            icon={BarChart}
-            iconClassName="text-green-500"
-          />
-        </Link>
+        <MetricCard
+          title="Authentication Failures"
+          value="42"
+          description="+10.5% from yesterday"
+          icon={AlertCircle}
+          iconClassName="text-red-500"
+        />
+        <MetricCard
+          title="Authentication Success"
+          value="958"
+          description="+2.1% from yesterday"
+          icon={CheckCircle}
+          iconClassName="text-green-500"
+        />
       </div>
 
       <Separator />
-
-      <StatisticsBar />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <div className="col-span-12 lg:col-span-4">

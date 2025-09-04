@@ -61,43 +61,18 @@ export function StatisticsBar() {
     setIsLoading(true);
     setError(null);
 
-    const startDate = Timestamp.fromDate(date.from);
-    const endDate = Timestamp.fromDate(date.to);
-
-    const queries = {
-      totalAlerts: query(collection(db, 'alerts'), where('createdAt', '>=', startDate), where('createdAt', '<=', endDate)),
-      highSeverityAlerts: query(collection(db, 'alerts'), where('createdAt', '>=', startDate), where('createdAt', '<=', endDate), where('severity', '>=', 12)),
-      authFailures: query(collection(db, 'auth_logs'), where('createdAt', '>=', startDate), where('createdAt', '<=', endDate), where('status', '==', 'failure')),
-      authSuccesses: query(collection(db, 'auth_logs'), where('createdAt', '>=', startDate), where('createdAt', '<=', endDate), where('status', '==', 'success')),
-      incidents: query(collection(db, 'incidents'), where('created', '>=', startDate), where('created', '<=', endDate)),
-    };
-
-    const unsubscribes = Object.entries(queries).map(([key, q]) => {
-      return onSnapshot(q, async (snapshot) => {
-        try {
-          if (key === 'incidents') {
-            const incidentsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Incident));
-            setIncidents(incidentsData);
-          } else {
-            const count = snapshot.size;
-            setStats((prevStats) => ({ ...(prevStats as StatData), [key]: count }));
-          }
-        } catch (err: any) {
-          console.error(`Error fetching ${key}:`, err);
-          setError(`Failed to load data for ${key}.`);
-        }
-      }, (err) => {
-        console.error(`Snapshot error for ${key}:`, err);
-        setError(`Error listening to ${key}. See console for details.`);
-        toast({ variant: 'destructive', title: `Real-time update failed for ${key}`, description: err.message });
-      });
+    // Mock data for demo purposes
+    setStats({
+      totalAlerts: 1284,
+      highSeverityAlerts: 73,
+      authFailures: 42,
+      authSuccesses: 958,
     });
     
-    // Simulate initial loading finished after a bit
-    const timer = setTimeout(() => setIsLoading(false), 1500);
+    // Simulate loading finished
+    const timer = setTimeout(() => setIsLoading(false), 500);
 
     return () => {
-      unsubscribes.forEach((unsub) => unsub());
       clearTimeout(timer);
     };
 
