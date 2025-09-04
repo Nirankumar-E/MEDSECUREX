@@ -38,6 +38,9 @@ export interface TTP {
   id: string;
   name: string;
   tactic: string;
+  description: string;
+  source: string;
+  endpoint: string;
   count: number;
   lastSeen: string;
 }
