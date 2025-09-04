@@ -13,9 +13,10 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { ArrowUpDown, Search, X } from 'lucide-react';
+import { ArrowUpDown, Search, X, ShieldCheck } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 import type { TTP } from '@/types';
+import { cn } from '@/lib/utils';
 
 const mockTTPs: TTP[] = [
   { id: 'T1059.001', name: 'PowerShell', tactic: 'Execution', description: 'Adversaries may abuse PowerShell commands and scripts for execution. PowerShell is a powerful interactive command-line interface and scripting language included in the Windows operating system.', source: 'PowerShell command line monitoring', endpoint: 'srv-db01.company.local', count: 48, lastSeen: '2023-10-27 14:45:12' },
@@ -27,6 +28,17 @@ const mockTTPs: TTP[] = [
   { id: 'T1098', name: 'Account Manipulation', tactic: 'Persistence', description: 'Adversaries may manipulate accounts to maintain access to victim systems. Account manipulation may consist of any action that preserves adversary access to a compromised account.', source: 'Active Directory audit logs', endpoint: 'dc01.company.local', count: 9, lastSeen: '2023-10-26 18:45:21' },
   { id: 'T1566.001', name: 'Phishing: Spearphishing Attachment', tactic: 'Initial Access', description: 'Adversaries may send spearphishing emails with malicious attachments to gain access to victim systems.', source: 'Email gateway security', endpoint: 'mail.company.local', count: 7, lastSeen: '2023-10-26 15:20:55' },
 ];
+
+const tacticColors: Record<string, string> = {
+  'Initial Access': 'bg-green-500/20 text-green-500 border-green-500/30',
+  'Execution': 'bg-yellow-500/20 text-yellow-500 border-yellow-500/30',
+  'Persistence': 'bg-orange-500/20 text-orange-500 border-orange-500/30',
+  'Credential Access': 'bg-red-500/20 text-red-500 border-red-500/30',
+  'Collection': 'bg-blue-500/20 text-blue-500 border-blue-500/30',
+  'Command and Control': 'bg-indigo-500/20 text-indigo-500 border-indigo-500/30',
+  'Impact': 'bg-purple-500/20 text-purple-500 border-purple-500/30',
+};
+
 
 export function TTPsTable() {
   const [ttps] = useState<TTP[]>(mockTTPs);
@@ -134,7 +146,7 @@ export function TTPsTable() {
                 <div className="py-4 space-y-6 max-h-[70vh] overflow-y-auto px-1">
                     <div className="space-y-2">
                         <h3 className="font-semibold text-lg">Tactic</h3>
-                        <Badge variant="secondary">{selectedTtp.tactic}</Badge>
+                        <Badge className={cn("border", tacticColors[selectedTtp.tactic] || 'bg-gray-500/20 text-gray-500 border-gray-500/30')}>{selectedTtp.tactic}</Badge>
                     </div>
                     <div className="space-y-2">
                         <h3 className="font-semibold text-lg">Description</h3>
@@ -151,6 +163,15 @@ export function TTPsTable() {
                     <div className="space-y-2">
                         <h3 className="font-semibold text-lg">Last Seen</h3>
                         <p className="text-muted-foreground">{new Date(selectedTtp.lastSeen).toLocaleString()}</p>
+                    </div>
+                    <div className="space-y-2 pt-4">
+                        <h3 className="font-semibold text-lg flex items-center gap-2"><ShieldCheck className="text-primary"/> How to Respond</h3>
+                        <div className="p-4 bg-background/50 rounded-lg border text-sm text-muted-foreground">
+                            <p><strong>1. Isolate:</strong> Immediately isolate the affected endpoint from the network to prevent lateral movement.</p>
+                            <p><strong>2. Investigate:</strong> Analyze logs from the source and endpoint to determine the scope of the attack.</p>
+                            <p><strong>3. Remediate:</strong> Remove the malicious process, script, or configuration responsible for the TTP.</p>
+                            <p><strong>4. Harden:</strong> Apply relevant security patches and configuration changes to prevent recurrence.</p>
+                        </div>
                     </div>
                 </div>
                 <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
