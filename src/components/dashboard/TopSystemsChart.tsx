@@ -106,6 +106,7 @@ export function TopSystemsChart() {
                 />
               ))}
             </RadialBar>
+            <Legend iconSize={10} />
           </RadialBarChart>
         </ChartContainer>
       </CardContent>
