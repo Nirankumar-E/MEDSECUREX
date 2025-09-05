@@ -1,8 +1,9 @@
+
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Legend } from 'recharts';
+import { AreaChart, Area, CartesianGrid, XAxis, YAxis, Legend } from 'recharts';
 
 const chartData = [
   { time: '14:00', rps: 120, success: 115, errors: 5 },
@@ -38,16 +39,30 @@ export function ApiUsageChart() {
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[350px] w-full">
-          <LineChart data={chartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+          <AreaChart data={chartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+             <defs>
+              <linearGradient id="fillRps" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-rps)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-rps)" stopOpacity={0.1} />
+              </linearGradient>
+              <linearGradient id="fillSuccess" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-success)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-success)" stopOpacity={0.1} />
+              </linearGradient>
+              <linearGradient id="fillErrors" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-errors)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-errors)" stopOpacity={0.1} />
+              </linearGradient>
+            </defs>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="time" tickLine={false} axisLine={false} tickMargin={8} />
             <YAxis yAxisId="left" tickLine={false} axisLine={false} tickMargin={8} />
             <ChartTooltip content={<ChartTooltipContent />} />
             <Legend />
-            <Line yAxisId="left" type="monotone" dataKey="rps" stroke="var(--color-rps)" strokeWidth={2} dot={false} />
-            <Line yAxisId="left" type="monotone" dataKey="success" stroke="var(--color-success)" strokeWidth={2} dot={false} />
-            <Line yAxisId="left" type="monotone" dataKey="errors" stroke="var(--color-errors)" strokeWidth={2} dot={false} />
-          </LineChart>
+            <Area yAxisId="left" type="monotone" dataKey="rps" stroke="var(--color-rps)" fill="url(#fillRps)" strokeWidth={2} dot={false} />
+            <Area yAxisId="left" type="monotone" dataKey="success" stroke="var(--color-success)" fill="url(#fillSuccess)" strokeWidth={2} dot={false} />
+            <Area yAxisId="left" type="monotone" dataKey="errors" stroke="var(--color-errors)" fill="url(#fillErrors)" strokeWidth={2} dot={false} />
+          </AreaChart>
         </ChartContainer>
       </CardContent>
     </Card>
