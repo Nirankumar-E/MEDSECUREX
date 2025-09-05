@@ -82,7 +82,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         </SidebarHeader>
         <SidebarContent>
           <ScrollArea className="flex-1">
-            <SidebarMenu className="gap-2">
+            <SidebarMenu className="gap-2 px-0">
               {filteredNavItems.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton asChild isActive={pathname.startsWith(item.href)} tooltip={item.label}>
