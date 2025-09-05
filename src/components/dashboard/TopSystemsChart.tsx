@@ -109,16 +109,6 @@ export function TopSystemsChart() {
                 />
               ))}
             </RadialBar>
-            <text
-              x="50%"
-              y="50%"
-              textAnchor="middle"
-              dominantBaseline="middle"
-              className="fill-muted-foreground text-sm"
-              dy={14}
-            >
-              Total Alerts
-            </text>
           </RadialBarChart>
         </ChartContainer>
       </CardContent>
