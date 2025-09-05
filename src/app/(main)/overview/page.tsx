@@ -16,7 +16,7 @@ import { StatisticsBar } from '@/components/dashboard/StatisticsBar';
 const TooltipList = ({ items }: { items: { label: string, value: string | number }[] }) => (
   <ul className="space-y-1">
     {items.map(item => (
-      <li key={item.label} className="flex justify-between items-center text-xs">
+      <li key={item.label} className="flex justify-between items-center text-xs space-x-4">
         <span className="text-muted-foreground">{item.label}</span>
         <span className="font-semibold">{item.value}</span>
       </li>
