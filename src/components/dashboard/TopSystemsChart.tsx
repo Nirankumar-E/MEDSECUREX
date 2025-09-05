@@ -5,13 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { ChartContainer } from '@/components/ui/chart';
 import { RadialBarChart, RadialBar, PolarAngleAxis, Legend, Tooltip, Cell } from 'recharts';
 
-// Chart Data: Add or update your OS data here.
-// The 'name' is the label, 'value' is the alert count, and 'fill' is the color.
 const chartData = [
-  { name: 'Windows', value: 450, fill: 'hsl(var(--chart-1))' },
-  { name: 'Linux', value: 300, fill: 'hsl(var(--chart-2))' },
-  { name: 'macOS', value: 150, fill: 'hsl(var(--chart-3))' },
-  { name: 'Other', value: 100, fill: 'hsl(var(--muted))' },
+  { name: 'Windows', value: 450, fill: 'url(#gradWindows)' },
+  { name: 'Linux', value: 300, fill: 'url(#gradLinux)' },
+  { name: 'macOS', value: 150, fill: 'url(#gradMacOS)' },
+  { name: 'Other', value: 100, fill: 'url(#gradOther)' },
 ];
 
 const chartConfig = {
@@ -21,26 +19,6 @@ const chartConfig = {
   macOS: { label: 'macOS', color: 'hsl(var(--chart-3))' },
   Other: { label: 'Other', color: 'hsl(var(--muted))' },
 };
-
-// Custom Label for Radial Bar segments
-const CustomLabel = ({ viewBox, value, name, percentage }: any) => {
-  const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, midAngle } = viewBox;
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * (Math.PI / 180));
-  const y = cy + radius * Math.sin(-midAngle * (Math.PI / 180));
-
-  return (
-    <g>
-      <text x={x} y={y - 10} textAnchor="middle" dominantBaseline="central" fill="white" fontSize="12" fontWeight="bold">
-        {name}
-      </text>
-      <text x={x} y={y + 5} textAnchor="middle" dominantBaseline="central" fill="white" fontSize="10">
-        {value} ({percentage}%)
-      </text>
-    </g>
-  );
-};
-
 
 export function TopSystemsChart() {
   const totalAlerts = React.useMemo(() => {
@@ -65,6 +43,24 @@ export function TopSystemsChart() {
             startAngle={90}
             endAngle={-270}
           >
+            <defs>
+                <linearGradient id="gradWindows" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="hsl(var(--chart-1))" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="hsl(var(--chart-1))" stopOpacity={0.2}/>
+                </linearGradient>
+                <linearGradient id="gradLinux" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="hsl(var(--chart-2))" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="hsl(var(--chart-2))" stopOpacity={0.2}/>
+                </linearGradient>
+                <linearGradient id="gradMacOS" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="hsl(var(--chart-3))" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="hsl(var(--chart-3))" stopOpacity={0.2}/>
+                </linearGradient>
+                <linearGradient id="gradOther" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="hsl(var(--muted))" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="hsl(var(--muted))" stopOpacity={0.2}/>
+                </linearGradient>
+            </defs>
             <Tooltip
                 content={({ active, payload }) => {
                     if (active && payload && payload.length) {

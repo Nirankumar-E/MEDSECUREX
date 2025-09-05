@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Defs, LinearGradient, Stop } from 'recharts';
 
 const chartData = [
   { date: 'Mon', 'SRV-DB01': 40, 'PC-MKTG-05': 24, 'SRV-WEB02': 22, 'DB-PATIENTS': 10, 'SRV-APP03': 13 },
@@ -30,9 +30,9 @@ export function AlertsEvolutionChart() {
   const getGlowFilter = (barKey: string) => {
     if (activeBar === barKey) {
       const color = chartConfig[barKey as keyof typeof chartConfig].color;
-      return `url(#glow) drop-shadow(0 0 5px ${color})`;
+      return `drop-shadow(0 0 5px ${color})`;
     }
-    return 'url(#glow)';
+    return undefined;
   };
 
   return (
@@ -45,24 +45,37 @@ export function AlertsEvolutionChart() {
         <ChartContainer config={chartConfig} className="h-[250px] w-full">
           <BarChart data={chartData} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
             <defs>
-                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                    <feMerge>
-                        <feMergeNode in="coloredBlur"/>
-                        <feMergeNode in="SourceGraphic"/>
-                    </feMerge>
-                </filter>
+              <linearGradient id="grad1" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="hsl(var(--chart-1))" stopOpacity={0.8} />
+                <stop offset="100%" stopColor="hsl(var(--chart-1))" stopOpacity={0.4} />
+              </linearGradient>
+              <linearGradient id="grad2" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="hsl(var(--chart-2))" stopOpacity={0.8} />
+                <stop offset="100%" stopColor="hsl(var(--chart-2))" stopOpacity={0.4} />
+              </linearGradient>
+              <linearGradient id="grad3" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="hsl(var(--chart-3))" stopOpacity={0.8} />
+                <stop offset="100%" stopColor="hsl(var(--chart-3))" stopOpacity={0.4} />
+              </linearGradient>
+              <linearGradient id="grad4" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="hsl(var(--chart-4))" stopOpacity={0.8} />
+                <stop offset="100%" stopColor="hsl(var(--chart-4))" stopOpacity={0.4} />
+              </linearGradient>
+              <linearGradient id="grad5" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="hsl(var(--chart-5))" stopOpacity={0.8} />
+                <stop offset="100%" stopColor="hsl(var(--chart-5))" stopOpacity={0.4} />
+              </linearGradient>
             </defs>
             <CartesianGrid vertical={false} />
             <XAxis dataKey="date" tickLine={false} axisLine={false} tickMargin={8} />
             <YAxis tickLine={false} axisLine={false} tickMargin={8} />
             <ChartTooltip content={<ChartTooltipContent />} />
             <Legend />
-            <Bar dataKey="SRV-DB01" stackId="a" fill="var(--color-SRV-DB01)" stroke="hsl(var(--background))" strokeWidth={1} style={{ transition: 'all 0.2s ease-in-out', filter: getGlowFilter('SRV-DB01') }} onMouseOver={() => setActiveBar('SRV-DB01')} onMouseOut={() => setActiveBar(null)} />
-            <Bar dataKey="PC-MKTG-05" stackId="a" fill="var(--color-PC-MKTG-05)" stroke="hsl(var(--background))" strokeWidth={1} style={{ transition: 'all 0.2s ease-in-out', filter: getGlowFilter('PC-MKTG-05') }} onMouseOver={() => setActiveBar('PC-MKTG-05')} onMouseOut={() => setActiveBar(null)} />
-            <Bar dataKey="SRV-WEB02" stackId="a" fill="var(--color-SRV-WEB02)" stroke="hsl(var(--background))" strokeWidth={1} style={{ transition: 'all 0.2s ease-in-out', filter: getGlowFilter('SRV-WEB02') }} onMouseOver={() => setActiveBar('SRV-WEB02')} onMouseOut={() => setActiveBar(null)} />
-            <Bar dataKey="DB-PATIENTS" stackId="a" fill="var(--color-DB-PATIENTS)" stroke="hsl(var(--background))" strokeWidth={1} style={{ transition: 'all 0.2s ease-in-out', filter: getGlowFilter('DB-PATIENTS') }} onMouseOver={() => setActiveBar('DB-PATIENTS')} onMouseOut={() => setActiveBar(null)} />
-            <Bar dataKey="SRV-APP03" stackId="a" fill="var(--color-SRV-APP03)" stroke="hsl(var(--background))" strokeWidth={1} style={{ transition: 'all 0.2s ease-in-out', filter: getGlowFilter('SRV-APP03') }} onMouseOver={() => setActiveBar('SRV-APP03')} onMouseOut={() => setActiveBar(null)} />
+            <Bar dataKey="SRV-DB01" stackId="a" fill="url(#grad1)" strokeWidth={1} style={{ transition: 'all 0.2s ease-in-out', filter: getGlowFilter('SRV-DB01') }} onMouseOver={() => setActiveBar('SRV-DB01')} onMouseOut={() => setActiveBar(null)} />
+            <Bar dataKey="PC-MKTG-05" stackId="a" fill="url(#grad2)" strokeWidth={1} style={{ transition: 'all 0.2s ease-in-out', filter: getGlowFilter('PC-MKTG-05') }} onMouseOver={() => setActiveBar('PC-MKTG-05')} onMouseOut={() => setActiveBar(null)} />
+            <Bar dataKey="SRV-WEB02" stackId="a" fill="url(#grad3)" strokeWidth={1} style={{ transition: 'all 0.2s ease-in-out', filter: getGlowFilter('SRV-WEB02') }} onMouseOver={() => setActiveBar('SRV-WEB02')} onMouseOut={() => setActiveBar(null)} />
+            <Bar dataKey="DB-PATIENTS" stackId="a" fill="url(#grad4)" strokeWidth={1} style={{ transition: 'all 0.2s ease-in-out', filter: getGlowFilter('DB-PATIENTS') }} onMouseOver={() => setActiveBar('DB-PATIENTS')} onMouseOut={() => setActiveBar(null)} />
+            <Bar dataKey="SRV-APP03" stackId="a" fill="url(#grad5)" strokeWidth={1} style={{ transition: 'all 0.2s ease-in-out', filter: getGlowFilter('SRV-APP03') }} onMouseOver={() => setActiveBar('SRV-APP03')} onMouseOut={() => setActiveBar(null)} />
           </BarChart>
         </ChartContainer>
       </CardContent>
