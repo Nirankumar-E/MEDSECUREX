@@ -69,7 +69,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   return (
     <SidebarProvider defaultOpen={true}>
       <Sidebar>
-        <SidebarHeader className="justify-between group-data-[collapsible=icon]:group-data-[state=collapsed]:justify-center">
+        <SidebarHeader className="justify-between group-data-[collapsible=icon]:group-data-[state=collapsed]:justify-center border-b">
           <div className="flex items-center gap-2 group-data-[collapsible=icon]:group-data-[state=collapsed]:hidden">
               <div className="bg-primary text-primary-foreground rounded-lg p-2">
                   <ShieldCheck className="h-6 w-6" />
@@ -126,7 +126,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b bg-background/95 backdrop-blur-sm px-4 shadow-sm">
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background px-4">
             <div className="flex items-center gap-2">
                <SidebarTrigger className="md:hidden" />
               {currentPage && (
