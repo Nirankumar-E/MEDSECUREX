@@ -114,7 +114,8 @@ export function TopSystemsChart() {
               y="50%"
               textAnchor="middle"
               dominantBaseline="middle"
-              className="fill-foreground text-xl font-bold"
+              className="fill-foreground text-2xl font-bold"
+              dy={-6}
             >
               {totalAlerts.toLocaleString()}
             </text>
@@ -123,8 +124,8 @@ export function TopSystemsChart() {
               y="50%"
               textAnchor="middle"
               dominantBaseline="middle"
-              dy="20"
               className="fill-muted-foreground text-sm"
+              dy={14}
             >
               Total Alerts
             </text>
