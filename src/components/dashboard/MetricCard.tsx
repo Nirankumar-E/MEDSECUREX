@@ -22,7 +22,7 @@ export function MetricCard({ icon: Icon, title, value, description, className, i
 
   return (
     <Card 
-      className={`rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 h-full overflow-hidden ${className}`}
+      className={`rounded-2xl shadow-lg hover:shadow-primary/20 hover:shadow-xl hover:border-primary/50 transition-all duration-300 h-full overflow-hidden ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -46,7 +46,7 @@ export function MetricCard({ icon: Icon, title, value, description, className, i
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="overflow-hidden"
           >
-            <div className="p-4 bg-muted/50">
+            <div className="p-4 bg-muted/50 border-t">
                 {detailsContent}
             </div>
           </motion.div>

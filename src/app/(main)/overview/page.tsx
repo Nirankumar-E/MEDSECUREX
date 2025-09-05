@@ -12,12 +12,23 @@ import { Separator } from '@/components/ui/separator';
 import { MitreAttackChart } from '@/components/dashboard/MitreAttackChart';
 import { AlertsEvolutionChart } from '@/components/dashboard/AlertsEvolutionChart';
 import { StatisticsBar } from '@/components/dashboard/StatisticsBar';
+import { cn } from '@/lib/utils';
+
+const severityColorMap: Record<string, string> = {
+  'Critical': 'bg-purple-500',
+  'High': 'bg-red-500',
+  'Medium': 'bg-orange-500',
+  'Low': 'bg-yellow-400',
+}
 
 const DetailsList = ({ items }: { items: { label: string, value: string | number }[] }) => (
-  <ul className="space-y-1 mt-2">
+  <ul className="space-y-2 mt-2">
     {items.map(item => (
       <li key={item.label} className="flex justify-between items-center text-xs space-x-4">
-        <span className="text-muted-foreground">{item.label}</span>
+        <div className="flex items-center gap-2">
+          {severityColorMap[item.label] && <div className={cn("h-2 w-2 rounded-full", severityColorMap[item.label])} />}
+          <span className="text-muted-foreground">{item.label}</span>
+        </div>
         <span className="font-semibold">{item.value}</span>
       </li>
     ))}
