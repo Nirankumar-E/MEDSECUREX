@@ -2,52 +2,50 @@
 
 import * as React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import { ChartContainer } from '@/components/ui/chart';
+import { RadialBarChart, RadialBar, PolarAngleAxis, Legend, Tooltip, Cell } from 'recharts';
 
+// Chart Data: Add or update your OS data here.
+// The 'name' is the label, 'value' is the alert count, and 'fill' is the color.
 const chartData = [
-  { os: 'Windows', alerts: 450, fill: 'hsl(var(--chart-1))' },
-  { os: 'Linux', alerts: 300, fill: 'hsl(var(--chart-2))' },
-  { os: 'macOS', alerts: 150, fill: 'hsl(var(--chart-3))' },
-  { os: 'Other', alerts: 100, fill: 'hsl(var(--muted))' },
+  { name: 'Windows', value: 450, fill: 'hsl(var(--chart-1))' },
+  { name: 'Linux', value: 300, fill: 'hsl(var(--chart-2))' },
+  { name: 'macOS', value: 150, fill: 'hsl(var(--chart-3))' },
+  { name: 'Other', value: 100, fill: 'hsl(var(--muted))' },
 ];
 
 const chartConfig = {
-  alerts: {
-    label: 'Alerts',
-  },
-  Windows: {
-    label: 'Windows',
-    color: 'hsl(var(--chart-1))',
-  },
-  Linux: {
-    label: 'Linux',
-    color: 'hsl(var(--chart-2))',
-  },
-  macOS: {
-    label: 'macOS',
-    color: 'hsl(var(--chart-3))',
-  },
-  Other: {
-    label: 'Other',
-    color: 'hsl(var(--muted))',
-  },
+  value: { label: 'Alerts' },
+  Windows: { label: 'Windows', color: 'hsl(var(--chart-1))' },
+  Linux: { label: 'Linux', color: 'hsl(var(--chart-2))' },
+  macOS: { label: 'macOS', color: 'hsl(var(--chart-3))' },
+  Other: { label: 'Other', color: 'hsl(var(--muted))' },
 };
 
+// Custom Label for Radial Bar segments
+const CustomLabel = ({ viewBox, value, name, percentage }: any) => {
+  const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, midAngle } = viewBox;
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * (Math.PI / 180));
+  const y = cy + radius * Math.sin(-midAngle * (Math.PI / 180));
+
+  return (
+    <g>
+      <text x={x} y={y - 10} textAnchor="middle" dominantBaseline="central" fill="white" fontSize="12" fontWeight="bold">
+        {name}
+      </text>
+      <text x={x} y={y + 5} textAnchor="middle" dominantBaseline="central" fill="white" fontSize="10">
+        {value} ({percentage}%)
+      </text>
+    </g>
+  );
+};
+
+
 export function TopSystemsChart() {
-  const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
-
   const totalAlerts = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.alerts, 0);
+    return chartData.reduce((acc, curr) => acc + curr.value, 0);
   }, []);
-
-  const onPieEnter = (_: any, index: number) => {
-    setActiveIndex(index);
-  };
-
-  const onPieLeave = () => {
-    setActiveIndex(null);
-  };
 
   return (
     <Card className="rounded-2xl shadow-lg h-full flex flex-col">
@@ -55,26 +53,32 @@ export function TopSystemsChart() {
         <CardTitle>Alerts by System OS</CardTitle>
         <CardDescription>Top operating systems generating alerts</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
+      <CardContent className="flex-1 pb-0 flex items-center justify-center">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-video max-h-[250px]"
+          className="mx-auto aspect-square max-h-[250px] w-full"
         >
-          <PieChart>
+          <RadialBarChart
+            data={chartData}
+            innerRadius="30%"
+            outerRadius="100%"
+            startAngle={90}
+            endAngle={-270}
+          >
             <Tooltip
                 content={({ active, payload }) => {
                     if (active && payload && payload.length) {
                     const data = payload[0].payload;
-                    const percentage = ((data.alerts / totalAlerts) * 100).toFixed(1);
+                    const percentage = ((data.value / totalAlerts) * 100).toFixed(1);
                     return (
                         <div className="rounded-lg border bg-background p-2 shadow-sm">
                         <div className="grid grid-cols-2 gap-2">
                             <div className="flex flex-col">
                             <span className="text-[0.70rem] uppercase text-muted-foreground">
-                                {data.os}
+                                {data.name}
                             </span>
                             <span className="font-bold text-muted-foreground">
-                                {data.alerts.toLocaleString()}
+                                {data.value.toLocaleString()}
                             </span>
                             </div>
                             <div className="flex flex-col">
@@ -92,28 +96,39 @@ export function TopSystemsChart() {
                     return null;
                 }}
             />
-            <Pie 
-              data={chartData} 
-              dataKey="alerts" 
-              nameKey="os" 
-              innerRadius="60%"
-              strokeWidth={0}
-              onMouseEnter={onPieEnter}
-              onMouseLeave={onPieLeave}
+            <PolarAngleAxis type="number" domain={[0, totalAlerts]} tick={false} />
+            <RadialBar
+              dataKey="value"
+              background
+              cornerRadius={10}
             >
-              {chartData.map((entry, index) => (
+              {chartData.map((entry) => (
                 <Cell 
-                  key={entry.os} 
-                  fill={entry.fill} 
-                  style={{
-                    transform: activeIndex === index ? 'scale(1.05)' : 'scale(1)',
-                    transformOrigin: 'center center',
-                    transition: 'transform 0.2s ease-in-out',
-                  }}
+                    key={`cell-${entry.name}`} 
+                    fill={entry.fill}
                 />
               ))}
-            </Pie>
-          </PieChart>
+            </RadialBar>
+            <text
+              x="50%"
+              y="50%"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              className="fill-foreground text-xl font-bold"
+            >
+              {totalAlerts.toLocaleString()}
+            </text>
+            <text
+              x="50%"
+              y="50%"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              dy="20"
+              className="fill-muted-foreground text-sm"
+            >
+              Total Alerts
+            </text>
+          </RadialBarChart>
         </ChartContainer>
       </CardContent>
     </Card>
