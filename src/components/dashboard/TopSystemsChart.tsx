@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -17,7 +18,7 @@ const chartConfig = {
   Windows: { label: 'Windows', color: 'hsl(var(--chart-1))' },
   Linux: { label: 'Linux', color: 'hsl(var(--chart-2))' },
   macOS: { label: 'macOS', color: 'hsl(var(--chart-3))' },
-  Other: { label: 'Other', color: 'hsl(var(--muted))' },
+  Other: { label: 'Other', color: 'hsl(var(--destructive))' },
 };
 
 export function TopSystemsChart() {
@@ -57,8 +58,8 @@ export function TopSystemsChart() {
                     <stop offset="95%" stopColor="hsl(var(--chart-3))" stopOpacity={0.2}/>
                 </linearGradient>
                 <linearGradient id="gradOther" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(var(--muted))" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="hsl(var(--muted))" stopOpacity={0.2}/>
+                    <stop offset="5%" stopColor="hsl(var(--destructive))" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="hsl(var(--destructive))" stopOpacity={0.2}/>
                 </linearGradient>
             </defs>
             <Tooltip
