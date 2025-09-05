@@ -7,13 +7,13 @@ import { PieChart, Pie, Cell } from 'recharts';
 import { motion } from 'framer-motion';
 
 // Chart Data: Add or update your MITRE ATT&CK techniques here.
-// The 'technique' is the label, 'alerts' is the value, and 'fill' is the color.
+// The 'technique' is the label, 'alerts' is the value. The 'fill' will reference a gradient ID.
 const chartData = [
-  { technique: 'Password Guessing', alerts: 275, fill: 'hsl(120 70% 40%)' }, // Green
-  { technique: 'SSH', alerts: 200, fill: 'hsl(220 70% 50%)' }, // Blue
-  { technique: 'Brute Force', alerts: 187, fill: 'hsl(var(--destructive))' }, // Red
-  { technique: 'Valid Accounts', alerts: 173, fill: 'hsl(280 65% 60%)' }, // Purple
-  { technique: 'System Binary Proxy', alerts: 90, fill: 'hsl(30 80% 55%)' }, // Orange
+  { technique: 'Password Guessing', alerts: 275, fill: 'url(#gradientGreen)' },
+  { technique: 'SSH', alerts: 200, fill: 'url(#gradientBlue)' },
+  { technique: 'Brute Force', alerts: 187, fill: 'url(#gradientRed)' },
+  { technique: 'Valid Accounts', alerts: 173, fill: 'url(#gradientPurple)' },
+  { technique: 'System Binary Proxy', alerts: 90, fill: 'url(#gradientOrange)' },
 ];
 
 // Chart Configuration: Maps data keys to labels and colors for the chart.
@@ -76,6 +76,28 @@ export function MitreAttackChart({ className }: { className?: string }) {
               className="mx-auto aspect-square h-full"
             >
               <PieChart>
+                <defs>
+                    <linearGradient id="gradientGreen" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="hsl(120 80% 50%)" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="hsl(120 70% 40%)" stopOpacity={1}/>
+                    </linearGradient>
+                    <linearGradient id="gradientBlue" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="hsl(220 80% 60%)" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="hsl(220 70% 50%)" stopOpacity={1}/>
+                    </linearGradient>
+                    <linearGradient id="gradientRed" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="hsl(0 90% 60%)" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="hsl(var(--destructive))" stopOpacity={1}/>
+                    </linearGradient>
+                    <linearGradient id="gradientPurple" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="hsl(280 75% 70%)" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="hsl(280 65% 60%)" stopOpacity={1}/>
+                    </linearGradient>
+                    <linearGradient id="gradientOrange" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="hsl(30 90% 65%)" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="hsl(30 80% 55%)" stopOpacity={1}/>
+                    </linearGradient>
+                </defs>
                 <ChartTooltip
                   cursor={false}
                   content={({ active, payload }) => {
@@ -132,7 +154,7 @@ export function MitreAttackChart({ className }: { className?: string }) {
               <div key={entry.technique} className="flex items-center gap-2">
                 <div
                   className="h-2.5 w-2.5 rounded-full"
-                  style={{ backgroundColor: entry.fill }}
+                  style={{ backgroundColor: chartConfig[entry.technique as keyof typeof chartConfig]?.color }}
                 />
                 <span>{entry.technique}</span>
               </div>
