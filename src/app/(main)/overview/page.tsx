@@ -6,15 +6,15 @@ import { AlertsOverTimeChart } from '@/components/dashboard/AlertsOverTimeChart'
 import { RecentAlertsTable } from '@/components/dashboard/RecentAlertsTable';
 import { AlertSourcesChart } from '@/components/dashboard/AlertSourcesChart';
 import { TopSystemsChart } from '@/components/dashboard/TopSystemsChart';
-import { BarChart, FileText, ShieldAlert, Zap, AlertCircle, CheckCircle } from 'lucide-react';
+import { BarChart, FileText, ShieldAlert, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { MitreAttackChart } from '@/components/dashboard/MitreAttackChart';
 import { AlertsEvolutionChart } from '@/components/dashboard/AlertsEvolutionChart';
 import { StatisticsBar } from '@/components/dashboard/StatisticsBar';
 
-const TooltipList = ({ items }: { items: { label: string, value: string | number }[] }) => (
-  <ul className="space-y-1">
+const DetailsList = ({ items }: { items: { label: string, value: string | number }[] }) => (
+  <ul className="space-y-1 mt-2">
     {items.map(item => (
       <li key={item.label} className="flex justify-between items-center text-xs space-x-4">
         <span className="text-muted-foreground">{item.label}</span>
@@ -33,63 +33,63 @@ export default function OverviewPage() {
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Link href="/alerts">
-            <MetricCard 
-                icon={ShieldAlert}
-                title="Total Alerts (24h)"
-                value="1,284"
-                description="+5.2% from yesterday"
-                iconClassName='text-orange-500'
-                tooltipContent={<TooltipList items={[
-                  { label: 'Critical', value: 15 },
-                  { label: 'High', value: 73 },
-                  { label: 'Medium', value: 432 },
-                  { label: 'Low', value: 764 },
-                ]} />}
-            />
+          <MetricCard
+            icon={ShieldAlert}
+            title="Total Alerts (24h)"
+            value="1,284"
+            description="+5.2% from yesterday"
+            iconClassName='text-orange-500'
+            detailsContent={<DetailsList items={[
+              { label: 'Critical', value: 15 },
+              { label: 'High', value: 73 },
+              { label: 'Medium', value: 432 },
+              { label: 'Low', value: 764 },
+            ]} />}
+          />
         </Link>
         <Link href="/alerts?severity=High">
-            <MetricCard 
-                icon={AlertCircle}
-                title="High Severity Alerts"
-                value="73"
-                description="-3.1% from yesterday"
-                iconClassName='text-red-500'
-                tooltipContent={<TooltipList items={[
-                  { label: 'T1110', value: 'Brute Force' },
-                  { label: 'T1071', value: 'Web Protocols' },
-                  { label: 'T1059', value: 'PowerShell' },
-                ]} />}
-            />
+          <MetricCard
+            icon={AlertCircle}
+            title="High Severity Alerts"
+            value="73"
+            description="-3.1% from yesterday"
+            iconClassName='text-red-500'
+            detailsContent={<DetailsList items={[
+              { label: 'T1110', value: 'Brute Force' },
+              { label: 'T1071', value: 'Web Protocols' },
+              { label: 'T1059', value: 'PowerShell' },
+            ]} />}
+          />
         </Link>
         <Link href="/incidents">
-            <MetricCard 
-                icon={FileText}
-                title="Open Incidents"
-                value="12"
-                description="2 require immediate attention"
-                iconClassName='text-purple-500'
-                tooltipContent={<TooltipList items={[
-                  { label: 'Active', value: 3 },
-                  { label: 'Investigating', value: 9 },
-                  { label: 'Resolved', value: 58 },
-                ]} />}
-            />
+          <MetricCard
+            icon={FileText}
+            title="Open Incidents"
+            value="12"
+            description="2 require immediate attention"
+            iconClassName='text-purple-500'
+            detailsContent={<DetailsList items={[
+              { label: 'Active', value: 3 },
+              { label: 'Investigating', value: 9 },
+              { label: 'Resolved', value: 58 },
+            ]} />}
+          />
         </Link>
         <Link href="/ttps">
-            <MetricCard 
-                icon={BarChart}
-                title="TTPs Detected"
-                value="48"
-                description="T1059.001 most common"
-                iconClassName='text-blue-500'
-                tooltipContent={<TooltipList items={[
-                  { label: 'T1059.001', value: 48 },
-                  { label: 'T1071.001', value: 32 },
-                  { label: 'T1110', value: 25 },
-                  { label: 'T1530', value: 18 },
-                  { label: 'T1486', value: 15 },
-                ]} />}
-            />
+          <MetricCard
+            icon={BarChart}
+            title="TTPs Detected"
+            value="48"
+            description="T1059.001 most common"
+            iconClassName='text-blue-500'
+            detailsContent={<DetailsList items={[
+              { label: 'T1059.001', value: 48 },
+              { label: 'T1071.001', value: 32 },
+              { label: 'T1110', value: 25 },
+              { label: 'T1530', value: 18 },
+              { label: 'T1486', value: 15 },
+            ]} />}
+          />
         </Link>
       </div>
 
