@@ -135,6 +135,10 @@ export default function MainLayout({ children }: { children: ReactNode }) {
             </div>
 
             <div className="flex items-center gap-2">
+              <Button variant="ghost" size="icon" className="h-9 w-9" onClick={handleLogout}>
+                  <LogOut className="h-4 w-4" />
+                  <span className="sr-only">Sign out</span>
+              </Button>
               <Button variant="ghost" size="icon" className="h-9 w-9">
                   <Bell className="h-4 w-4" />
                   <span className="sr-only">Toggle notifications</span>
