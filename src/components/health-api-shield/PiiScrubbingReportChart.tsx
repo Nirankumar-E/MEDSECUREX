@@ -1,5 +1,7 @@
+
 'use client';
 
+import * as React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend } from 'recharts';
@@ -21,6 +23,8 @@ const chartConfig = {
 };
 
 export function PiiScrubbingReportChart() {
+  const [activeBar, setActiveBar] = React.useState<string | null>(null);
+
   return (
     <Card className="rounded-2xl shadow-lg">
       <CardHeader>
@@ -29,15 +33,54 @@ export function PiiScrubbingReportChart() {
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[350px] w-full">
-          <BarChart data={chartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+          <BarChart 
+            data={chartData} 
+            margin={{ top: 5, right: 20, left: -10, bottom: 5 }}
+            onMouseMove={(state) => {
+              if (state.isTooltipActive && state.activePayload?.[0]?.payload?.date) {
+                setActiveBar(state.activePayload[0].payload.date);
+              } else {
+                setActiveBar(null);
+              }
+            }}
+            onMouseLeave={() => {
+              setActiveBar(null);
+            }}
+          >
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="date" tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} tickLine={false} axisLine={false} tickMargin={8} />
-            <YAxis tickLine={false} axisLine={false} tickMargin={8} />
-            <ChartTooltip content={<ChartTooltipContent />} />
+            <XAxis 
+              dataKey="date" 
+              tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} 
+              tickLine={false} 
+              axisLine={false} 
+              tickMargin={8} 
+              stroke="hsl(var(--muted-foreground))"
+            />
+            <YAxis 
+              tickLine={false} 
+              axisLine={false} 
+              tickMargin={8} 
+              stroke="hsl(var(--muted-foreground))" 
+            />
+            <ChartTooltip 
+              cursor={{ fill: 'hsl(var(--accent) / 0.2)' }}
+              content={<ChartTooltipContent />} 
+            />
             <Legend />
-            <Bar dataKey="ssn" stackId="a" fill="var(--color-ssn)" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="dob" stackId="a" fill="var(--color-dob)" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="address" stackId="a" fill="var(--color-address)" radius={[4, 4, 0, 0]} />
+            {Object.entries(chartConfig).map(([key, config]) => (
+                <Bar 
+                    key={key}
+                    dataKey={key} 
+                    stackId="a" 
+                    fill={config.color} 
+                    stroke="hsl(var(--card))"
+                    strokeWidth={1}
+                    style={{
+                      filter: activeBar === (chartData.find(d => activeBar && d.date === activeBar)?.[key] !== undefined) ? `drop-shadow(0 0 6px ${config.color})` : 'none',
+                      transition: 'filter 0.2s ease-in-out',
+                    }}
+                />
+            ))}
           </BarChart>
         </ChartContainer>
       </CardContent>
