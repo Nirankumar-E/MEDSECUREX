@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -319,7 +320,6 @@ const SidebarInset = React.forwardRef<
         "md:peer-data-[collapsible=icon]:peer-data-[state=expanded]:peer-data-[side=right]:mr-[--sidebar-width]",
         "md:peer-data-[collapsible=icon]:peer-data-[state=collapsed]:peer-data-[side=right]:mr-[--sidebar-width-icon]",
         "md:peer-data-[collapsible=offcanvas]:ml-0",
-        "md:peer-data-[collapsible=none]:ml-0",
         className
       )}
       {...props}

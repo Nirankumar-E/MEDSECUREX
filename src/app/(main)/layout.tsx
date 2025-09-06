@@ -68,21 +68,23 @@ export default function MainLayout({ children }: { children: ReactNode }) {
 
   return (
     <SidebarProvider defaultOpen={true}>
-      <Sidebar>
-        <SidebarHeader className="justify-between group-data-[collapsible=icon]:group-data-[state=collapsed]:justify-center border-b">
-          <div className="flex items-center gap-2 group-data-[collapsible=icon]:group-data-[state=collapsed]:hidden">
-              <div className="bg-primary text-primary-foreground rounded-lg p-2">
-                  <ShieldCheck className="h-6 w-6" />
-              </div>
-              <div className="group-data-[collapsible=icon]:group-data-[state=collapsed]:hidden">
-                <h1 className="text-xl font-semibold font-headline text-primary">MedSecureX</h1>
-              </div>
-          </div>
+      <Sidebar className="p-0 m-0">
+      <SidebarHeader className="h-14 flex items-center justify-between">
+  <div className="flex items-center gap-2 group-data-[collapsible=icon]:group-data-[state=collapsed]:hidden">
+      <div className="bg-primary text-primary-foreground rounded-lg p-2">
+          <ShieldCheck className="h-6 w-6" />
+      </div>
+      <div className="group-data-[collapsible=icon]:group-data-[state=collapsed]:hidden">
+        <h1 className="text-xl font-semibold font-headline text-primary">MedSecureX</h1>
+      </div>
+  </div>
+
           <SidebarTrigger className="hidden md:flex" />
         </SidebarHeader>
         <SidebarContent>
           <ScrollArea className="flex-1">
             <SidebarMenu className="gap-2 px-0">
+            
               {filteredNavItems.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton asChild isActive={pathname.startsWith(item.href)} tooltip={item.label}>
@@ -126,7 +128,8 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background px-4">
+      <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background px-4">
+
             <div className="flex items-center gap-2">
                <SidebarTrigger className="md:hidden" />
               {currentPage && (
