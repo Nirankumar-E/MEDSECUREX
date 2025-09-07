@@ -667,5 +667,6 @@ export {
   SidebarMenuAction,
   SidebarInput,
   SidebarUser,
+  useSidebar,
 }
 export type { SidebarContext }
