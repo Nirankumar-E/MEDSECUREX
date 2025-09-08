@@ -52,6 +52,7 @@ type NavItemType = {
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   const { user, role, loading, setUser, setRole } = useAuth();
+  const { isCollapsed } = useSidebar();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -101,6 +102,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
                 <div className="bg-primary text-primary-foreground rounded-lg p-2">
                   <ShieldCheck className="h-6 w-6" />
                 </div>
+                <h1 className={cn("font-bold text-lg", isCollapsed && "hidden")}>MEDSECUREX</h1>
               </div>
           </SidebarHeader>
 
@@ -119,7 +121,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
               <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="w-full justify-start p-2">
                       <UserCircle className="h-6 w-6 shrink-0" />
-                       <div className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-left ml-2">
+                       <div className={cn("flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-left ml-2", isCollapsed && "hidden")}>
                         <p className="text-sm font-medium leading-none">{user.name}</p>
                       </div>
                   </Button>
