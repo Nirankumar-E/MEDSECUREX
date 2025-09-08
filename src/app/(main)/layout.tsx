@@ -64,7 +64,7 @@ const navItems: NavItemType[] = [
 
 function AppLayout({ user, children }: { user: any; children: ReactNode }) {
   const { role, setUser, setRole } = useAuth();
-  const { isCollapsed } = useSidebar();
+  const { isCollapsed, toggleSidebar } = useSidebar();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -87,12 +87,14 @@ function AppLayout({ user, children }: { user: any; children: ReactNode }) {
     <div className="flex min-h-screen">
       <Sidebar>
         <SidebarHeader>
+          <Button variant="ghost" onClick={toggleSidebar} className="h-12 w-full justify-start px-2">
             <div className="flex items-center gap-2">
               <div className="bg-primary text-primary-foreground rounded-lg p-2">
                 <ShieldCheck className="h-6 w-6" />
               </div>
               <h1 className={cn("font-bold text-lg", isCollapsed && "hidden")}>MEDSECUREX</h1>
             </div>
+          </Button>
         </SidebarHeader>
 
         <SidebarContent>
@@ -143,6 +145,10 @@ function AppLayout({ user, children }: { user: any; children: ReactNode }) {
             )}
           </div>
           <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" className="h-9 w-9" onClick={handleLogout}>
+              <LogOut className="h-4 w-4" />
+              <span className="sr-only">Sign Out</span>
+            </Button>
             <Button variant="ghost" size="icon" className="h-9 w-9">
                 <Bell className="h-4 w-4" />
                 <span className="sr-only">Toggle notifications</span>
