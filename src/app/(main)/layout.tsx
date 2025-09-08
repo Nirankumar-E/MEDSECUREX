@@ -15,8 +15,8 @@ import {
   SidebarInset,
   SidebarTrigger,
   SidebarHeader,
+  useSidebar,
 } from '@/components/ui/sidebar';
-// MODIFICATION: Added UserCircle for the new profile button
 import { Bell, ChevronDown, LayoutDashboard, LogOut, Settings, ShieldAlert, ShieldCheck, HeartPulse, Archive, ClipboardList, FileText, BarChart, Rocket, UserCircle } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -24,6 +24,31 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { auth } from '@/lib/firebase';
 import { ModeToggle } from '@/components/ui/mode-toggle';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { cn } from '@/lib/utils';
+
+function NavItem({ item, pathname }: { item: NavItemType, pathname: string }) {
+  const { isCollapsed } = useSidebar();
+  
+  return (
+    <SidebarMenuItem key={item.href}>
+      <SidebarMenuButton asChild isActive={pathname.startsWith(item.href)} tooltip={item.label}>
+        <Link href={item.href}>
+          <item.icon className="h-5 w-5 shrink-0" />
+          <span className={cn("overflow-hidden text-ellipsis whitespace-nowrap", isCollapsed && "hidden")}>
+            {item.label}
+          </span>
+        </Link>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  )
+}
+
+type NavItemType = {
+  href: string;
+  label: string;
+  icon: React.ElementType;
+  roles: string[];
+}
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   const { user, role, loading, setUser, setRole } = useAuth();
@@ -36,7 +61,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
     }
   }, [user, loading, router]);
 
-  const navItems = [
+  const navItems: NavItemType[] = [
     { href: '/overview', label: 'Overview', icon: LayoutDashboard, roles: ['Admin', 'Analyst', 'Viewer'] },
     { href: '/health-api-shield', label: 'Health API Shield', icon: HeartPulse, roles: ['Admin', 'Analyst', 'Viewer'] },
     { href: '/med-x-box', label: 'MED x Box', icon: Archive, roles: ['Admin', 'Analyst', 'Viewer'] },
@@ -68,84 +93,77 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    // MODIFICATION: Removed defaultOpen prop to let the component control its state
     <SidebarProvider>
-      <Sidebar>
-        {/* MODIFICATION: Simplified header to only show the logo */}
-        <SidebarHeader>
-          <div className="bg-primary text-primary-foreground rounded-lg p-2">
-            <ShieldCheck className="h-6 w-6" />
-          </div>
-        </SidebarHeader>
-
-        <SidebarContent>
-          <ScrollArea className="flex-1">
-            <SidebarMenu>
-              {filteredNavItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton asChild isActive={pathname.startsWith(item.href)} tooltip={item.label}>
-                    <Link href={item.href}>
-                      <item.icon />
-                      {/* MODIFICATION: Removed the text span to make it icon-only */}
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </ScrollArea>
-        </SidebarContent>
-
-        {/* MODIFICATION: Replaced the footer content with an icon-only dropdown trigger */}
-        <SidebarFooter>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <SidebarMenuButton tooltip="Profile" className="w-full mt-auto">
-                    <UserCircle />
-                </SidebarMenuButton>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
-              <DropdownMenuLabel className="font-normal">
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">{user.name}</p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    {user.email}
-                  </p>
+      <div className="flex min-h-screen">
+        <Sidebar>
+          <SidebarHeader>
+              <div className="flex items-center gap-2">
+                <div className="bg-primary text-primary-foreground rounded-lg p-2">
+                  <ShieldCheck className="h-6 w-6" />
                 </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout}>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </SidebarFooter>
-      </Sidebar>
+              </div>
+          </SidebarHeader>
 
-      <SidebarInset>
-        <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background px-4">
-          <div className="flex items-center gap-2">
-            <SidebarTrigger className="md:hidden" />
-            {currentPage && (
-              <h1 className="text-lg font-semibold md:text-xl font-headline text-muted-foreground">{currentPage.label}</h1>
-            )}
-          </div>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="h-9 w-9" onClick={handleLogout}>
-                <LogOut className="h-4 w-4" />
-                <span className="sr-only">Sign out</span>
-            </Button>
-            <Button variant="ghost" size="icon" className="h-9 w-9">
-                <Bell className="h-4 w-4" />
-                <span className="sr-only">Toggle notifications</span>
-            </Button>
-            <ModeToggle />
-          </div>
-        </header>
-        <main className="flex-1 p-4 sm:px-6 sm:py-4">
-            {children}
-        </main>
-      </SidebarInset>
+          <SidebarContent>
+            <ScrollArea className="flex-1">
+              <SidebarMenu>
+                {filteredNavItems.map((item) => (
+                  <NavItem key={item.href} item={item} pathname={pathname} />
+                ))}
+              </SidebarMenu>
+            </ScrollArea>
+          </SidebarContent>
+
+          <SidebarFooter>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="w-full justify-start p-2">
+                      <UserCircle className="h-6 w-6 shrink-0" />
+                       <div className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-left ml-2">
+                        <p className="text-sm font-medium leading-none">{user.name}</p>
+                      </div>
+                  </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 mb-2 ml-2" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">{user.name}</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarFooter>
+        </Sidebar>
+
+        <SidebarInset>
+          <header className="sticky top-0 z-10 flex h-14 items-center justify-between gap-4 border-b bg-background px-4">
+            <div className="flex items-center gap-2">
+              <SidebarTrigger />
+              {currentPage && (
+                <h1 className="text-lg font-semibold md:text-xl font-headline text-muted-foreground">{currentPage.label}</h1>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="icon" className="h-9 w-9">
+                  <Bell className="h-4 w-4" />
+                  <span className="sr-only">Toggle notifications</span>
+              </Button>
+              <ModeToggle />
+            </div>
+          </header>
+          <main className="flex-1 p-4 sm:px-6 sm:py-4">
+              {children}
+          </main>
+        </SidebarInset>
+      </div>
     </SidebarProvider>
   );
 }
