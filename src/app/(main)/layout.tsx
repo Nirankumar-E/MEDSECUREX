@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, type ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/components/auth/useAuth';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,30 +17,59 @@ import {
   SidebarHeader,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { Bell, ChevronDown, LayoutDashboard, LogOut, Settings, ShieldAlert, ShieldCheck, HeartPulse, Archive, ClipboardList, FileText, BarChart, Rocket, UserCircle } from 'lucide-react';
+import {
+  Bell,
+  LayoutDashboard,
+  LogOut,
+  Settings,
+  ShieldAlert,
+  HeartPulse,
+  Archive,
+  ClipboardList,
+  FileText,
+  BarChart,
+  Rocket,
+  UserCircle,
+} from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { auth } from '@/lib/firebase';
 import { ModeToggle } from '@/components/ui/mode-toggle';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import Image from 'next/image'; // ✅ Added import for logo
 
-function NavItem({ item, pathname }: { item: NavItemType, pathname: string }) {
+function NavItem({ item, pathname }: { item: NavItemType; pathname: string }) {
   const { isCollapsed } = useSidebar();
-  
+
   return (
     <SidebarMenuItem key={item.href}>
-      <SidebarMenuButton asChild isActive={pathname.startsWith(item.href)} tooltip={item.label}>
+      <SidebarMenuButton
+        asChild
+        isActive={pathname.startsWith(item.href)}
+        tooltip={item.label}
+      >
         <Link href={item.href}>
           <item.icon className="h-5 w-5 shrink-0" />
-          <span className={cn("overflow-hidden text-ellipsis whitespace-nowrap", isCollapsed && "hidden")}>
+          <span
+            className={cn(
+              'overflow-hidden text-ellipsis whitespace-nowrap',
+              isCollapsed && 'hidden'
+            )}
+          >
             {item.label}
           </span>
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
-  )
+  );
 }
 
 type NavItemType = {
@@ -48,18 +77,18 @@ type NavItemType = {
   label: string;
   icon: React.ElementType;
   roles: string[];
-}
+};
 
 const navItems: NavItemType[] = [
-    { href: '/overview', label: 'Overview', icon: LayoutDashboard, roles: ['Admin', 'Analyst', 'Viewer'] },
-    { href: '/health-api-shield', label: 'Health API Shield', icon: HeartPulse, roles: ['Admin', 'Analyst', 'Viewer'] },
-    { href: '/med-x-box', label: 'MED x Box', icon: Archive, roles: ['Admin', 'Analyst', 'Viewer'] },
-    { href: '/alerts', label: 'Alerts', icon: ShieldAlert, roles: ['Admin', 'Analyst', 'Viewer'] },
-    { href: '/incidents', label: 'Incidents', icon: FileText, roles: ['Admin', 'Analyst'] },
-    { href: '/ttps', label: 'TTPs', icon: BarChart, roles: ['Admin', 'Analyst'] },
-    { href: '/pii-reports', label: 'PII Reports', icon: ClipboardList, roles: ['Admin', 'Analyst'] },
-    { href: '/agents', label: 'Agents', icon: Rocket, roles: ['Admin', 'Analyst', 'Viewer'] },
-    { href: '/settings', label: 'Settings', icon: Settings, roles: ['Admin'] },
+  { href: '/overview', label: 'Overview', icon: LayoutDashboard, roles: ['Admin', 'Analyst', 'Viewer'] },
+  { href: '/health-api-shield', label: 'Health API Shield', icon: HeartPulse, roles: ['Admin', 'Analyst', 'Viewer'] },
+  { href: '/med-x-box', label: 'MED x Box', icon: Archive, roles: ['Admin', 'Analyst', 'Viewer'] },
+  { href: '/alerts', label: 'Alerts', icon: ShieldAlert, roles: ['Admin', 'Analyst', 'Viewer'] },
+  { href: '/incidents', label: 'Incidents', icon: FileText, roles: ['Admin', 'Analyst'] },
+  { href: '/ttps', label: 'TTPs', icon: BarChart, roles: ['Admin', 'Analyst'] },
+  { href: '/pii-reports', label: 'PII Reports', icon: ClipboardList, roles: ['Admin', 'Analyst'] },
+  { href: '/agents', label: 'Agents', icon: Rocket, roles: ['Admin', 'Analyst', 'Viewer'] },
+  { href: '/settings', label: 'Settings', icon: Settings, roles: ['Admin'] },
 ];
 
 function AppLayout({ user, children }: { user: any; children: ReactNode }) {
@@ -68,31 +97,50 @@ function AppLayout({ user, children }: { user: any; children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const filteredNavItems = navItems.filter(item => role && item.roles.includes(role));
-  
+  const filteredNavItems = navItems.filter(
+    (item) => role && item.roles.includes(role)
+  );
+
   const getPageData = (path: string) => {
-    return navItems.find(item => path.startsWith(item.href))
-  }
-  const currentPage = getPageData(pathname)
-  
+    return navItems.find((item) => path.startsWith(item.href));
+  };
+  const currentPage = getPageData(pathname);
+
   const handleLogout = async () => {
     await auth.signOut();
     setUser(null);
     setRole(null);
     localStorage.removeItem('medi-secure-x2-user');
     router.push('/login');
-  }
+  };
 
   return (
     <div className="flex min-h-screen">
       <Sidebar>
         <SidebarHeader>
-          <Button variant="ghost" onClick={toggleSidebar} className="h-12 w-full justify-start px-2">
+          <Button
+            variant="ghost"
+            onClick={toggleSidebar}
+            className="h-12 w-full justify-start px-2"
+          >
             <div className="flex items-center gap-2">
-              <div className="bg-primary text-primary-foreground rounded-lg p-2">
-                <ShieldCheck className="h-6 w-6" />
-              </div>
-              <h1 className={cn("font-bold text-lg", isCollapsed && "hidden")}>MEDSECUREX</h1>
+              {/* ✅ Logo instead of ShieldCheck */}
+              <Image
+                  src="/header-100px.png"
+                  alt="MedSecureX Logo"
+                  width={100}
+                  height={100}
+                  priority   // 👈 this preloads it
+/               >
+
+              <h1
+                className={cn(
+                  'font-bold text-lg',
+                  isCollapsed && 'hidden'
+                )}
+              >
+                MEDSECUREX
+              </h1>
             </div>
           </Button>
         </SidebarHeader>
@@ -110,17 +158,30 @@ function AppLayout({ user, children }: { user: any; children: ReactNode }) {
         <SidebarFooter>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="w-full justify-start p-2">
-                    <UserCircle className="h-6 w-6 shrink-0" />
-                      <div className={cn("flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-left ml-2", isCollapsed && "hidden")}>
-                      <p className="text-sm font-medium leading-none">{user.name}</p>
-                    </div>
-                </Button>
+              <Button variant="ghost" className="w-full justify-start p-2">
+                <UserCircle className="h-6 w-6 shrink-0" />
+                <div
+                  className={cn(
+                    'flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-left ml-2',
+                    isCollapsed && 'hidden'
+                  )}
+                >
+                  <p className="text-sm font-medium leading-none">
+                    {user.name}
+                  </p>
+                </div>
+              </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 mb-2 ml-2" align="end" forceMount>
+            <DropdownMenuContent
+              className="w-56 mb-2 ml-2"
+              align="end"
+              forceMount
+            >
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">{user.name}</p>
+                  <p className="text-sm font-medium leading-none">
+                    {user.name}
+                  </p>
                   <p className="text-xs leading-none text-muted-foreground">
                     {user.email}
                   </p>
@@ -141,29 +202,33 @@ function AppLayout({ user, children }: { user: any; children: ReactNode }) {
           <div className="flex items-center gap-2">
             <SidebarTrigger />
             {currentPage && (
-              <h1 className="text-lg font-semibold md:text-xl font-headline text-muted-foreground">{currentPage.label}</h1>
+              <h1 className="text-lg font-semibold md:text-xl font-headline text-muted-foreground">
+                {currentPage.label}
+              </h1>
             )}
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="h-9 w-9" onClick={handleLogout}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9"
+              onClick={handleLogout}
+            >
               <LogOut className="h-4 w-4" />
               <span className="sr-only">Sign Out</span>
             </Button>
             <Button variant="ghost" size="icon" className="h-9 w-9">
-                <Bell className="h-4 w-4" />
-                <span className="sr-only">Toggle notifications</span>
+              <Bell className="h-4 w-4" />
+              <span className="sr-only">Toggle notifications</span>
             </Button>
             <ModeToggle />
           </div>
         </header>
-        <main className="flex-1 p-4 sm:px-6 sm:py-4">
-            {children}
-        </main>
+        <main className="flex-1 p-4 sm:px-6 sm:py-4">{children}</main>
       </SidebarInset>
     </div>
   );
 }
-
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
@@ -176,14 +241,16 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   }, [user, loading, router]);
 
   if (loading || !user) {
-    return <div className="flex h-screen items-center justify-center">Loading...</div>;
+    return (
+      <div className="flex h-screen items-center justify-center">
+        Loading...
+      </div>
+    );
   }
-  
+
   return (
     <SidebarProvider>
-      <AppLayout user={user}>
-        {children}
-      </AppLayout>
+      <AppLayout user={user}>{children}</AppLayout>
     </SidebarProvider>
   );
 }
