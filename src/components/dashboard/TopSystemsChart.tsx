@@ -1,10 +1,22 @@
-
 'use client';
 
 import * as React from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card';
 import { ChartContainer } from '@/components/ui/chart';
-import { RadialBarChart, RadialBar, PolarAngleAxis, Legend, Tooltip, Cell } from 'recharts';
+import {
+  RadialBarChart,
+  RadialBar,
+  PolarAngleAxis,
+  Legend,
+  Tooltip,
+  Cell,
+} from 'recharts';
 
 const chartData = [
   { name: 'Windows', value: 450, fill: 'url(#gradWindows)' },
@@ -45,68 +57,77 @@ export function TopSystemsChart() {
             endAngle={-270}
           >
             <defs>
-                <linearGradient id="gradWindows" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(var(--chart-1))" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="hsl(var(--chart-1))" stopOpacity={0.2}/>
-                </linearGradient>
-                <linearGradient id="gradLinux" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(var(--chart-2))" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="hsl(var(--chart-2))" stopOpacity={0.2}/>
-                </linearGradient>
-                <linearGradient id="gradMacOS" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(var(--chart-3))" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="hsl(var(--chart-3))" stopOpacity={0.2}/>
-                </linearGradient>
-                <linearGradient id="gradOther" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(var(--destructive))" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="hsl(var(--destructive))" stopOpacity={0.2}/>
-                </linearGradient>
+              <linearGradient id="gradWindows" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="hsl(var(--chart-1))" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="hsl(var(--chart-1))" stopOpacity={0.2} />
+              </linearGradient>
+              <linearGradient id="gradLinux" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="hsl(var(--chart-2))" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="hsl(var(--chart-2))" stopOpacity={0.2} />
+              </linearGradient>
+              <linearGradient id="gradMacOS" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="hsl(var(--chart-3))" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="hsl(var(--chart-3))" stopOpacity={0.2} />
+              </linearGradient>
+              <linearGradient id="gradOther" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="hsl(var(--destructive))" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="hsl(var(--destructive))" stopOpacity={0.2} />
+              </linearGradient>
             </defs>
+
             <Tooltip
-                content={({ active, payload }) => {
-                    if (active && payload && payload.length) {
-                    const data = payload[0].payload;
-                    const percentage = ((data.value / totalAlerts) * 100).toFixed(1);
-                    return (
-                        <div className="rounded-lg border bg-background p-2 shadow-sm">
-                        <div className="grid grid-cols-2 gap-2">
-                            <div className="flex flex-col">
-                            <span className="text-[0.70rem] uppercase text-muted-foreground">
-                                {data.name}
-                            </span>
-                            <span className="font-bold text-muted-foreground">
-                                {data.value.toLocaleString()}
-                            </span>
-                            </div>
-                            <div className="flex flex-col">
-                            <span className="text-[0.70rem] uppercase text-muted-foreground">
-                                Percent
-                            </span>
-                            <span className="font-bold">
-                                {percentage}%
-                            </span>
-                            </div>
+              content={({ active, payload }) => {
+                if (active && payload && payload.length) {
+                  const data = payload[0].payload;
+                  const percentage = ((data.value / totalAlerts) * 100).toFixed(1);
+                  return (
+                    <div className="rounded-lg border bg-background p-2 shadow-sm">
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="flex flex-col">
+                          <span className="text-[0.70rem] uppercase text-muted-foreground">
+                            {data.name}
+                          </span>
+                          <span className="font-bold text-muted-foreground">
+                            {data.value.toLocaleString()}
+                          </span>
                         </div>
+                        <div className="flex flex-col">
+                          <span className="text-[0.70rem] uppercase text-muted-foreground">
+                            Percent
+                          </span>
+                          <span className="font-bold">{percentage}%</span>
                         </div>
-                    );
-                    }
-                    return null;
-                }}
+                      </div>
+                    </div>
+                  );
+                }
+                return null;
+              }}
             />
+
             <PolarAngleAxis type="number" domain={[0, totalAlerts]} tick={false} />
+
             <RadialBar
               dataKey="value"
               background
               cornerRadius={10}
+              animationBegin={0}
+              animationDuration={800}
+              isAnimationActive={true}
             >
               {chartData.map((entry) => (
-                <Cell 
-                    key={`cell-${entry.name}`} 
-                    fill={entry.fill}
-                />
+                <Cell key={`cell-${entry.name}`} fill={entry.fill} />
               ))}
             </RadialBar>
-            <Legend iconSize={10} />
+
+            <Legend
+            
+              iconSize={20}
+              layout="vertical"
+              align="right"
+              verticalAlign="middle"
+              formatter={(value) => chartConfig[value]?.label}
+            />
           </RadialBarChart>
         </ChartContainer>
       </CardContent>

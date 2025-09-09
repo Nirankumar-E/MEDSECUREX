@@ -11,7 +11,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { DateRange } from 'react-day-picker';
 import { addDays, format, startOfMonth } from 'date-fns';
 import { Skeleton } from '@/components/ui/skeleton';
-import { motion } from 'framer-motion';
+import { motion, useSpring, useTransform, animate } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import type { Incident } from '@/types';
@@ -21,6 +21,17 @@ interface StatData {
   highSeverityAlerts: number;
   authFailures: number;
   authSuccesses: number;
+}
+
+function AnimatedNumber({ value }: { value: number }) {
+    const spring = useSpring(0, { mass: 0.8, stiffness: 100, damping: 20 });
+    const display = useTransform(spring, (current) => Math.round(current).toLocaleString());
+
+    useEffect(() => {
+        spring.set(value);
+    }, [spring, value]);
+
+    return <motion.span>{display}</motion.span>;
 }
 
 const StatCard = ({ title, value, color, isLoading }: { title: string; value: number | null; color: string; isLoading: boolean }) => (
@@ -34,7 +45,7 @@ const StatCard = ({ title, value, color, isLoading }: { title: string; value: nu
           <Skeleton className="h-9 w-3/4" />
         ) : (
           <div className={`text-3xl font-bold ${color}`}>
-            {value !== null ? value.toLocaleString() : 'Error'}
+            {value !== null ? <AnimatedNumber value={value} /> : 'Error'}
           </div>
         )}
       </CardContent>
@@ -54,6 +65,10 @@ export function StatisticsBar() {
     from: startOfMonth(new Date()),
     to: new Date(),
   });
+  
+  const getRandomValue = (min: number, max: number) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
   useEffect(() => {
     if (!date?.from || !date?.to) return;
@@ -61,16 +76,16 @@ export function StatisticsBar() {
     setIsLoading(true);
     setError(null);
 
-    // Mock data for demo purposes
-    setStats({
-      totalAlerts: 1284,
-      highSeverityAlerts: 73,
-      authFailures: 42,
-      authSuccesses: 958,
-    });
-    
-    // Simulate loading finished
-    const timer = setTimeout(() => setIsLoading(false), 500);
+    const timer = setTimeout(() => {
+        setStats({
+          totalAlerts: getRandomValue(800, 1500),
+          highSeverityAlerts: getRandomValue(50, 150),
+          authFailures: getRandomValue(20, 80),
+          authSuccesses: getRandomValue(700, 1200),
+        });
+        setIsLoading(false);
+    }, 300);
+
 
     return () => {
       clearTimeout(timer);
