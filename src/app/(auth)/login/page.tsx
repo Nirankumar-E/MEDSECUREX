@@ -80,9 +80,9 @@ export default function LoginPage() {
         <CardHeader className="text-center">
           <div className="flex justify-center items-center gap-4 mb-4">
             <Image src="/logo.png" alt="MedSecureX Shield" width={48} height={48} />
-            <Image src="/text.png" alt="MedSecureX" width={180} height={40} />
+            <h1 className="text-4xl font-headline font-bold">MedSecureX</h1>
           </div>
-          <CardTitle className="sr-only text-3xl font-headline">MedSecureX</CardTitle>
+          <CardTitle className="sr-only">MedSecureX</CardTitle>
           <CardDescription>Sign in to access your security dashboard.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
