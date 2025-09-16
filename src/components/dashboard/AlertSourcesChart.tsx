@@ -68,10 +68,9 @@ export function AlertSourcesChart({ className }: { className?: string }) {
                         key={`cell-${entry.source}`} 
                         fill={entry.fill} 
                         style={{
-                            filter: `drop-shadow(0 0 6px ${entry.fill})`,
                             transform: activeIndex === index ? 'scale(1.05)' : 'scale(1)',
                             transformOrigin: 'center center',
-                            transition: 'transform 0.2s ease-in-out, filter 0.2s ease-in-out',
+                            transition: 'transform 0.2s ease-in-out',
                         }}
                     />
                 ))}
