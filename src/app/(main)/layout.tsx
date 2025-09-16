@@ -118,22 +118,23 @@ function AppLayout({ user, children }: { user: any; children: ReactNode }) {
     <div className="flex min-h-screen">
       <Sidebar>
         <SidebarHeader>
-          <Link href="/overview" className="flex items-center gap-2 h-12 w-full justify-start px-3">
+          <Link href="/overview" className="flex items-center gap-2 h-12 justify-center w-full px-3">
              <Image
-                src="/Vector_MedSecureX Logo.svg"
+                src="/logo.png"
                 alt="MedSecureX Logo"
                 width={32}
                 height={32}
                 className="transition-all"
               />
-              <h1
-                className={cn(
-                  'font-bold text-lg origin-left transition-all duration-300',
-                  isCollapsed ? 'scale-x-0 opacity-0' : 'scale-x-100 opacity-100'
-                )}
-              >
-                MedSecureX
-              </h1>
+              <div className={cn("overflow-hidden transition-all duration-300", isCollapsed ? "w-0" : "w-auto")}>
+                <Image
+                    src="/text.png"
+                    alt="MedSecureX"
+                    width={130}
+                    height={28}
+                    className="transition-all"
+                />
+              </div>
           </Link>
         </SidebarHeader>
 
