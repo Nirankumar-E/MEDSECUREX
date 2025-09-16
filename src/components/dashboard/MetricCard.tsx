@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { type LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface MetricCardProps {
   icon: LucideIcon;
@@ -22,14 +23,19 @@ export function MetricCard({ icon: Icon, title, value, description, className, i
 
   return (
     <Card 
-      className={`rounded-2xl shadow-lg hover:shadow-primary/20 hover:shadow-xl hover:border-primary/50 transition-all duration-300 h-full overflow-hidden ${className}`}
+      className={cn(
+        "rounded-2xl shadow-lg transition-all duration-300 h-full overflow-hidden",
+        "border border-[#2fc1a6]/50",
+        "hover:border-[#2fc1a6] hover:shadow-[0_0_15px_2px_#2fc1a640]",
+        className
+      )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="p-6">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-0">
           <CardTitle className="text-sm font-medium">{title}</CardTitle>
-          <Icon className={`h-5 w-5 text-muted-foreground ${iconClassName}`} />
+          <Icon className={cn("h-5 w-5 text-muted-foreground", iconClassName)} />
         </CardHeader>
         <CardContent className="p-0">
           <div className="text-3xl font-bold">{value}</div>

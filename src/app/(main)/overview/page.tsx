@@ -36,7 +36,6 @@ const DetailsList = ({ items }: { items: { label: string, value: string | number
 );
 
 export default function OverviewPage() {
-  const cardGlowStyle = "shadow-[0_0_15px_2px_#2fc1a640] border-[#2fc1a6]";
   const iconGlowStyle = "text-[#2fc1a6]";
 
   return (
@@ -52,7 +51,6 @@ export default function OverviewPage() {
             title="Total Alerts (24h)"
             value="1,284"
             description="+5.2% from yesterday"
-            className={cardGlowStyle}
             iconClassName={iconGlowStyle}
             detailsContent={<DetailsList items={[
               { label: 'Critical', value: 15 },
@@ -68,7 +66,6 @@ export default function OverviewPage() {
             title="High Severity Alerts"
             value="73"
             description="-3.1% from yesterday"
-            className={cardGlowStyle}
             iconClassName={iconGlowStyle}
             detailsContent={<DetailsList items={[
               { label: 'T1110', value: 'Brute Force' },
@@ -83,7 +80,6 @@ export default function OverviewPage() {
             title="Open Incidents"
             value="12"
             description="2 require immediate attention"
-            className={cardGlowStyle}
             iconClassName={iconGlowStyle}
             detailsContent={<DetailsList items={[
               { label: 'Active', value: 3 },
@@ -98,7 +94,6 @@ export default function OverviewPage() {
             title="TTPs Detected"
             value="48"
             description="T1059.001 most common"
-            className={cardGlowStyle}
             iconClassName={iconGlowStyle}
             detailsContent={<DetailsList items={[
               { label: 'T1059.001', value: 48 },
