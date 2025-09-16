@@ -118,7 +118,7 @@ function AppLayout({ user, children }: { user: any; children: ReactNode }) {
     <div className="flex min-h-screen">
       <Sidebar>
         <SidebarHeader>
-          <Link href="/overview" className="flex items-center gap-2 h-12 justify-center w-full px-3">
+           <Link href="/overview" className={cn("flex items-center gap-2 h-12 w-full", isCollapsed ? "justify-center" : "justify-start px-3")}>
              <Image
                 src="/logo.png"
                 alt="MedSecureX Logo"
