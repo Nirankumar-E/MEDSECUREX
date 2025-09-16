@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  allowedDevOrigins: ["https://6000-firebase-medisecurex-niran-1756200560746.cluster-yylgzpipxrar4v4a72liastuqy.cloudworkstations.dev"],
+  allowedDevOrigins: ["https://6000-firebase-afterlogo-1757784212134.cluster-yylgzpipxrar4v4a72liastuqy.cloudworkstations.dev"],
   experimental: {
   },
 };
