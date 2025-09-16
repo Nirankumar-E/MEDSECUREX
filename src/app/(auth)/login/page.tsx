@@ -76,7 +76,7 @@ export default function LoginPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md shadow-2xl rounded-2xl">
+      <Card className="w-full max-w-md shadow-2xl rounded-2xl interactive-glow">
         <CardHeader className="text-center">
           <div className="flex flex-col justify-center items-center gap-2 mb-4">
             <Image src="/logo.png" alt="MedSecureX Shield" width={48} height={48} />

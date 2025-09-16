@@ -73,3 +73,44 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .interactive-glow {
+    @apply transition-all duration-300;
+  }
+  .interactive-glow:hover {
+    box-shadow: 0 0 15px 2px #2fc1a640, 0 0 20px 7px #00c7ff66, 0 0 18px 6px #0066ff4d;
+    -webkit-animation: aura-glow 5s ease-in-out infinite;
+            animation: aura-glow 5s ease-in-out infinite;
+  }
+
+  @-webkit-keyframes aura-glow {
+    0% {
+      box-shadow: 0 0 15px 2px #2fc1a640;
+    }
+    33% {
+      box-shadow: 0 0 20px 7px #00c7ff66;
+    }
+    66% {
+      box-shadow: 0 0 18px 6px #0066ff4d;
+    }
+    100% {
+      box-shadow: 0 0 15px 2px #2fc1a640;
+    }
+  }
+
+  @keyframes aura-glow {
+    0% {
+      box-shadow: 0 0 15px 2px #2fc1a640;
+    }
+    33% {
+      box-shadow: 0 0 20px 7px #00c7ff66;
+    }
+    66% {
+      box-shadow: 0 0 18px 6px #0066ff4d;
+    }
+    100% {
+      box-shadow: 0 0 15px 2px #2fc1a640;
+    }
+  }
+}

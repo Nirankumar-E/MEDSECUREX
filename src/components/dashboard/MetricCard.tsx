@@ -24,9 +24,8 @@ export function MetricCard({ icon: Icon, title, value, description, className, i
   return (
     <Card 
       className={cn(
-        "rounded-2xl shadow-lg transition-all duration-300 h-full overflow-hidden",
-        "border border-[#2fc1a6]/50",
-        "hover:border-[#2fc1a6] hover:shadow-[0_0_15px_2px_#2fc1a640]",
+        "rounded-2xl shadow-lg transition-all duration-300 h-full overflow-hidden interactive-glow",
+        "border border-transparent hover:border-teal-400/50",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
