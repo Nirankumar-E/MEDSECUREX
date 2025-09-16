@@ -154,8 +154,6 @@ export function StatisticsBar() {
     { title: "Authentication Success", value: stats?.authSuccesses ?? 0, color: "text-blue-500", isLoading: isLoading },
   ]
 
-  const doubleBorderButton = "border-2 border-[#2fcbada] shadow-[0_0_0_1px_#2fcbada] rounded-2xl";
-
   return (
     <div className="space-y-4">
       <div className="flex flex-col md:flex-row justify-between items-center gap-4">
@@ -168,8 +166,7 @@ export function StatisticsBar() {
                 <Button
                 variant={'outline'}
                 className={cn(
-                    "w-full sm:w-[280px] justify-start text-left font-normal",
-                    doubleBorderButton
+                    "w-full sm:w-[280px] justify-start text-left font-normal rounded-full"
                 )}
                 >
                 <CalendarIcon className="mr-2 h-4 w-4" />
@@ -197,10 +194,10 @@ export function StatisticsBar() {
                 />
             </PopoverContent>
             </Popover>
-           <Button variant="outline" onClick={handleExploreAgent} className={cn("w-full sm:w-auto", doubleBorderButton)}><Rocket className="mr-2 h-4 w-4"/> Explore Agent</Button>
+           <Button variant="outline" onClick={handleExploreAgent} className={cn("w-full sm:w-auto rounded-full")}><Rocket className="mr-2 h-4 w-4"/> Explore Agent</Button>
            <Button 
                 onClick={handleGenerateReport} 
-                className="w-full sm:w-auto text-white rounded-2xl bg-gradient-to-r from-[#2fcbada] to-blue-600 hover:shadow-[0_0_15px_2px_#2fcbada40] transition-shadow"
+                className="w-full sm:w-auto rounded-full"
             >
                 <FileDown className="mr-2 h-4 w-4"/> Generate Report
             </Button>
