@@ -16,11 +16,11 @@ const chartData = [
 const chartConfig = {
   high: {
     label: 'High Severity',
-    color: 'hsl(var(--destructive))',
+    color: '#00BFFF',
   },
   medium: {
     label: 'Medium Severity',
-    color: 'hsl(var(--primary))',
+    color: '#00FFB2',
   },
   low: {
     label: 'Low Severity',
@@ -41,30 +41,41 @@ export function AlertsOverTimeChart() {
             <CartesianGrid vertical={false} strokeDasharray="3 3" />
             <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} />
             <YAxis tickLine={false} axisLine={false} tickMargin={8} />
-            <ChartTooltip content={<ChartTooltipContent />} />
+            <ChartTooltip content={<ChartTooltipContent 
+                formatter={(value, name) => (
+                    <div className="flex items-center">
+                        <span className="w-2.5 h-2.5 rounded-full mr-2" style={{backgroundColor: chartConfig[name as keyof typeof chartConfig].color}}></span>
+                        <span>{chartConfig[name as keyof typeof chartConfig].label}: {value}</span>
+                    </div>
+                )}
+            />} />
             <defs>
               <linearGradient id="fillHigh" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-high)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-high)" stopOpacity={0.1} />
+                <stop offset="5%" stopColor={chartConfig.high.color} stopOpacity={0.8} />
+                <stop offset="95%" stopColor={chartConfig.high.color} stopOpacity={0.1} />
               </linearGradient>
               <linearGradient id="fillMedium" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-medium)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-medium)" stopOpacity={0.1} />
+                <stop offset="5%" stopColor={chartConfig.medium.color} stopOpacity={0.8} />
+                <stop offset="95%" stopColor={chartConfig.medium.color} stopOpacity={0.1} />
               </linearGradient>
             </defs>
             <Area
               dataKey="medium"
               type="natural"
               fill="url(#fillMedium)"
-              stroke="var(--color-medium)"
+              stroke={chartConfig.medium.color}
               stackId="a"
+              strokeWidth={2}
+              style={{ filter: `drop-shadow(0 0 6px ${chartConfig.medium.color})` } as React.CSSProperties}
             />
             <Area
               dataKey="high"
               type="natural"
               fill="url(#fillHigh)"
-              stroke="var(--color-high)"
+              stroke={chartConfig.high.color}
               stackId="a"
+              strokeWidth={2}
+               style={{ filter: `drop-shadow(0 0 6px ${chartConfig.high.color})` } as React.CSSProperties}
             />
           </AreaChart>
         </ChartContainer>

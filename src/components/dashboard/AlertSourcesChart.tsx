@@ -6,8 +6,8 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLe
 import { PieChart, Pie, Cell } from 'recharts';
 
 const chartData = [
-  { source: 'API Shield', alerts: 65, fill: 'hsl(var(--destructive))' },
-  { source: 'MED Box', alerts: 35, fill: 'hsl(var(--primary))' },
+  { source: 'API Shield', alerts: 65, fill: '#00BFFF' },
+  { source: 'MED Box', alerts: 35, fill: '#00FFB2' },
 ];
 
 const chartConfig = {
@@ -16,11 +16,11 @@ const chartConfig = {
   },
   'API Shield': {
     label: 'API Shield',
-    color: 'hsl(var(--destructive))',
+    color: '#00BFFF',
   },
   'MED Box': {
     label: 'MED Box',
-    color: 'hsl(var(--primary))',
+    color: '#00FFB2',
   },
 };
 
@@ -67,9 +67,10 @@ export function AlertSourcesChart({ className }: { className?: string }) {
                         key={`cell-${entry.source}`} 
                         fill={entry.fill} 
                         style={{
+                            filter: `drop-shadow(0 0 6px ${entry.fill})`,
                             transform: activeIndex === index ? 'scale(1.05)' : 'scale(1)',
                             transformOrigin: 'center center',
-                            transition: 'transform 0.2s ease-in-out',
+                            transition: 'transform 0.2s ease-in-out, filter 0.2s ease-in-out',
                         }}
                     />
                 ))}
