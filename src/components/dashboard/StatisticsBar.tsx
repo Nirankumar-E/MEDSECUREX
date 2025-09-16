@@ -15,6 +15,7 @@ import { motion, useSpring, useTransform, animate } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import type { Incident } from '@/types';
+import { cn } from '@/lib/utils';
 
 interface StatData {
   totalAlerts: number;
@@ -153,6 +154,8 @@ export function StatisticsBar() {
     { title: "Authentication Success", value: stats?.authSuccesses ?? 0, color: "text-blue-500", isLoading: isLoading },
   ]
 
+  const doubleBorderButton = "border-2 border-[#2fcbada] shadow-[0_0_0_1px_#2fcbada] rounded-2xl";
+
   return (
     <div className="space-y-4">
       <div className="flex flex-col md:flex-row justify-between items-center gap-4">
@@ -164,7 +167,10 @@ export function StatisticsBar() {
             <PopoverTrigger asChild>
                 <Button
                 variant={'outline'}
-                className="w-full sm:w-[280px] justify-start text-left font-normal"
+                className={cn(
+                    "w-full sm:w-[280px] justify-start text-left font-normal",
+                    doubleBorderButton
+                )}
                 >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {date?.from ? (
@@ -191,8 +197,13 @@ export function StatisticsBar() {
                 />
             </PopoverContent>
             </Popover>
-           <Button variant="outline" onClick={handleExploreAgent} className="w-full sm:w-auto"><Rocket className="mr-2 h-4 w-4"/> Explore Agent</Button>
-           <Button onClick={handleGenerateReport} className="w-full sm:w-auto"><FileDown className="mr-2 h-4 w-4"/> Generate Report</Button>
+           <Button variant="outline" onClick={handleExploreAgent} className={cn("w-full sm:w-auto", doubleBorderButton)}><Rocket className="mr-2 h-4 w-4"/> Explore Agent</Button>
+           <Button 
+                onClick={handleGenerateReport} 
+                className="w-full sm:w-auto text-white rounded-2xl bg-gradient-to-r from-[#2fcbada] to-blue-600 hover:shadow-[0_0_15px_2px_#2fcbada40] transition-shadow"
+            >
+                <FileDown className="mr-2 h-4 w-4"/> Generate Report
+            </Button>
         </div>
       </div>
       
