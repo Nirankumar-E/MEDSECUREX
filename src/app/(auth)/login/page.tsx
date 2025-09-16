@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth/useAuth';
 import { Button } from '@/components/ui/button';
@@ -10,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ShieldCheck, Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import type { Role } from '@/types';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -77,10 +78,11 @@ export default function LoginPage() {
     <main className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md shadow-2xl rounded-2xl">
         <CardHeader className="text-center">
-          <div className="mx-auto bg-primary text-primary-foreground rounded-full p-3 w-fit mb-4">
-            <ShieldCheck className="h-8 w-8" />
+          <div className="flex justify-center items-center gap-4 mb-4">
+            <Image src="/logo.png" alt="MedSecureX Shield" width={48} height={48} />
+            <Image src="/text.png" alt="MedSecureX" width={180} height={40} />
           </div>
-          <CardTitle className="text-3xl font-headline">MedSecureX</CardTitle>
+          <CardTitle className="sr-only text-3xl font-headline">MedSecureX</CardTitle>
           <CardDescription>Sign in to access your security dashboard.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">

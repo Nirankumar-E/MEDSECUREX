@@ -44,7 +44,7 @@ import { auth } from '@/lib/firebase';
 import { ModeToggle } from '@/components/ui/mode-toggle';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
-import Image from 'next/image'; // ✅ Added import for logo
+import Image from 'next/image';
 
 function NavItem({ item, pathname }: { item: NavItemType; pathname: string }) {
   const { isCollapsed } = useSidebar();
@@ -93,7 +93,7 @@ const navItems: NavItemType[] = [
 
 function AppLayout({ user, children }: { user: any; children: ReactNode }) {
   const { role, setUser, setRole } = useAuth();
-  const { isCollapsed, toggleSidebar } = useSidebar();
+  const { isCollapsed } = useSidebar();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -118,31 +118,23 @@ function AppLayout({ user, children }: { user: any; children: ReactNode }) {
     <div className="flex min-h-screen">
       <Sidebar>
         <SidebarHeader>
-          <Button
-            variant="ghost"
-            onClick={toggleSidebar}
-            className="h-12 w-full justify-start px-2"
-          >
-            <div className="flex items-center gap-2">
-              {/* ✅ Logo instead of ShieldCheck */}
-              <Image
-                  src="/header-100px.png"
-                  alt="MedSecureX Logo"
-                  width={100}
-                  height={100}
-                  priority   // 👈 this preloads it
-/               >
-
+          <Link href="/overview" className="flex items-center gap-2 h-12 w-full justify-start px-3">
+             <Image
+                src="/Vector_MedSecureX Logo.svg"
+                alt="MedSecureX Logo"
+                width={32}
+                height={32}
+                className="transition-all"
+              />
               <h1
                 className={cn(
-                  'font-bold text-lg',
-                  isCollapsed && 'hidden'
+                  'font-bold text-lg origin-left transition-all duration-300',
+                  isCollapsed ? 'scale-x-0 opacity-0' : 'scale-x-100 opacity-100'
                 )}
               >
-                MEDSECUREX
+                MedSecureX
               </h1>
-            </div>
-          </Button>
+          </Link>
         </SidebarHeader>
 
         <SidebarContent>
