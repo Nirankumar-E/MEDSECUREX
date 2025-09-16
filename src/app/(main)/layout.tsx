@@ -120,7 +120,7 @@ function AppLayout({ user, children }: { user: any; children: ReactNode }) {
       <Sidebar>
         <SidebarHeader>
            <Link href="/overview" className={cn("flex items-center gap-2 h-12", isCollapsed ? "justify-center" : "justify-start px-3")}>
-             <Shield className="h-8 w-8 text-primary shrink-0" />
+             <Image src="/logo.png" alt="MedSecureX Logo" width={32} height={32} className="h-8 w-8 text-primary shrink-0" />
               <div className={cn("overflow-hidden transition-all duration-300", isCollapsed ? "w-0" : "w-auto")}>
                 <span className="text-xl font-bold font-headline whitespace-nowrap">
                     MedSecureX
