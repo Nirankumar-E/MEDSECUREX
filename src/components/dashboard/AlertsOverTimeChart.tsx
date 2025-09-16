@@ -67,7 +67,6 @@ export function AlertsOverTimeChart() {
               stroke={chartConfig.medium.color}
               stackId="a"
               strokeWidth={2}
-              style={{ filter: `drop-shadow(0 0 6px ${chartConfig.medium.color})` } as React.CSSProperties}
             />
             <Area
               dataKey="high"
@@ -76,7 +75,6 @@ export function AlertsOverTimeChart() {
               stroke={chartConfig.high.color}
               stackId="a"
               strokeWidth={2}
-               style={{ filter: `drop-shadow(0 0 6px ${chartConfig.high.color})` } as React.CSSProperties}
             />
           </AreaChart>
         </ChartContainer>
