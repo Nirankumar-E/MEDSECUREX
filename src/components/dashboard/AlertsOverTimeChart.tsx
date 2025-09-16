@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,11 +16,11 @@ const chartData = [
 
 const chartConfig = {
   high: {
-    label: 'High Severity',
+    label: 'API Shield',
     color: '#00BFFF',
   },
   medium: {
-    label: 'Medium Severity',
+    label: 'MED Box',
     color: '#00FFB2',
   },
   low: {
@@ -33,7 +34,7 @@ export function AlertsOverTimeChart() {
     <Card className="rounded-2xl shadow-lg">
       <CardHeader>
         <CardTitle>Alerts Over Time</CardTitle>
-        <CardDescription>Total alerts by severity over the last 6 months</CardDescription>
+        <CardDescription>Total alerts by source over the last 6 months</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[300px] w-full">
