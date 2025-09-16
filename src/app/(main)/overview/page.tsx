@@ -36,6 +36,9 @@ const DetailsList = ({ items }: { items: { label: string, value: string | number
 );
 
 export default function OverviewPage() {
+  const cardGlowStyle = "shadow-[0_0_15px_2px_#2fc1a640] border-[#2fc1a6]";
+  const iconGlowStyle = "text-[#2fc1a6]";
+
   return (
     <div className="flex-1 space-y-6">
       <div>
@@ -49,7 +52,8 @@ export default function OverviewPage() {
             title="Total Alerts (24h)"
             value="1,284"
             description="+5.2% from yesterday"
-            iconClassName='text-orange-500'
+            className={cardGlowStyle}
+            iconClassName={iconGlowStyle}
             detailsContent={<DetailsList items={[
               { label: 'Critical', value: 15 },
               { label: 'High', value: 73 },
@@ -64,7 +68,8 @@ export default function OverviewPage() {
             title="High Severity Alerts"
             value="73"
             description="-3.1% from yesterday"
-            iconClassName='text-red-500'
+            className={cardGlowStyle}
+            iconClassName={iconGlowStyle}
             detailsContent={<DetailsList items={[
               { label: 'T1110', value: 'Brute Force' },
               { label: 'T1071', value: 'Web Protocols' },
@@ -78,7 +83,8 @@ export default function OverviewPage() {
             title="Open Incidents"
             value="12"
             description="2 require immediate attention"
-            iconClassName='text-purple-500'
+            className={cardGlowStyle}
+            iconClassName={iconGlowStyle}
             detailsContent={<DetailsList items={[
               { label: 'Active', value: 3 },
               { label: 'Investigating', value: 9 },
@@ -92,7 +98,8 @@ export default function OverviewPage() {
             title="TTPs Detected"
             value="48"
             description="T1059.001 most common"
-            iconClassName='text-blue-500'
+            className={cardGlowStyle}
+            iconClassName={iconGlowStyle}
             detailsContent={<DetailsList items={[
               { label: 'T1059.001', value: 48 },
               { label: 'T1071.001', value: 32 },
