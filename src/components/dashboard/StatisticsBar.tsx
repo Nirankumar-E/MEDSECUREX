@@ -166,7 +166,7 @@ export function StatisticsBar() {
                 <Button
                 variant={'outline'}
                 className={cn(
-                    "w-full sm:w-[280px] justify-start text-left font-normal rounded-full"
+                    "w-full sm:w-[280px] justify-start text-left font-normal rounded-full border-[#2FCBADA] hover:bg-white/10"
                 )}
                 >
                 <CalendarIcon className="mr-2 h-4 w-4" />
@@ -194,10 +194,10 @@ export function StatisticsBar() {
                 />
             </PopoverContent>
             </Popover>
-           <Button variant="outline" onClick={handleExploreAgent} className={cn("w-full sm:w-auto rounded-full")}><Rocket className="mr-2 h-4 w-4"/> Explore Agent</Button>
+           <Button variant="outline" onClick={handleExploreAgent} className={cn("w-full sm:w-auto rounded-full border-[#2FCBADA] hover:bg-white/10")}><Rocket className="mr-2 h-4 w-4"/> Explore Agent</Button>
            <Button 
                 onClick={handleGenerateReport} 
-                className="w-full sm:w-auto rounded-full"
+                className={cn("w-full sm:w-auto rounded-full bg-white text-black hover:bg-gray-200")}
             >
                 <FileDown className="mr-2 h-4 w-4"/> Generate Report
             </Button>
