@@ -118,7 +118,7 @@ export default function OverviewPage() {
             <AlertsOverTimeChart />
         </div>
         <div className="col-span-12 lg:col-span-3">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 h-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 h-full mt-6 md:mt-0">
                 <AlertSourcesChart />
                 <MitreAttackChart />
             </div>
