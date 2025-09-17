@@ -121,9 +121,9 @@ function AppLayout({ user, children }: { user: any; children: ReactNode }) {
       <Sidebar>
         <SidebarHeader>
            <Link href="/overview" className={cn("flex items-center gap-2 h-14 interactive-glow", isCollapsed ? "justify-center px-2" : "justify-start px-3")}>
-             <Image src="/logo.png" alt="MedSecureX Logo" width={32} height={32} className="h-8 w-8 text-primary shrink-0" />
+             <Image src="/logo.png" alt="MedSecureX Logo" width={40} height={40} className="h-10 w-10 text-primary shrink-0" />
               <div className={cn("overflow-hidden transition-all duration-300", isCollapsed ? "w-0" : "w-auto")}>
-                <span className="text-xl font-bold bg-gradient-to-r from-teal-400 via-blue-600 to-teal-400 bg-clip-text text-transparent whitespace-nowrap">
+                <span className="text-2xl font-bold bg-gradient-to-r from-teal-400 via-blue-600 to-teal-400 bg-clip-text text-transparent whitespace-nowrap">
                     MedSecureX
                 </span>
               </div>
