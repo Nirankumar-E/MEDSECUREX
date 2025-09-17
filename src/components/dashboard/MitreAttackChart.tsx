@@ -63,7 +63,7 @@ export function MitreAttackChart({ className }: { className?: string }) {
 
   return (
     <Card className={`rounded-2xl shadow-lg h-full flex flex-col overflow-hidden ${className}`}>
-      <div className="relative z-10 flex flex-col h-full">
+      <div className="relative flex flex-col h-full">
         <CardHeader className="items-center pb-2">
           <CardTitle>MITRE ATT&amp;CK Techniques</CardTitle>
         </CardHeader>
