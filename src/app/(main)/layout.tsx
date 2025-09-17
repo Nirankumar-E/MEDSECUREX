@@ -209,7 +209,7 @@ function AppLayout({ user, children }: { user: any; children: ReactNode }) {
             <ModeToggle />
           </div>
         </header>
-        <main className="flex-1 p-4 sm:px-6 sm:py-4">{children}</main>
+        <main className="flex-1 p-6">{children}</main>
       </SidebarInset>
     </div>
   );
