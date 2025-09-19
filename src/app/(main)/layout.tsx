@@ -68,9 +68,9 @@ function NavItem({ item, pathname }: { item: NavItemType; pathname: string }) {
   
   const linkClasses = cn(
     "flex items-center gap-3 rounded-md px-3 py-2 text-muted-foreground transition-colors duration-200",
-    "hover:bg-blue-900/20 hover:text-blue-400 hover:[text-shadow:0_0_8px_hsl(var(--primary)/0.5)]",
-    "focus-visible:bg-blue-900/20 focus-visible:text-blue-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-    isActive && "bg-blue-900/30 text-blue-400 [text-shadow:0_0_8px_hsl(var(--primary)/0.5)]",
+    "hover:bg-accent hover:text-accent-foreground",
+    "focus-visible:bg-accent focus-visible:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+    isActive && "bg-accent text-accent-foreground",
     isCollapsed && "justify-center"
   );
 
@@ -142,7 +142,7 @@ function AppLayout({ user, children }: { user: any; children: ReactNode }) {
     <div className="flex min-h-screen">
       <Sidebar>
         <SidebarHeader>
-           <Link href="/overview" className={cn("flex items-center gap-2 h-14 px-3", isCollapsed ? 'justify-center' : 'justify-start')}>
+           <Link href="/overview" className={cn("flex items-center gap-2 h-14 px-3 justify-center")}>
              <Image src="/logo.png" alt="MedSecureX Logo" width={32} height={32} className="h-8 w-8 text-primary shrink-0" />
               <div className={cn("overflow-hidden transition-all duration-300", isCollapsed ? "w-0" : "w-auto")}>
                 <span className="font-bold bg-gradient-to-r from-teal-400 via-blue-600 to-teal-400 bg-clip-text text-transparent whitespace-nowrap text-xl">
