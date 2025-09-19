@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, type ReactNode } from 'react';
@@ -11,11 +12,10 @@ import {
   SidebarFooter,
   SidebarMenu,
   SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarInset,
   SidebarTrigger,
   SidebarHeader,
   useSidebar,
+  SidebarInset,
 } from '@/components/ui/sidebar';
 import {
   Bell,
@@ -30,7 +30,6 @@ import {
   BarChart,
   Rocket,
   UserCircle,
-  Shield,
 } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -46,30 +45,52 @@ import { ModeToggle } from '@/components/ui/mode-toggle';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 function NavItem({ item, pathname }: { item: NavItemType; pathname: string }) {
   const { isCollapsed } = useSidebar();
+  const isActive = pathname.startsWith(item.href);
+
+  const linkContent = (
+    <>
+      <item.icon className="h-4 w-4 shrink-0" />
+      <span
+        className={cn(
+          'overflow-hidden text-ellipsis whitespace-nowrap',
+          isCollapsed && 'hidden'
+        )}
+      >
+        {item.label}
+      </span>
+    </>
+  );
+  
+  const linkClasses = cn(
+    "flex items-center gap-3 rounded-md px-3 py-2 text-muted-foreground transition-colors duration-200",
+    "hover:bg-accent hover:text-blue-400 hover:[text-shadow:0_0_8px_hsl(var(--primary)/0.5)]",
+    "focus-visible:bg-accent focus-visible:text-blue-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+    isActive && "bg-accent text-blue-400 [text-shadow:0_0_8px_hsl(var(--primary)/0.5)]",
+    isCollapsed && "justify-center"
+  );
 
   return (
-    <SidebarMenuItem key={item.href}>
-      <SidebarMenuButton
-        asChild
-        isActive={pathname.startsWith(item.href)}
-        tooltip={item.label}
-        className="interactive-glow"
-      >
-        <Link href={item.href}>
-          <item.icon className="h-5 w-5 shrink-0" />
-          <span
-            className={cn(
-              'overflow-hidden text-ellipsis whitespace-nowrap',
-              isCollapsed && 'hidden'
-            )}
-          >
+    <SidebarMenuItem>
+      {isCollapsed ? (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Link href={item.href} className={linkClasses}>
+              {linkContent}
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent side="right" sideOffset={5}>
             {item.label}
-          </span>
+          </TooltipContent>
+        </Tooltip>
+      ) : (
+        <Link href={item.href} className={linkClasses}>
+          {linkContent}
         </Link>
-      </SidebarMenuButton>
+      )}
     </SidebarMenuItem>
   );
 }
@@ -121,9 +142,9 @@ function AppLayout({ user, children }: { user: any; children: ReactNode }) {
       <Sidebar>
         <SidebarHeader>
            <Link href="/overview" className={cn("flex items-center justify-center gap-2 h-14 px-3")}>
-             <Image src="/logo.png" alt="MedSecureX Logo" width={40} height={40} className="h-10 w-10 text-primary shrink-0" />
+             <Image src="/logo.png" alt="MedSecureX Logo" width={32} height={32} className="h-8 w-8 text-primary shrink-0" />
               <div className={cn("overflow-hidden transition-all duration-300", isCollapsed ? "w-0" : "w-auto")}>
-                <span className="text-2xl font-bold bg-gradient-to-r from-teal-400 via-blue-600 to-teal-400 bg-clip-text text-transparent whitespace-nowrap">
+                <span className="font-bold bg-gradient-to-r from-teal-400 via-blue-600 to-teal-400 bg-clip-text text-transparent whitespace-nowrap text-xl">
                     MedSecureX
                 </span>
               </div>
