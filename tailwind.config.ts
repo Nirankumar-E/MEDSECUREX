@@ -65,6 +65,8 @@ export default {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))',
         },
+        'title-primary': 'hsl(var(--title-primary))',
+        'title-secondary': 'hsl(var(--title-secondary))',
       },
       borderRadius: {
         '2xl': 'calc(var(--radius) + 4px)',

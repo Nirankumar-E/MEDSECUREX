@@ -36,6 +36,9 @@ body {
     
     --sidebar-width-expanded: 240px;
     --sidebar-width-collapsed: 72px;
+
+    --title-primary: 223 82% 25%; /* #0B2C79 */
+    --title-secondary: 225 66% 24%; /* #152E64 */
   }
   .dark {
     --background: 220 18% 11%;
@@ -62,6 +65,8 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --title-primary: 188 78% 52%; /* #2FCBDA */
+    --title-secondary: 174 65% 47%; /* #2FC1A6 */
   }
 }
 
@@ -71,6 +76,12 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+  h1 {
+    @apply text-title-primary font-bold transition-colors duration-200;
+  }
+  h1:hover {
+    color: hsl(var(--title-secondary));
   }
 }
 
