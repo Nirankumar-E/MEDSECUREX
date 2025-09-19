@@ -17,11 +17,11 @@ const chartData = [
 const chartConfig = {
   high: {
     label: 'API Shield',
-    color: '#00BFFF',
+    color: 'hsl(var(--chart-1))',
   },
   medium: {
     label: 'MED Box',
-    color: '#00FFB2',
+    color: 'hsl(var(--chart-2))',
   },
   low: {
     label: 'Low Severity',
@@ -52,19 +52,19 @@ export function AlertsOverTimeChart() {
             />} />
             <defs>
               <linearGradient id="fillHigh" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={chartConfig.high.color} stopOpacity={0.8} />
-                <stop offset="95%" stopColor={chartConfig.high.color} stopOpacity={0.1} />
+                <stop offset="5%" stopColor="var(--color-high)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-high)" stopOpacity={0.1} />
               </linearGradient>
               <linearGradient id="fillMedium" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={chartConfig.medium.color} stopOpacity={0.8} />
-                <stop offset="95%" stopColor={chartConfig.medium.color} stopOpacity={0.1} />
+                <stop offset="5%" stopColor="var(--color-medium)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-medium)" stopOpacity={0.1} />
               </linearGradient>
             </defs>
             <Area
               dataKey="medium"
               type="natural"
               fill="url(#fillMedium)"
-              stroke={chartConfig.medium.color}
+              stroke="var(--color-medium)"
               stackId="a"
               strokeWidth={2}
             />
@@ -72,7 +72,7 @@ export function AlertsOverTimeChart() {
               dataKey="high"
               type="natural"
               fill="url(#fillHigh)"
-              stroke={chartConfig.high.color}
+              stroke="var(--color-high)"
               stackId="a"
               strokeWidth={2}
             />
