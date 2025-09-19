@@ -6,26 +6,22 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
 const chartData = [
-  { month: 'January', high: 186, medium: 80, low: 20 },
-  { month: 'February', high: 305, medium: 200, low: 40 },
-  { month: 'March', high: 237, medium: 120, low: 30 },
-  { month: 'April', high: 73, medium: 190, low: 10 },
-  { month: 'May', high: 209, medium: 130, low: 25 },
-  { month: 'June', high: 214, medium: 140, low: 35 },
+  { month: 'January', apiShield: 186, medBox: 80 },
+  { month: 'February', apiShield: 305, medBox: 200 },
+  { month: 'March', apiShield: 237, medBox: 120 },
+  { month: 'April', apiShield: 73, medBox: 190 },
+  { month: 'May', apiShield: 209, medBox: 130 },
+  { month: 'June', apiShield: 214, medBox: 140 },
 ];
 
 const chartConfig = {
-  high: {
+  apiShield: {
     label: 'API Shield',
     color: 'hsl(var(--chart-1))',
   },
-  medium: {
+  medBox: {
     label: 'MED Box',
     color: 'hsl(var(--chart-2))',
-  },
-  low: {
-    label: 'Low Severity',
-    color: 'hsl(var(--accent))',
   },
 };
 
@@ -51,13 +47,13 @@ export function AlertsOverTimeChart() {
                 )}
             />} />
             <defs>
-              <linearGradient id="fillHigh" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-high)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-high)" stopOpacity={0.1} />
+              <linearGradient id="fillApiShield" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-apiShield)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-apiShield)" stopOpacity={0.1} />
               </linearGradient>
-              <linearGradient id="fillMedium" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-medium)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-medium)" stopOpacity={0.1} />
+              <linearGradient id="fillMedBox" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-medBox)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-medBox)" stopOpacity={0.1} />
               </linearGradient>
               <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
                   <feDropShadow dx="0" dy="0" stdDeviation="4" floodColor="hsl(var(--chart-1))" />
@@ -67,19 +63,19 @@ export function AlertsOverTimeChart() {
               </filter>
             </defs>
             <Area
-              dataKey="medium"
+              dataKey="medBox"
               type="natural"
-              fill="url(#fillMedium)"
-              stroke="var(--color-medium)"
+              fill="url(#fillMedBox)"
+              stroke="var(--color-medBox)"
               stackId="a"
               strokeWidth={2}
               filter="url(#glow2)"
             />
             <Area
-              dataKey="high"
+              dataKey="apiShield"
               type="natural"
-              fill="url(#fillHigh)"
-              stroke="var(--color-high)"
+              fill="url(#fillApiShield)"
+              stroke="var(--color-apiShield)"
               stackId="a"
               strokeWidth={2}
               filter="url(#glow)"
