@@ -59,6 +59,12 @@ export function AlertsOverTimeChart() {
                 <stop offset="5%" stopColor="var(--color-medium)" stopOpacity={0.8} />
                 <stop offset="95%" stopColor="var(--color-medium)" stopOpacity={0.1} />
               </linearGradient>
+              <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feDropShadow dx="0" dy="0" stdDeviation="4" floodColor="hsl(var(--chart-1))" />
+              </filter>
+              <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+                  <feDropShadow dx="0" dy="0" stdDeviation="4" floodColor="hsl(var(--chart-2))" />
+              </filter>
             </defs>
             <Area
               dataKey="medium"
@@ -67,6 +73,7 @@ export function AlertsOverTimeChart() {
               stroke="var(--color-medium)"
               stackId="a"
               strokeWidth={2}
+              filter="url(#glow2)"
             />
             <Area
               dataKey="high"
@@ -75,6 +82,7 @@ export function AlertsOverTimeChart() {
               stroke="var(--color-high)"
               stackId="a"
               strokeWidth={2}
+              filter="url(#glow)"
             />
           </AreaChart>
         </ChartContainer>
