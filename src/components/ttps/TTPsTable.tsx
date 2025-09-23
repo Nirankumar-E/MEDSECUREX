@@ -34,10 +34,18 @@ const tacticColors: Record<string, string> = {
   'Discovery': 'bg-cyan-500/20 text-cyan-500 border-cyan-500/30',
   'Lateral Movement': 'bg-lime-500/20 text-lime-500 border-lime-500/30',
   'Exfiltration': 'bg-fuchsia-500/20 text-fuchsia-500 border-fuchsia-500/30',
+  'Malware': 'bg-rose-500/20 text-rose-500 border-rose-500/30',
+  'Exploit': 'bg-amber-500/20 text-amber-500 border-amber-500/30',
+  'Phishing': 'bg-violet-500/20 text-violet-500 border-violet-500/30',
+  'Brute Force': 'bg-red-700/20 text-red-700 border-red-700/30'
 };
 
 
-export function TTPsTable() {
+interface TTPsTableProps {
+    selectedTactic: string | null;
+}
+
+export function TTPsTable({ selectedTactic }: TTPsTableProps) {
   const [ttps, setTtps] = useState<TTP[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -50,7 +58,7 @@ export function TTPsTable() {
         const tactic = row.AttackType || row.Attack_Type || row.Tactic || 'N/A';
         return {
             id: row.MITRE || `TTP-${index}`,
-            name: row.Label || row.Name || 'N/A',
+            name: row.Label || row.Label || row.name || row.Name || 'N/A',
             tactic: tactic,
             description: row.Description || 'No description available.',
             source: row.Signature || 'N/A',
@@ -64,11 +72,13 @@ export function TTPsTable() {
   }, []);
 
   const filteredAndSortedTTPs = useMemo(() => {
-    let filtered = ttps.filter(ttp =>
-      ttp.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ttp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ttp.tactic.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    let filtered = ttps.filter(ttp => {
+        const searchMatch = ttp.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            ttp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            ttp.tactic.toLowerCase().includes(searchTerm.toLowerCase());
+        const tacticMatch = selectedTactic ? ttp.tactic === selectedTactic : true;
+        return searchMatch && tacticMatch;
+    });
 
     if (sortConfig !== null) {
       filtered.sort((a, b) => {
@@ -85,7 +95,7 @@ export function TTPsTable() {
     }
     
     return filtered;
-  }, [ttps, searchTerm, sortConfig]);
+  }, [ttps, searchTerm, sortConfig, selectedTactic]);
 
   const requestSort = (key: keyof TTP) => {
     let direction: 'ascending' | 'descending' = 'ascending';
@@ -104,7 +114,7 @@ export function TTPsTable() {
       <Card className="rounded-2xl shadow-lg">
         <CardHeader>
           <CardTitle className="text-center">TTPs Detected</CardTitle>
-          <CardDescription className="text-center">MITRE ATT&CK techniques observed in your environment.</CardDescription>
+          <CardDescription className="text-center">MITRE ATT&amp;CK techniques observed in your environment.</CardDescription>
         </CardHeader>
         <div className="py-4 px-6">
           <div className="relative w-full max-w-md mx-auto">

@@ -39,6 +39,13 @@ body {
 
     --title-primary: 223 82% 25%; /* #0B2C79 */
     --title-secondary: 225 66% 24%; /* #152E64 */
+
+    --bubble-1: 164 70% 45%; /* Teal Green: #20C997 */
+    --bubble-2: 188 70% 50%; /* Aqua Blue: #4DD0E1 */
+    --bubble-3: 223 100% 16%; /* Navy Blue: #001F54 */
+    --bubble-4: 232 50% 50%; /* Dark Indigo: #3F51B5 */
+    --bubble-5: 200 80% 55%; /* A lighter blue */
+    --bubble-6: 260 70% 60%; /* A lavender */
   }
   .dark {
     --background: 0 0% 0%;
@@ -67,6 +74,13 @@ body {
     --chart-5: 340 75% 55%;
     --title-primary: 188 78% 52%; /* #2FCBDA */
     --title-secondary: 174 65% 47%; /* #2FC1A6 */
+
+    --bubble-1: 164 70% 45%;
+    --bubble-2: 188 70% 50%;
+    --bubble-3: 223 100% 25%; /* Brighter navy for dark mode */
+    --bubble-4: 232 50% 60%; /* Lighter indigo for dark mode */
+    --bubble-5: 200 80% 55%;
+    --bubble-6: 260 70% 60%;
   }
 }
 
