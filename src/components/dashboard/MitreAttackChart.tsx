@@ -1,57 +1,78 @@
+
 'use client';
 
 import * as React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip } from '@/components/ui/chart';
 import { PieChart, Pie, Cell } from 'recharts';
 import { motion } from 'framer-motion';
+import ttpsData from '@/components/dashboard/mitre_attack_dataset.json';
 
-// Chart Data: Add or update your MITRE ATT&CK techniques here.
-// The 'technique' is the label, 'alerts' is the value. The 'fill' will reference a gradient ID.
-const chartData = [
-  { technique: 'Password Guessing', alerts: 275, fill: 'url(#gradientGreen)' },
-  { technique: 'SSH', alerts: 200, fill: 'url(#gradientBlue)' },
-  { technique: 'Brute Force', alerts: 187, fill: 'url(#gradientRed)' },
-  { technique: 'Valid Accounts', alerts: 173, fill: 'url(#gradientPurple)' },
-  { technique: 'System Binary Proxy', alerts: 90, fill: 'url(#gradientOrange)' },
-];
-
-// Chart Configuration: Maps data keys to labels and colors for the chart.
-const chartConfig = {
+const initialChartConfig = {
   alerts: {
     label: 'Alerts',
   },
-  'Password Guessing': {
-    label: 'Password Guessing',
-    color: 'hsl(120 70% 40%)',
-  },
-  'SSH': {
-    label: 'SSH',
-    color: 'hsl(220 70% 50%)',
-  },
-  'Brute Force': {
-    label: 'Brute Force',
-    color: 'hsl(var(--destructive))',
-  },
-  'Valid Accounts': {
-    label: 'Valid Accounts',
-    color: 'hsl(280 65% 60%)',
-  },
-  'System Binary Proxy': {
-    label: 'System Binary Proxy',
-    color: 'hsl(30 80% 55%)',
-  },
 };
 
+// Define a consistent color palette for the chart
+const COLORS = [
+  'hsl(var(--chart-1))',
+  'hsl(var(--chart-2))',
+  'hsl(var(--chart-3))',
+  'hsl(var(--chart-4))',
+  'hsl(var(--chart-5))',
+];
+
 export function MitreAttackChart({ className }: { className?: string }) {
+  const [chartData, setChartData] = React.useState<{ name: string; value: number; fill: string; }[]>([]);
+  const [chartConfig, setChartConfig] = React.useState(initialChartConfig);
+  const [totalIncidents, setTotalIncidents] = React.useState(0);
   const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
 
-  // Calculate the total number of incidents from the chart data.
-  // Replace this with your actual total or keep it dynamic
-  const totalAlerts = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.alerts, 0); 
+  React.useEffect(() => {
+    // Process the TTPs data to get counts for each attack type
+    const tacticCounts: { [key: string]: number } = {};
+    ttpsData.forEach((item: any) => {
+      const tactic = item.AttackType;
+      if (tactic) {
+        tacticCounts[tactic] = (tacticCounts[tactic] || 0) + 1;
+      }
+    });
+    
+    const total = Object.values(tacticCounts).reduce((sum, count) => sum + count, 0);
+    setTotalIncidents(total);
+
+    const sortedTactics = Object.entries(tacticCounts)
+      .sort(([, a], [, b]) => b - a);
+
+    const top4 = sortedTactics.slice(0, 4);
+    const otherCount = sortedTactics.slice(4).reduce((sum, [, count]) => sum + count, 0);
+
+    const processedData = top4.map(([name, value], index) => ({
+      name,
+      value,
+      fill: COLORS[index % COLORS.length],
+    }));
+
+    if (otherCount > 0) {
+      processedData.push({
+        name: 'Others',
+        value: otherCount,
+        fill: COLORS[4 % COLORS.length],
+      });
+    }
+
+    const newConfig = processedData.reduce((acc, item) => {
+        acc[item.name] = { label: item.name, color: item.fill };
+        return acc;
+    }, { ...initialChartConfig });
+
+    setChartData(processedData);
+    // @ts-ignore
+    setChartConfig(newConfig);
+
   }, []);
-  
+
   const onPieEnter = (_: any, index: number) => {
     setActiveIndex(index);
   };
@@ -66,6 +87,7 @@ export function MitreAttackChart({ className }: { className?: string }) {
       <div className="relative flex flex-col h-full">
         <CardHeader className="items-center pb-2">
           <CardTitle>MITRE ATT&amp;CK Techniques</CardTitle>
+          <CardDescription>Top 4 observed techniques</CardDescription>
         </CardHeader>
         <CardContent className="flex-1 flex flex-col items-center justify-center p-4 pt-6">
           <div
@@ -76,39 +98,16 @@ export function MitreAttackChart({ className }: { className?: string }) {
               className="mx-auto aspect-square h-full"
             >
               <PieChart>
-                <defs>
-                    <linearGradient id="gradientGreen" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="hsl(120 80% 50%)" stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor="hsl(120 70% 40%)" stopOpacity={1}/>
-                    </linearGradient>
-                    <linearGradient id="gradientBlue" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="hsl(220 80% 60%)" stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor="hsl(220 70% 50%)" stopOpacity={1}/>
-                    </linearGradient>
-                    <linearGradient id="gradientRed" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="hsl(0 90% 60%)" stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor="hsl(var(--destructive))" stopOpacity={1}/>
-                    </linearGradient>
-                    <linearGradient id="gradientPurple" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="hsl(280 75% 70%)" stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor="hsl(280 65% 60%)" stopOpacity={1}/>
-                    </linearGradient>
-                    <linearGradient id="gradientOrange" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="hsl(30 90% 65%)" stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor="hsl(30 80% 55%)" stopOpacity={1}/>
-                    </linearGradient>
-                </defs>
                 <ChartTooltip
                   cursor={false}
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
                       const data = payload[0].payload;
-                      const chartTotal = chartData.reduce((acc, curr) => acc + curr.alerts, 0);
-                      const percentage = ((data.alerts / chartTotal) * 100).toFixed(1);
+                      const percentage = ((data.value / totalIncidents) * 100).toFixed(1);
                       return (
                         <div className="rounded-lg border bg-background/80 backdrop-blur-sm p-2 shadow-sm text-xs">
-                          <p className="font-bold">{data.technique}</p>
-                          <p>Count: {data.alerts.toLocaleString()}</p>
+                          <p className="font-bold">{data.name}</p>
+                          <p>Count: {data.value.toLocaleString()}</p>
                           <p>Percentage: {percentage}%</p>
                         </div>
                       );
@@ -118,8 +117,8 @@ export function MitreAttackChart({ className }: { className?: string }) {
                 />
                 <Pie
                   data={chartData}
-                  dataKey="alerts"
-                  nameKey="technique"
+                  dataKey="value"
+                  nameKey="name"
                   innerRadius="60%"
                   strokeWidth={2}
                   stroke="hsl(var(--card))"
@@ -129,7 +128,7 @@ export function MitreAttackChart({ className }: { className?: string }) {
                 >
                   {chartData.map((entry, index) => (
                     <Cell 
-                        key={`cell-${entry.technique}`} 
+                        key={`cell-${entry.name}`} 
                         fill={entry.fill}
                         style={{
                             transform: activeIndex === index ? 'scale(1.05)' : 'scale(1)',
@@ -147,18 +146,18 @@ export function MitreAttackChart({ className }: { className?: string }) {
               animate={{ opacity: activeIndex !== null ? 0 : 1 }}
               transition={{ duration: 0.2 }}
             >
-              <span className="text-3xl font-bold">{totalAlerts.toLocaleString()}</span>
+              <span className="text-3xl font-bold">{totalIncidents.toLocaleString()}</span>
               <span className="text-xs text-muted-foreground">Total Incidents</span>
             </motion.div>
           </div>
           <div className="w-full mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs">
             {chartData.map((entry) => (
-              <div key={entry.technique} className="flex items-center gap-2">
+              <div key={entry.name} className="flex items-center gap-2">
                 <div
                   className="h-2.5 w-2.5 rounded-full"
-                  style={{ backgroundColor: chartConfig[entry.technique as keyof typeof chartConfig]?.color }}
+                  style={{ backgroundColor: entry.fill }}
                 />
-                <span>{entry.technique}</span>
+                <span>{entry.name}</span>
               </div>
             ))}
           </div>
