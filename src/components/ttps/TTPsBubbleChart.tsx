@@ -109,7 +109,7 @@ export function TTPsBubbleChart({ onBubbleClick }: BubbleChartProps) {
                     margin={{
                         top: 20,
                         right: 20,
-                        bottom: 20,
+                        bottom: 40,
                         left: 20,
                     }}
                     >
@@ -147,7 +147,7 @@ export function TTPsBubbleChart({ onBubbleClick }: BubbleChartProps) {
                             return null;
                         }}
                     />
-                    <Legend />
+                    <Legend layout="horizontal" verticalAlign="bottom" align="center" wrapperStyle={{ bottom: 0, left: 20 }}/>
                     {tactics.map(tactic => (
                         <Scatter 
                             key={tactic} 
