@@ -109,6 +109,15 @@ body {
             animation: aura-glow 5s ease-in-out infinite;
   }
 
+  .interactive-glow-0 {
+    @apply transition-all duration-300;
+  }
+  .interactive-glow-0:hover {
+    box-shadow: none;
+    -webkit-animation: none;
+            animation: none;
+  }
+
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;

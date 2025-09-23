@@ -164,7 +164,7 @@ export function TTPsBubbleChart({ onBubbleClick }: BubbleChartProps) {
             </ResponsiveContainer>
         </ChartContainer>
         <div className="text-center mt-4">
-            <Button variant="link" onClick={() => onBubbleClick(null)}>Reset Filter</Button>
+            <Button variant="link" onClick={() => onBubbleClick(null)} className="interactive-glow-0">Reset Filter</Button>
         </div>
       </CardContent>
     </Card>
