@@ -8,6 +8,7 @@ import { TTP } from '@/types';
 import ttpsData from '@/components/dashboard/mitre_attack_dataset.json';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
 
 interface BubbleChartProps {
   onBubbleClick: (tactic: string | null) => void;
