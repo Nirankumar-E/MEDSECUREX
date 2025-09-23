@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -17,17 +17,9 @@ import { ArrowUpDown, Search, X, ShieldCheck } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 import type { TTP } from '@/types';
 import { cn } from '@/lib/utils';
+import { Skeleton } from '@/components/ui/skeleton';
+import ttpsData from '@/components/dashboard/mitre_attack_dataset.json';
 
-const mockTTPs: TTP[] = [
-  { id: 'T1059.001', name: 'PowerShell', tactic: 'Execution', description: 'Adversaries may abuse PowerShell commands and scripts for execution. PowerShell is a powerful interactive command-line interface and scripting language included in the Windows operating system.', source: 'PowerShell command line monitoring', endpoint: 'srv-db01.company.local', count: 48, lastSeen: '2023-10-27 14:45:12' },
-  { id: 'T1071.001', name: 'Web Protocols', tactic: 'Command and Control', description: 'Adversaries may communicate using application layer protocols associated with web traffic to avoid detection/network filtering by blending in with existing traffic.', source: 'Firewall logs', endpoint: 'pc-mktg-05.company.local', count: 32, lastSeen: '2023-10-27 14:30:05' },
-  { id: 'T1110', name: 'Brute Force', tactic: 'Credential Access', description: 'Adversaries may use brute-force attacks to gain access to accounts when passwords are not known.', source: 'Active Directory logs', endpoint: 'dc01.company.local', count: 25, lastSeen: '2023-10-27 13:55:41' },
-  { id: 'T1530', name: 'Data from Cloud Storage Object', tactic: 'Collection', description: 'Adversaries may access and collect data from information repositories in cloud storage. This can include sensitive data such as patient records, financial information, or intellectual property.', source: 'DLP solution', endpoint: 'cloud-storage-bucket-prod', count: 18, lastSeen: '2023-10-27 12:15:00' },
-  { id: 'T1486', name: 'Data Encrypted for Impact', tactic: 'Impact', description: 'Adversaries may encrypt data on target systems or on large numbers of systems in a network to interrupt availability to system and network resources.', source: 'EDR solution', endpoint: 'srv-fileshare.company.local', count: 15, lastSeen: '2023-10-26 22:10:19' },
-  { id: 'T1053.005', name: 'Scheduled Task/Job: Scheduled Task', tactic: 'Execution', description: 'Adversaries may abuse the `at.exe` utility or `schtasks.exe` to schedule execution of programs at a specified time or date.', source: 'System event logs', endpoint: 'srv-app03.company.local', count: 12, lastSeen: '2023-10-26 20:05:33' },
-  { id: 'T1098', name: 'Account Manipulation', tactic: 'Persistence', description: 'Adversaries may manipulate accounts to maintain access to victim systems. Account manipulation may consist of any action that preserves adversary access to a compromised account.', source: 'Active Directory audit logs', endpoint: 'dc01.company.local', count: 9, lastSeen: '2023-10-26 18:45:21' },
-  { id: 'T1566.001', name: 'Phishing: Spearphishing Attachment', tactic: 'Initial Access', description: 'Adversaries may send spearphishing emails with malicious attachments to gain access to victim systems.', source: 'Email gateway security', endpoint: 'mail.company.local', count: 7, lastSeen: '2023-10-26 15:20:55' },
-];
 
 const tacticColors: Record<string, string> = {
   'Initial Access': 'bg-green-500/20 text-green-500 border-green-500/30',
@@ -37,14 +29,39 @@ const tacticColors: Record<string, string> = {
   'Collection': 'bg-blue-500/20 text-blue-500 border-blue-500/30',
   'Command and Control': 'bg-indigo-500/20 text-indigo-500 border-indigo-500/30',
   'Impact': 'bg-purple-500/20 text-purple-500 border-purple-500/30',
+  'Privilege Escalation': 'bg-pink-500/20 text-pink-500 border-pink-500/30',
+  'Defense Evasion': 'bg-teal-500/20 text-teal-500 border-teal-500/30',
+  'Discovery': 'bg-cyan-500/20 text-cyan-500 border-cyan-500/30',
+  'Lateral Movement': 'bg-lime-500/20 text-lime-500 border-lime-500/30',
+  'Exfiltration': 'bg-fuchsia-500/20 text-fuchsia-500 border-fuchsia-500/30',
 };
 
 
 export function TTPsTable() {
-  const [ttps] = useState<TTP[]>(mockTTPs);
+  const [ttps, setTtps] = useState<TTP[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortConfig, setSortConfig] = useState<{ key: keyof TTP; direction: 'ascending' | 'descending' } | null>({ key: 'count', direction: 'descending' });
   const [selectedTtp, setSelectedTtp] = useState<TTP | null>(null);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const formattedTtps: TTP[] = ttpsData.map((row: any, index: number) => {
+        const tactic = row.AttackType || row.Attack_Type || row.Tactic || 'N/A';
+        return {
+            id: row.MITRE || `TTP-${index}`,
+            name: row.Label || row.Name || 'N/A',
+            tactic: tactic,
+            description: row.Description || 'No description available.',
+            source: row.Signature || 'N/A',
+            endpoint: row.Payload || 'N/A',
+            count: Math.floor(Math.random() * 200) + 1,
+            lastSeen: new Date(Date.now() - Math.floor(Math.random() * 1000 * 3600 * 24 * 30)).toISOString(),
+        };
+    });
+    setTtps(formattedTtps);
+    setIsLoading(false);
+  }, []);
 
   const filteredAndSortedTTPs = useMemo(() => {
     let filtered = ttps.filter(ttp =>
@@ -55,10 +72,12 @@ export function TTPsTable() {
 
     if (sortConfig !== null) {
       filtered.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
+        const aVal = a[sortConfig.key];
+        const bVal = b[sortConfig.key];
+        if (aVal < bVal) {
           return sortConfig.direction === 'ascending' ? -1 : 1;
         }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
+        if (aVal > bVal) {
           return sortConfig.direction === 'ascending' ? 1 : -1;
         }
         return 0;
@@ -120,17 +139,35 @@ export function TTPsTable() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredAndSortedTTPs.map((ttp) => (
-                <TableRow key={ttp.id} onClick={() => handleRowClick(ttp)} className="cursor-pointer">
-                  <TableCell className="font-mono hidden md:table-cell text-center">{ttp.id}</TableCell>
-                  <TableCell className="font-medium">{ttp.name}</TableCell>
-                  <TableCell className="hidden sm:table-cell text-center">
-                    <Badge variant="outline">{ttp.tactic}</Badge>
+              {isLoading ? (
+                Array.from({ length: 5 }).map((_, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="hidden md:table-cell text-center"><Skeleton className="h-4 w-20 mx-auto" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-40" /></TableCell>
+                    <TableCell className="hidden sm:table-cell text-center"><Skeleton className="h-4 w-24 mx-auto" /></TableCell>
+                    <TableCell className="text-center"><Skeleton className="h-4 w-8 mx-auto" /></TableCell>
+                    <TableCell className="hidden lg:table-cell text-center"><Skeleton className="h-4 w-32 mx-auto" /></TableCell>
+                  </TableRow>
+                ))
+              ) : filteredAndSortedTTPs.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={5} className="h-24 text-center">
+                    No TTPs found.
                   </TableCell>
-                  <TableCell className="text-center">{ttp.count}</TableCell>
-                  <TableCell className="hidden lg:table-cell text-center">{new Date(ttp.lastSeen).toLocaleString()}</TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                filteredAndSortedTTPs.map((ttp) => (
+                  <TableRow key={ttp.id} onClick={() => handleRowClick(ttp)} className="cursor-pointer">
+                    <TableCell className="font-mono hidden md:table-cell text-center">{ttp.id}</TableCell>
+                    <TableCell className="font-medium">{ttp.name}</TableCell>
+                    <TableCell className="hidden sm:table-cell text-center">
+                      <Badge className={cn("border", tacticColors[ttp.tactic] || 'bg-gray-500/20 text-gray-500 border-gray-500/30')}>{ttp.tactic}</Badge>
+                    </TableCell>
+                    <TableCell className="text-center">{ttp.count}</TableCell>
+                    <TableCell className="hidden lg:table-cell text-center">{new Date(ttp.lastSeen).toLocaleString()}</TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </CardContent>
@@ -153,12 +190,12 @@ export function TTPsTable() {
                         <p className="text-muted-foreground">{selectedTtp.description}</p>
                     </div>
                     <div className="space-y-2">
-                        <h3 className="font-semibold text-lg">Detection Source</h3>
-                        <p className="text-muted-foreground font-mono">{selectedTtp.source}</p>
+                        <h3 className="font-semibold text-lg">Detection Signature</h3>
+                        <p className="text-muted-foreground font-mono bg-muted/50 p-2 rounded-md">{selectedTtp.source}</p>
                     </div>
                      <div className="space-y-2">
-                        <h3 className="font-semibold text-lg">Discovered Endpoint</h3>
-                        <p className="text-muted-foreground font-mono">{selectedTtp.endpoint}</p>
+                        <h3 className="font-semibold text-lg">Example Payload</h3>
+                        <p className="text-muted-foreground font-mono bg-muted/50 p-2 rounded-md">{selectedTtp.endpoint}</p>
                     </div>
                     <div className="space-y-2">
                         <h3 className="font-semibold text-lg">Last Seen</h3>

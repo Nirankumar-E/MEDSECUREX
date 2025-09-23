@@ -39,8 +39,8 @@ export interface TTP {
   name: string;
   tactic: string;
   description: string;
-  source: string;
-  endpoint: string;
+  source: string; // Corresponds to Signature
+  endpoint: string; // Corresponds to Payload
   count: number;
   lastSeen: string;
 }
