@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { Scatter, ScatterChart, XAxis, YAxis, CartesianGrid, ZAxis, Legend, ResponsiveContainer } from 'recharts';
+import { Scatter, ScatterChart, XAxis, YAxis, CartesianGrid, ZAxis, Legend, ResponsiveContainer, Brush } from 'recharts';
 import type { TTP } from '@/types';
 import ttpsData from '@/components/dashboard/mitre_attack_dataset.json';
 import { Button } from '@/components/ui/button';
@@ -82,7 +82,7 @@ export function TTPsBubbleChart({ onBubbleClick }: BubbleChartProps) {
   const chartData = React.useMemo(() => {
     return ttps.map(ttp => ({
       x: ttp.count,
-      y: getTacticYValue(ttp.tactic) + (Math.random() - 0.5) * 10,
+      y: getTacticYValue(ttp.tactic) + (Math.random() - 0.5) * 15, // Increased jitter
       z: ttp.count,
       tactic: ttp.tactic,
       name: ttp.name,
@@ -129,6 +129,7 @@ export function TTPsBubbleChart({ onBubbleClick }: BubbleChartProps) {
                         name="technique" 
                         label={{ value: "Technique Spread", angle: -90, position: "insideLeft" }}
                         domain={[30, 100]}
+                        tick={false}
                     />
                     <ZAxis type="number" dataKey="z" range={[100, 2000]} name="count" />
                     <ChartTooltip 
@@ -160,6 +161,7 @@ export function TTPsBubbleChart({ onBubbleClick }: BubbleChartProps) {
                             className="cursor-pointer"
                         />
                     ))}
+                     <Brush dataKey="x" height={30} stroke="hsl(var(--primary))" />
                 </ScatterChart>
             </ResponsiveContainer>
         </ChartContainer>
