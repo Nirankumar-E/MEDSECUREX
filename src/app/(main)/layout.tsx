@@ -1,5 +1,3 @@
-
-
 'use client';
 
 import { useEffect, type ReactNode } from 'react';
@@ -31,6 +29,7 @@ import {
   BarChart,
   Rocket,
   UserCircle,
+  Network
 } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -107,6 +106,7 @@ const navItems: NavItemType[] = [
   { href: '/overview', label: 'Overview', icon: LayoutDashboard, roles: ['Admin', 'Analyst', 'Viewer'] },
   { href: '/health-api-shield', label: 'Health API Shield', icon: HeartPulse, roles: ['Admin', 'Analyst', 'Viewer'] },
   { href: '/med-x-box', label: 'MED x Box', icon: Archive, roles: ['Admin', 'Analyst', 'Viewer'] },
+  { href: '/api-gateway', label: 'API Gateway', icon: Network, roles: ['Admin', 'Analyst'] },
   { href: '/alerts', label: 'Alerts', icon: ShieldAlert, roles: ['Admin', 'Analyst', 'Viewer'] },
   { href: '/incidents', label: 'Incidents', icon: FileText, roles: ['Admin', 'Analyst'] },
   { href: '/ttps', label: 'TTPs', icon: BarChart, roles: ['Admin', 'Analyst'] },
