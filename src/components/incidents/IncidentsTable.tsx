@@ -11,7 +11,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { StatusBadge } from '../ui/StatusBadge';
-import type { Incident, IncidentSeverity, IncidentStatus } from '@/types';
+import type { Incident, IncidentSeverity } from '@/types';
 
 interface IncidentsTableProps {
   incidents: Incident[];
@@ -36,7 +36,7 @@ export function IncidentsTable({ incidents }: IncidentsTableProps) {
                 <TableHeader>
                 <TableRow>
                     <TableHead className="text-center">ID</TableHead>
-                    <TableHead className="text-center">Title</TableHead>
+                    <TableHead>Title</TableHead>
                     <TableHead className="text-center">Status</TableHead>
                     <TableHead className="text-center">Severity</TableHead>
                     <TableHead className="text-center">Assignee</TableHead>
@@ -47,7 +47,7 @@ export function IncidentsTable({ incidents }: IncidentsTableProps) {
                 {incidents.map((incident) => (
                     <TableRow key={incident.id}>
                     <TableCell className="font-mono text-center">{incident.id}</TableCell>
-                    <TableCell className="font-medium text-center">{incident.title}</TableCell>
+                    <TableCell className="font-medium">{incident.title}</TableCell>
                     <TableCell className="text-center">
                         <StatusBadge status={incident.status} />
                     </TableCell>

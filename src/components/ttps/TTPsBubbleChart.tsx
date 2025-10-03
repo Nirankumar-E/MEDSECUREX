@@ -5,8 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Scatter, ScatterChart, XAxis, YAxis, CartesianGrid, ZAxis, Legend, ResponsiveContainer, Brush } from 'recharts';
 import type { TTP } from '@/types';
-import ttpsData from '@/components/dashboard/mitre_attack_dataset.json';
 import { Button } from '@/components/ui/button';
+import { useMemo } from 'react';
 
 const tacticColorPalette: Record<string, string> = {
   'Initial Access': 'hsl(var(--bubble-1))',
@@ -55,34 +55,16 @@ const getTacticYValue = (tactic: string) => {
 }
 
 interface BubbleChartProps {
+  ttps: TTP[];
   onBubbleClick: (tactic: string | null) => void;
 }
 
-export function TTPsBubbleChart({ onBubbleClick }: BubbleChartProps) {
-  const [ttps, setTtps] = React.useState<TTP[]>([]);
-  const [activeTactic, setActiveTactic] = React.useState<string | null>(null);
+export function TTPsBubbleChart({ ttps, onBubbleClick }: BubbleChartProps) {
 
-  React.useEffect(() => {
-    const formattedTtps: TTP[] = ttpsData.map((row: any, index: number) => {
-      const tactic = row.AttackType || row.Attack_Type || row.Tactic || 'N/A';
-      return {
-        id: row.MITRE || `TTP-${index}`,
-        name: row.Label || row.name || row.Name || 'N/A',
-        tactic: tactic,
-        description: row.Description || 'No description available.',
-        source: row.Signature || 'N/A',
-        endpoint: row.Payload || 'N/A',
-        count: Math.floor(Math.random() * 200) + 1,
-        lastSeen: new Date(Date.now() - Math.floor(Math.random() * 1000 * 3600 * 24 * 30)).toISOString(),
-      };
-    });
-    setTtps(formattedTtps);
-  }, []);
-
-  const chartData = React.useMemo(() => {
+  const chartData = useMemo(() => {
     return ttps.map(ttp => ({
       x: ttp.count,
-      y: getTacticYValue(ttp.tactic) + (Math.random() - 0.5) * 15, // Increased jitter
+      y: getTacticYValue(ttp.tactic) + (Math.random() - 0.5) * 20, // Increased jitter
       z: ttp.count,
       tactic: ttp.tactic,
       name: ttp.name,
@@ -90,7 +72,7 @@ export function TTPsBubbleChart({ onBubbleClick }: BubbleChartProps) {
     }));
   }, [ttps]);
 
-  const tactics = React.useMemo(() => {
+  const tactics = useMemo(() => {
       const uniqueTactics = [...new Set(chartData.map(d => d.tactic))];
       return uniqueTactics;
   }, [chartData]);

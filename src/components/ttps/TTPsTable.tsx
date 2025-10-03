@@ -18,8 +18,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@
 import type { TTP } from '@/types';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
-import ttpsData from '@/components/dashboard/mitre_attack_dataset.json';
-
 
 const tacticColors: Record<string, string> = {
   'Initial Access': 'bg-green-500/20 text-green-500 border-green-500/30',
@@ -42,39 +40,19 @@ const tacticColors: Record<string, string> = {
 
 
 interface TTPsTableProps {
+    ttps: TTP[];
     selectedTactic: string | null;
 }
 
-export function TTPsTable({ selectedTactic }: TTPsTableProps) {
-  const [ttps, setTtps] = useState<TTP[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+export function TTPsTable({ ttps, selectedTactic }: TTPsTableProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortConfig, setSortConfig] = useState<{ key: keyof TTP; direction: 'ascending' | 'descending' } | null>({ key: 'count', direction: 'descending' });
   const [selectedTtp, setSelectedTtp] = useState<TTP | null>(null);
 
-  useEffect(() => {
-    setIsLoading(true);
-    const formattedTtps: TTP[] = ttpsData.map((row: any, index: number) => {
-        const tactic = row.AttackType || row.Attack_Type || row.Tactic || 'N/A';
-        return {
-            id: row.MITRE || `TTP-${index}`,
-            name: row.Label || row.Label || row.name || row.Name || 'N/A',
-            tactic: tactic,
-            description: row.Description || 'No description available.',
-            source: row.Signature || 'N/A',
-            endpoint: row.Payload || 'N/A',
-            count: Math.floor(Math.random() * 200) + 1,
-            lastSeen: new Date(Date.now() - Math.floor(Math.random() * 1000 * 3600 * 24 * 30)).toISOString(),
-        };
-    });
-    setTtps(formattedTtps);
-    setIsLoading(false);
-  }, []);
-
   const filteredAndSortedTTPs = useMemo(() => {
     let filtered = ttps.filter(ttp => {
         const searchMatch = ttp.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            ttp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (ttp.name && ttp.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
             ttp.tactic.toLowerCase().includes(searchTerm.toLowerCase());
         const tacticMatch = selectedTactic ? ttp.tactic === selectedTactic : true;
         return searchMatch && tacticMatch;
@@ -149,17 +127,7 @@ export function TTPsTable({ selectedTactic }: TTPsTableProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isLoading ? (
-                Array.from({ length: 5 }).map((_, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="hidden md:table-cell text-center"><Skeleton className="h-4 w-20 mx-auto" /></TableCell>
-                    <TableCell><Skeleton className="h-4 w-40" /></TableCell>
-                    <TableCell className="hidden sm:table-cell text-center"><Skeleton className="h-4 w-24 mx-auto" /></TableCell>
-                    <TableCell className="text-center"><Skeleton className="h-4 w-8 mx-auto" /></TableCell>
-                    <TableCell className="hidden lg:table-cell text-center"><Skeleton className="h-4 w-32 mx-auto" /></TableCell>
-                  </TableRow>
-                ))
-              ) : filteredAndSortedTTPs.length === 0 ? (
+              {filteredAndSortedTTPs.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={5} className="h-24 text-center">
                     No TTPs found.

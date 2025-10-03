@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { IncidentsTable } from '@/components/incidents/IncidentsTable';
 import type { Incident, IncidentSeverity, IncidentStatus } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,25 +12,33 @@ import { RecentIncidentsTable } from '@/components/incidents/RecentIncidentsTabl
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { useToast } from '@/hooks/use-toast';
-
-const mockIncidents: Incident[] = [
-  { id: 'INC-001', title: 'Ransomware attack on SRV-DB01', status: 'In Progress', severity: 'Critical', assignee: 'Dr. Alex Chen', created: '2023-10-27 15:00:00' },
-  { id: 'INC-002', title: 'Data exfiltration from patient records DB', status: 'Open', severity: 'Critical', assignee: 'Unassigned', created: '2023-10-27 10:00:00' },
-  { id: 'INC-003', title: 'C2 communication from PC-MKTG-05', status: 'In Progress', severity: 'High', assignee: 'Ben Carter', created: '2023-10-27 09:00:00' },
-  { id: 'INC-004', title: 'Brute-force attempts on admin account', status: 'Resolved', severity: 'High', assignee: 'Ben Carter', created: '2023-10-27 08:00:00' },
-  { id: 'INC-005', title: 'Suspicious PowerShell execution on SRV-WEB02', status: 'Resolved', severity: 'High', assignee: 'Casey Day', created: '2023-10-26 23:00:00' },
-  { id: 'INC-006', title: 'Suspicious scheduled task on SRV-APP03', status: 'Resolved', severity: 'Medium', assignee: 'Casey Day', created: '2023-10-26 18:00:00' },
-  { id: 'INC-007', title: 'Phishing email campaign detected', status: 'Closed', severity: 'Medium', assignee: 'Ben Carter', created: '2023-10-26 12:00:00' },
-  { id: 'INC-008', title: 'User added to privileged group', status: 'Closed', severity: 'Low', assignee: 'Casey Day', created: '2023-10-26 11:00:00' },
-  { id: 'INC-009', title: 'Anomalous API usage for user_123', status: 'Open', severity: 'High', assignee: 'Unassigned', created: '2023-10-27 14:40:00' },
-  { id: 'INC-010', title: 'PII leakage in API response', status: 'In Progress', severity: 'Critical', assignee: 'Dr. Alex Chen', created: '2023-10-27 14:35:10' },
-  { id: 'INC-011', title: 'Excessive 4xx errors from client IP', status: 'In Progress', severity: 'Medium', assignee: 'Ben Carter', created: '2023-10-27 13:50:25' },
-  { id: 'INC-012', title: 'Potential API scraping activity', status: 'Resolved', severity: 'High', assignee: 'Casey Day', created: '2023-10-26 21:30:00' },
-];
+import { getIncidents } from '@/app/actions';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function IncidentsPage() {
-  const [incidents] = useState<Incident[]>(mockIncidents);
+  const [incidents, setIncidents] = useState<Incident[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+
+  useEffect(() => {
+    async function loadIncidents() {
+      setIsLoading(true);
+      const { data, error } = await getIncidents();
+      if (error) {
+        toast({
+          variant: 'destructive',
+          title: 'Failed to load incidents',
+          description: error,
+        });
+        setIncidents([]);
+      } else {
+        setIncidents(data || []);
+      }
+      setIsLoading(false);
+    }
+    loadIncidents();
+  }, [toast]);
+
 
   const statusCounts = incidents.reduce((acc, incident) => {
     acc[incident.status] = (acc[incident.status] || 0) + 1;
@@ -108,6 +116,21 @@ export default function IncidentsPage() {
     }
   };
   
+  if (isLoading) {
+    return (
+        <div className="flex-1 space-y-6">
+            <Skeleton className="h-10 w-1/3 mx-auto" />
+            <Skeleton className="h-6 w-1/2 mx-auto" />
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <Skeleton className="h-48" />
+                <Skeleton className="h-48" />
+                <Skeleton className="h-48" />
+            </div>
+            <Skeleton className="h-64" />
+            <Skeleton className="h-96" />
+        </div>
+    );
+  }
 
   return (
     <div className="flex-1">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { Alert, AlertSeverity, AlertStatus } from '@/types';
 import {
   Table,
@@ -24,17 +24,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { StatusBadge } from '../ui/StatusBadge';
-
-const mockAlerts: Alert[] = [
-    { id: 'AL-9876', timestamp: '2023-10-27 14:45:12', severity: 'Critical', description: 'Ransomware behavior detected on endpoint SRV-DB01', ttp_id: 'T1486', status: 'New', source: 'EDR', entity: 'SRV-DB01' },
-    { id: 'AL-9875', timestamp: '2023-10-27 14:30:05', severity: 'High', description: 'Unusual outbound traffic to known C2 server', ttp_id: 'T1071.001', status: 'In Progress', source: 'Firewall', entity: 'PC-MKTG-05' },
-    { id: 'AL-9874', timestamp: '2023-10-27 13:55:41', severity: 'High', description: 'Multiple failed login attempts for admin account', ttp_id: 'T1110', status: 'Resolved', source: 'Active Directory', entity: 'admin' },
-    { id: 'AL-9873', timestamp: '2023-10-27 12:15:00', severity: 'Medium', description: 'Suspicious scheduled task creation', ttp_id: 'T1053.005', status: 'Resolved', source: 'EDR', entity: 'SRV-APP03' },
-    { id: 'AL-9872', timestamp: '2023-10-26 22:10:19', severity: 'High', description: 'PowerShell execution with suspicious arguments', ttp_id: 'T1059.001', status: 'Resolved', source: 'EDR', entity: 'SRV-WEB02' },
-    { id: 'AL-9871', timestamp: '2023-10-26 20:05:33', severity: 'Critical', description: 'Data exfiltration pattern identified from patient records DB', ttp_id: 'T1530', status: 'New', source: 'DLP', entity: 'DB-PATIENT-RECORDS' },
-    { id: 'AL-9870', timestamp: '2023-10-26 18:45:21', severity: 'Low', description: 'User added to sensitive security group', ttp_id: 'T1098', status: 'Dismissed', source: 'Active Directory', entity: 'sec_group_db_admins' },
-    { id: 'AL-9869', timestamp: '2023-10-26 15:20:55', severity: 'Medium', description: 'Potential phishing email detected and quarantined', ttp_id: 'T1566.001', status: 'Resolved', source: 'Email Gateway', entity: 'user@example.com' },
-];
+import { getAlerts } from '@/app/actions';
+import { useToast } from '@/hooks/use-toast';
+import { Skeleton } from '../ui/skeleton';
 
 const severityOrder: Record<AlertSeverity, number> = { 'Critical': 4, 'High': 3, 'Medium': 2, 'Low': 1 };
 const severityStyles: Record<Alert['severity'], string> = {
@@ -46,12 +38,29 @@ const severityStyles: Record<Alert['severity'], string> = {
 
 
 export function AlertsTable() {
-  const [alerts] = useState<Alert[]>(mockAlerts);
+  const [alerts, setAlerts] = useState<Alert[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [severityFilter, setSeverityFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [sortConfig, setSortConfig] = useState<{ key: keyof Alert; direction: 'ascending' | 'descending' } | null>({ key: 'timestamp', direction: 'descending' });
+  const { toast } = useToast();
+
+  useEffect(() => {
+    async function loadAlerts() {
+        setIsLoading(true);
+        const { data, error } = await getAlerts();
+        if (error) {
+            toast({ variant: 'destructive', title: 'Failed to load alerts', description: error });
+            setAlerts([]);
+        } else {
+            setAlerts(data || []);
+        }
+        setIsLoading(false);
+    }
+    loadAlerts();
+  }, [toast]);
   
   const filteredAlerts = useMemo(() => {
     let filtered = alerts.filter(alert =>
@@ -99,10 +108,49 @@ export function AlertsTable() {
     setSortConfig({ key, direction });
   };
 
-  const getSortIndicator = (key: keyof Alert) => {
-    if (!sortConfig || sortConfig.key !== key) return null;
-    return sortConfig.direction === 'ascending' ? '▲' : '▼';
-  };
+  const renderTableBody = () => {
+    if (isLoading) {
+        return (
+            <TableBody>
+                {Array.from({length: 5}).map((_, i) => (
+                    <TableRow key={i}>
+                        <TableCell><Skeleton className="h-6 w-20" /></TableCell>
+                        <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+                        <TableCell className="hidden md:table-cell"><Skeleton className="h-4 w-24" /></TableCell>
+                        <TableCell className="hidden sm:table-cell"><Skeleton className="h-6 w-24" /></TableCell>
+                        <TableCell><Skeleton className="h-4 w-32" /></TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        )
+    }
+    if (sortedAlerts.length === 0) {
+        return (
+            <TableBody>
+                <TableRow>
+                    <TableCell colSpan={5} className="h-24 text-center">No alerts found.</TableCell>
+                </TableRow>
+            </TableBody>
+        )
+    }
+    return (
+        <TableBody>
+          {sortedAlerts.map((alert) => (
+            <TableRow key={alert.id} onClick={() => setSelectedAlert(alert)} className="cursor-pointer">
+              <TableCell className="text-center">
+                <Badge className={severityStyles[alert.severity]}>
+                  {alert.severity}
+                </Badge>
+              </TableCell>
+              <TableCell className="font-medium">{alert.description}</TableCell>
+              <TableCell className="hidden md:table-cell text-center"><Badge variant="outline">{alert.ttp_id}</Badge></TableCell>
+              <TableCell className="hidden sm:table-cell text-center"><StatusBadge status={alert.status} /></TableCell>
+              <TableCell className="text-center">{new Date(alert.timestamp).toLocaleString()}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+    );
+  }
 
   return (
     <Sheet open={!!selectedAlert} onOpenChange={(isOpen) => !isOpen && setSelectedAlert(null)}>
@@ -172,21 +220,7 @@ export function AlertsTable() {
                 </TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
-              {sortedAlerts.map((alert) => (
-                <TableRow key={alert.id} onClick={() => setSelectedAlert(alert)} className="cursor-pointer">
-                  <TableCell className="text-center">
-                    <Badge className={severityStyles[alert.severity]}>
-                      {alert.severity}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="font-medium">{alert.description}</TableCell>
-                  <TableCell className="hidden md:table-cell text-center"><Badge variant="outline">{alert.ttp_id}</Badge></TableCell>
-                  <TableCell className="hidden sm:table-cell text-center"><StatusBadge status={alert.status} /></TableCell>
-                  <TableCell className="text-center">{new Date(alert.timestamp).toLocaleString()}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
+            {renderTableBody()}
           </Table>
         </div>
       </div>
