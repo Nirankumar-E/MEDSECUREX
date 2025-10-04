@@ -5,45 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { AreaChart, Area, XAxis } from 'recharts';
 
-
-
-
-// Add this to BlockedRequestsChart.tsx
-
-export function BlockedRequestsChart() {
-  const [chartData, setChartData] = useState([]);
-
-  useEffect(() => {
-    // Add this console.log line for debugging
-    console.log('API URL from env:', process.env.NEXT_PUBLIC_API_URL);
-
-    const fetchData = async () => {
-      try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-        // The fetch call will only work if apiUrl is a valid string
-        if (apiUrl) {
-            const response = await fetch(`${apiUrl}/api/blocked-requests`);
-            const data = await response.json();
-            setChartData(data);
-        } else {
-            console.error('API URL is not defined. Check Vercel environment variables.');
-        }
-      } catch (error) {
-        console.error("Failed to fetch blocked requests data:", error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 30000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // ... rest of your component code ...
-}
-
-
-
-
 const chartConfig = {
   blocked: {
     label: 'Blocked',
@@ -55,14 +16,21 @@ export function BlockedRequestsChart() {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
+    // This log will confirm if the Vercel variable is being read
+    console.log('API URL from Vercel env:', process.env.NEXT_PUBLIC_API_URL);
+
     const fetchData = async () => {
       try {
-        // This is the key change: it uses the Vercel environment variable
         const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-        const response = await fetch(`${apiUrl}/api/blocked-requests`);
         
-        const data = await response.json();
-        setChartData(data);
+        // Safety check to ensure the URL exists before fetching
+        if (apiUrl) {
+          const response = await fetch(`${apiUrl}/api/blocked-requests`);
+          const data = await response.json();
+          setChartData(data);
+        } else {
+          console.error('ERROR: API URL is not defined. Please check your Vercel environment variables.');
+        }
       } catch (error) {
         console.error("Failed to fetch blocked requests data:", error);
       }
@@ -80,7 +48,7 @@ export function BlockedRequestsChart() {
       <CardHeader>
         <CardTitle>Blocked Requests</CardTitle>
         <CardDescription>Threats blocked in real-time.</CardDescription>
-      </CardHeader>
+      </Header>
       <CardContent>
         <div className="text-4xl font-bold text-destructive">{totalBlocked.toLocaleString()}</div>
         <p className="text-xs text-muted-foreground">+15.2% from last hour</p>
