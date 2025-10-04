@@ -5,6 +5,45 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { AreaChart, Area, XAxis } from 'recharts';
 
+
+
+
+// Add this to BlockedRequestsChart.tsx
+
+export function BlockedRequestsChart() {
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    // Add this console.log line for debugging
+    console.log('API URL from env:', process.env.NEXT_PUBLIC_API_URL);
+
+    const fetchData = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        // The fetch call will only work if apiUrl is a valid string
+        if (apiUrl) {
+            const response = await fetch(`${apiUrl}/api/blocked-requests`);
+            const data = await response.json();
+            setChartData(data);
+        } else {
+            console.error('API URL is not defined. Check Vercel environment variables.');
+        }
+      } catch (error) {
+        console.error("Failed to fetch blocked requests data:", error);
+      }
+    };
+
+    fetchData();
+    const interval = setInterval(fetchData, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // ... rest of your component code ...
+}
+
+
+
+
 const chartConfig = {
   blocked: {
     label: 'Blocked',
