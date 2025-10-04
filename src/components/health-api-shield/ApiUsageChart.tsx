@@ -1,23 +1,13 @@
-
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { AreaChart, Area, CartesianGrid, XAxis, YAxis, Legend } from 'recharts';
 
-const chartData = [
-  { time: '14:00', rps: 120, success: 115, errors: 5 },
-  { time: '14:05', rps: 150, success: 148, errors: 2 },
-  { time: '14:10', rps: 180, success: 175, errors: 5 },
-  { time: '14:15', rps: 130, success: 130, errors: 0 },
-  { time: '14:20', rps: 200, success: 190, errors: 10 },
-  { time: '14:25', rps: 160, success: 160, errors: 0 },
-  { time: '14:30', rps: 190, success: 185, errors: 5 },
-];
-
 const chartConfig = {
   rps: {
-    label: 'RPS',
+    label: 'Total Requests',
     color: 'hsl(var(--chart-1))',
   },
   success: {
@@ -25,22 +15,45 @@ const chartConfig = {
     color: 'hsl(var(--chart-2))',
   },
   errors: {
-    label: 'Errors',
+    label: 'Blocked',
     color: 'hsl(var(--destructive))',
   },
 };
 
 export function ApiUsageChart() {
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        if (apiUrl) {
+          const response = await fetch(`${apiUrl}/api/api-usage`);
+          const data = await response.json();
+          setChartData(data);
+        } else {
+          console.error('ERROR: NEXT_PUBLIC_API_URL is not defined.');
+        }
+      } catch (error) {
+        console.error("Failed to fetch API usage data:", error);
+      }
+    };
+
+    fetchData();
+    const interval = setInterval(fetchData, 30000); // Refresh every 30 seconds
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Card className="rounded-2xl shadow-lg">
       <CardHeader>
         <CardTitle>API Usage</CardTitle>
-        <CardDescription>Real-time requests per second, success, and error rates.</CardDescription>
+        <CardDescription>Real-time requests, success, and error rates (last hour).</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[350px] w-full">
           <AreaChart data={chartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-             <defs>
+            <defs>
               <linearGradient id="fillRps" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="var(--color-rps)" stopOpacity={0.8} />
                 <stop offset="95%" stopColor="var(--color-rps)" stopOpacity={0.1} />
