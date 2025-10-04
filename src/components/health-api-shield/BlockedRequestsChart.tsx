@@ -16,6 +16,9 @@ export function BlockedRequestsChart() {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
+    // This log will confirm the variable is being read in the browser
+    console.log('API URL from Vercel env:', process.env.NEXT_PUBLIC_API_URL);
+
     const fetchData = async () => {
       try {
         const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -25,7 +28,7 @@ export function BlockedRequestsChart() {
           const data = await response.json();
           setChartData(data);
         } else {
-          console.error('ERROR: API URL is not defined. Double-check your Vercel environment variables.');
+          console.error('ERROR: API URL is not defined. Double-check Vercel environment variables.');
         }
       } catch (error) {
         console.error("Failed to fetch blocked requests data:", error);
