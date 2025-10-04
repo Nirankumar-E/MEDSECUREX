@@ -1,18 +1,9 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { AreaChart, Area, CartesianGrid, XAxis } from 'recharts';
-
-const chartData = [
-  { time: '14:00', blocked: 12 },
-  { time: '14:05', blocked: 15 },
-  { time: '14:10', blocked: 8 },
-  { time: '14:15', blocked: 18 },
-  { time: '14:20', blocked: 25 },
-  { time: '14:25', blocked: 10 },
-  { time: '14:30', blocked: 22 },
-];
+import { AreaChart, Area, XAxis } from 'recharts';
 
 const chartConfig = {
   blocked: {
@@ -22,6 +13,29 @@ const chartConfig = {
 };
 
 export function BlockedRequestsChart() {
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // This is the key change: it uses the Vercel environment variable
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        const response = await fetch(`${apiUrl}/api/blocked-requests`);
+        
+        const data = await response.json();
+        setChartData(data);
+      } catch (error) {
+        console.error("Failed to fetch blocked requests data:", error);
+      }
+    };
+
+    fetchData();
+    const interval = setInterval(fetchData, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const totalBlocked = chartData.reduce((sum, item) => sum + item.blocked, 0);
+
   return (
     <Card className="rounded-2xl shadow-lg">
       <CardHeader>
@@ -29,7 +43,7 @@ export function BlockedRequestsChart() {
         <CardDescription>Threats blocked in real-time.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="text-4xl font-bold text-destructive">1,402</div>
+        <div className="text-4xl font-bold text-destructive">{totalBlocked.toLocaleString()}</div>
         <p className="text-xs text-muted-foreground">+15.2% from last hour</p>
         <div className="h-32 mt-4">
           <ChartContainer config={chartConfig}>
