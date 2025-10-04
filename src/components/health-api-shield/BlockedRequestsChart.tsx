@@ -16,14 +16,10 @@ export function BlockedRequestsChart() {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
-    // This debug log is crucial. We MUST see this in the browser console.
-    console.log('API URL from Vercel env:', process.env.NEXT_PUBLIC_API_URL);
-
     const fetchData = async () => {
       try {
         const apiUrl = process.env.NEXT_PUBLIC_API_URL;
         
-        // Safety check to ensure the URL exists before fetching
         if (apiUrl) {
           const response = await fetch(`${apiUrl}/api/blocked-requests`);
           const data = await response.json();
@@ -48,7 +44,7 @@ export function BlockedRequestsChart() {
       <CardHeader>
         <CardTitle>Blocked Requests</CardTitle>
         <CardDescription>Threats blocked in real-time.</CardDescription>
-      </Header>
+      </CardHeader>
       <CardContent>
         <div className="text-4xl font-bold text-destructive">{totalBlocked.toLocaleString()}</div>
         <p className="text-xs text-muted-foreground">+15.2% from last hour</p>
